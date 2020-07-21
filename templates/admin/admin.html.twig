@@ -2,17 +2,16 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Avc-Doctor{% endblock %}</title>
+        <title>{% block title %} espace admin {% endblock %}</title>
          <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" rel="stylesheet">
             <link rel="stylesheet" href="/css/bootstrap.min.css">
             <link rel="stylesheet" href="/css/app.css">
         {% block stylesheets %}{% endblock %}
     </head>
-    
-        {% block body %}
+
         <body>
           {% block navbar %}
-              <nav class="navbar navbar-expand-lg navbar-dark bg-2-dark shadow">
+              <nav class="navbar navbar-expand-lg navbar-dark bg-2-light shadow">
                     <a class="navbar-brand fa" href="{{path('welcome_page')}}"><h5>AvcDoctor</h5></a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                       <span class="navbar-toggler-icon"></span>
@@ -40,7 +39,7 @@
         {% endblock content %}
         </body>
          {% block footer %}
-            <footer class="bg-2-dark text-light">
+            <footer class="bg-2-light text-light">
             <br>
                 <div class="container-fluid text-center">
                    ©  <script type="text/javascript">document.write( new Date().getFullYear() );</script> Copyright:
@@ -48,10 +47,9 @@
                 </div>
             </footer> 
          {% endblock footer %}
-        {% endblock body %}
-        <script src="js/jquery.min.js"></script>
-        <script src="js/popper.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

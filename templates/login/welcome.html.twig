@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+    <div class="container border-dark">
+        <div class="row text-center">
+            <div class="col"></div>
+            <div class="col-10">
+            <a href="{{ path('User_login') }}">
+                 <div class="card m-3 text-center text-white">
+                    <h3 class="card-header card-h-bg">Patient</h3>
+                    <div class="bg-2-dark">
+                    <br>
+                    <i class="fas fa-hospital-user fa-5x"></i>
+                    <div class="card-body">
+                        <h5 class="card-title">Connectez vous nos chère patient</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                    </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+        <div class="row text-center mt-2 mb-5">
+            <div class="col">
+                <a href="{{ path('doctor_login') }}">
+                <div class="card m-3 text-center text-light">
+                    <h3 class="card-header card-h-bg">Docteur</h3>
+                    <div class="bg-2-dark">
+                    <br>
+                    <i class="fas fa-user-md fa-5x"></i>
+                    <div class="card-body">
+                        <h5 class="card-title">Connectez vous docteur</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                    </div>
+                </div>
+                </a>
+            </div>
+            <div class="col">
+            <a href="{{ path('admin_login') }}">
+            <div class="card m-3 text-center text-white">
+                <h3 class="card-header card-h-bg">Administrator</h3>
+              <div class="bg-2-dark">
+                <br>
+                <i class="fas fa-users-cog fa-5x"></i>
+                <div class="card-body">
+                    <h5 class="card-title">Connectez vous admin</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+              </div>
+            </div>
+            </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

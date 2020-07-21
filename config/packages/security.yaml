@@ -1,15 +1,63 @@
 security:
+    encoders: 
+        App\Entity\User:
+            algorithm: bcrypt
+        App\Entity\Users:
+            algorithm: auto
+
+
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         users_in_memory: { memory: null }
+        in_database:
+            entity:
+                class: App\Entity\User
+                property: email
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\Users
+                property: email
+        # used to reload user from session & other features (e.g. switch_user)
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        admin:
+            pattern: ^/admin
+            anonymous: true
+            provider: in_database
+
+            form_login:
+                login_path: admin_login
+                check_path: admin_login
+            logout:
+                path: admin_logout
+                target: welcome_page
+        
+        docteur:
+            pattern: ^/doctor
+            anonymous: true
+            provider: in_database
+            
+            form_login: 
+                login_path: doctor_login
+                check_path: doctor_login
+            logout:
+                path: doctor_logout
+                target: welcome_page    
         main:
             anonymous: true
             lazy: true
-            provider: users_in_memory
+            provider: in_database
+            form_login:
+                login_path: User_login
+                check_path: User_login
+            
+            logout:
+                path: account_logout
+                target: welcome_page
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -20,5 +68,12 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        #- { path: ^/profil, roles: ROLE_USER }
+        - { path: ^/doctor/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^doctor, roles: ROLE_DOCTOR}
+        - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        
+    role_hierarchy:
+        ROLE_DOCTOR: ROLE_USER
+        ROLE_ADMIN: ROLE_DOCTOR
