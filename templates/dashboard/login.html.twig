@@ -1,0 +1,60 @@
+{% extends 'partials/_SideNav.html.twig' %}
+
+{% block title %}Connexion docteur{% endblock %}
+
+{% block main %}  
+    <style>
+    #login{
+        justify-content:center;
+    }
+    .card  {
+        border-top-right-radius: 20px;
+        border-bottom-left-radius:20px;
+    }
+    .card .card-header{
+         border-top-right-radius: 20px;
+    }
+    .form-group > label:before {
+        content: "* ";
+        color:tomato;
+    }
+    </style>
+            <div class="container-fluid d-lg-flex" id="login">
+                <div class="row" style="justify-content:center;">
+                <div class="card bg-light shadow-lg mt-xl-5 mb-xl-5">
+                            <div class="card-header bg-1-lightpink">
+                                <h4 class="card-title text-center">
+                                    <i class="fa fa-door-open mr-lg-1"></i>
+                                    Accedez Votre Espace  
+                                </h4>    
+                            </div>
+                            <div class="card-body ml-2">
+                                    <br>
+                                    <form action="{{ path('User_login') }}" method="post" >
+                                        <div class="form-group row">
+                                            <i class="far fa-user-circle mr-2"></i>
+                                            <label for="_username">Email</label>
+                                            <input type="email" class="form-control" name="_username" placeholder="Email..." required>
+                                        </div>
+                                        <div class="form-group row">
+                                            <i class="fas fa-key mr-2"></i>
+                                            <label for="_password">Mot de passe</label>
+                                            <input type="password" class="form-control" name="_password" required placeholder="Mot de passe...">
+                                        </div>
+                                        <br>
+                                        <hr >
+                                        <div class="form-group text-center mt-3">
+                                            <button type="submit" class="btn bg-1-lightpink mr-5">
+                                            <i class="fas fa-lock-open"></i>
+                                                connexion </button>
+                                            <a href="{{ path('welcome_page') }}" class="btn bg-2-lightpink">
+                                            <i class="fas fa-arrow-circle-left"></i>
+                                                Page d'acceuil </a>
+                                        </div>
+                                    </form>
+                            </div>
+                    </div>
+                </div>                    
+            </div>
+{% endblock %}
+

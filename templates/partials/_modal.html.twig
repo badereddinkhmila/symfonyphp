@@ -1,0 +1,43 @@
+<style>
+    label.required:before {
+    content: "* ";
+    color: red; 
+}
+
+</style>
+<div tabindex="-1" class="modal fade" id="{{modalID}}" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header  bg-1-lightpink">
+                <div class=><span><i class="fas fa-user-alt fa-3x mr-3"></i> </span><span><h3 class="modal-title">Nouveau {{User}}</h3></span></div>
+                <i class="fas fa-window-close fa-2x close" type="button" aria-hidden="true" data-dismiss="modal"></i>
+            </div>
+            <div class="modal-body">
+                {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-4">{{ form_row(form.firstname) }}</div>
+                    <div class="col-md-4">{{form_row(form.lastname)}}</div>
+                     <div class="col-md-4">{{form_row(form.age)}}</div>
+                </div>
+                <div class="row align-content-md-start">
+                    <div class="col-md-3">{{ form_row(form.email) }}</div>
+                    <div class="col-md-3">{{form_row(form.password)}}</div>
+                    <div class="col-md-6 mr-0">{{form_row(form.birthdate)}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">{{ form_row(form.gender) }}</div>
+                    <div class="col-md-4">{{form_row(form.address)}}</div>
+                    <div class="col-md-4">{{form_row(form.phone)}}</div>
+                </div>
+                <div class="row justify-content-center">{{form_row(form.avatar)}}</div>
+                <hr>
+                <div class="text-center">
+                    <button type="submit" class="btn bg-1-lightpink"><i class="fas fa-save"></i>  Confirmer la création</button>
+                </div>    
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+</div>        
+

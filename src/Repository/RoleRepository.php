@@ -36,6 +36,21 @@ class RoleRepository extends ServiceEntityRepository
     }
     */
 
+     /**
+      * @return Role[] Returns an array of Role objects
+      */
+    
+    public function findRole($value)
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
     /*
     public function findOneBySomeField($value): ?Role
     {

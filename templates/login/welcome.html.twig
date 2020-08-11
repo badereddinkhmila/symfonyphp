@@ -1,64 +1,36 @@
-{% extends 'base.html.twig' %}
+{% extends 'partials/_SideNav.html.twig' %}
 
 
-{% block content %}
-    <div class="container border-dark">
-        <div class="row text-center">
-            <div class="col"></div>
-            <div class="col-10">
-            <a href="{{ path('User_login') }}">
-                 <div class="card m-3 text-center text-white">
-                    <h3 class="card-header card-h-bg">Patient</h3>
-                    <div class="bg-2-dark">
-                    <br>
-                    <i class="fas fa-hospital-user fa-5x"></i>
-                    <div class="card-body">
-                        <h5 class="card-title">Connectez vous nos chère patient</h5>
+{% block main %}
+        <div class="row mt-xl-5">
+            <div class="col-6 mt-xl-5">
+                <a href="{{ path('User_login') }}" style="text-decoration:none;">
+                    <div class="card md-3 text-center card-b-bg text-white justify-content-center">
+                        <div class="row justify-content-center">
+                            <img src="/images/d-a-login.jpg" class="mt-4 mr-1 rounded img-thumbnail shadow-lg" alt="#" style="max-width:150px;max-height:80px;">
+                            <img src="/images/p-a-login.png" class="mt-4 rounded img-thumbnail shadow-lg" alt="#" style="max-width:150px;max-height:80px;">        
+                        </div>    
+                        <div class="card-body">
+                            <h5 class="card-title">Connexion Client</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                    </div>
-                    </a>
-                </div>
+                </a>
             </div>
-            <div class="col"></div>
-        </div>
-        <div class="row text-center mt-2 mb-5">
-            <div class="col">
-                <a href="{{ path('doctor_login') }}">
-                <div class="card m-3 text-center text-light">
-                    <h3 class="card-header card-h-bg">Docteur</h3>
-                    <div class="bg-2-dark">
-                    <br>
-                    <i class="fas fa-user-md fa-5x"></i>
+            <div class="col-6 mt-xl-5">
+                <a href="{{ path('admin_login') }}" style="text-decoration:none;">
+                <div class="card md-3 text-center text-white card-b-bg">
+                    <img src="/images/login1.svg" class="mt-4 rounded img-thumbnail shadow-lg" alt="#" style="align-self: center;max-width:150px;max-height:80px;">
                     <div class="card-body">
-                        <h5 class="card-title">Connectez vous docteur</h5>
+                        <h5 class="card-title">Connexion Administrateur</h5>
                     </div>
                     <div class="card-body">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
                     </div>
                 </div>
                 </a>
             </div>
-            <div class="col">
-            <a href="{{ path('admin_login') }}">
-            <div class="card m-3 text-center text-white">
-                <h3 class="card-header card-h-bg">Administrator</h3>
-              <div class="bg-2-dark">
-                <br>
-                <i class="fas fa-users-cog fa-5x"></i>
-                <div class="card-body">
-                    <h5 class="card-title">Connectez vous admin</h5>
-                </div>
-                <div class="card-body">
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                </div>
-              </div>
-            </div>
-            </a>
-            </div>
         </div>
-    </div>
 {% endblock %}

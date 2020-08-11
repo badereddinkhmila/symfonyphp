@@ -1,0 +1,28 @@
+{% extends "partials/_SideNav.html.twig" %}
+{% block title %}Créer un docteur{% endblock %}
+
+
+{% block main %}
+<style>
+    label.required:before {
+        content: "* ";
+        color: red;}
+</style>
+        <div style="display:flex;justify-content:center;height:100vh;">
+            <div class="col-md-6">
+                <div class="card shadow-lg mb-5">
+                    <div class="bg-1-lightpink"><h4 class="card-header text-center"><i class="fas fa-user-md" style="animation: swing ease-in-out 0.5s 1 alternate;"></i> <span>Créer un nouveau docteur</span></h4></div>
+                    <div class="card-body">
+                        {{ form_start(form) }}
+                        {{ form_widget(form) }}
+                        <hr>
+                        <div class="text-center">
+                            <button type="submit" class="btn bg-1-lightpink"><i class="fas fa-plus-circle"></i>  Confirmer la création</button>
+                        </div>    
+                        {{ form_end(form) }}
+                    </div>    
+                </div>
+            </div>    
+        </div>
+{% endblock main %}
+

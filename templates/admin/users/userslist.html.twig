@@ -1,0 +1,86 @@
+{% extends "partials/_SideNav.html.twig" %}
+
+{% block main %}
+{% for labels , message in app.flashes %}
+<div role="alert" class="alert alert-{{labels}} alert-dismissible">
+    <button aria-labels="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
+    <h2 class="alert-heading">Succès!</h2>
+    <hr>
+    {% for msg in message %}
+     <p> <i class="fas fa-user-md"></i> {{ msg | raw }} </p>        
+    {% endfor %}
+</div>
+{% endfor %}
+    <div class="container-fluid">
+        <div class="card-header text-capitalize bg-1-lightpink shadow-lg row">
+            <span class="col-10"><h5>Liste des docteurs</h5></span>
+            <span class="col-2"><button data-target="#add_doctor" data-toggle="modal" class="btn btn-md bg-2-dark text-light" type="button"><i class="fa fa-plus-circle"></i>  <span>Ajouter</span></button></span>
+        </div>   
+        <br> 
+            <table class="table table-hover table-bordered table-active shadow-lg">
+            <thead>
+                <tr>
+                <th scope="col">Prénom</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Avatar</th>
+                <th scope="col">Age</th>
+                <th scope="col">Date de naissance</th>               
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                {% if 'ROLE_DOCTOR' in user.getRoles %}
+                <tr>
+                    <th scope="row">{{ user.firstname }}</th>
+                    <th scope="row">{{ user.lastname }}</th>
+                    <td>{{ user.email }}</td>
+                    <td>    
+                        <img class="avatar avatar-small" src="{{ user.avatar }}" alt="image de {{ user.firstname }}">
+                    </td>
+                    <td>{{user.age}}</td>
+                    <td>{{user.birthdate | date("d/m/Y")}}</td>
+                    <td class="text-center">
+                            <button data-target="#edit_doctor_{{user.id}}" data-toggle="modal" type="button" class="btn btn-primary btn-sm text-light" id="{{user.id}}">
+                                <i class="fas fa-id-card-alt"></i>
+                            </button>
+                        <button type="button" data-action="delete" data-target="#block_{{user.id}}" class="btn btn-danger btn-sm text-light">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+            </table> 
+            <div class="d-flex justify-content-center mt-5" id="pagination">
+                <ul class="pagination">
+                    <li class="page-item {% if page == 1 %} disabled {% endif %}">
+                        <a class="page-link" href="{{ path('doctors_list',{ 'page' : page -1 }) }}">&laquo;</a>
+                    </li>
+                    {% for i in 1..pages %}
+                        <li class="page-item {% if page == i %} active bg-link {% endif %}">
+                            <a class="page-link" href="{{ path('doctors_list',{ 'page' :i }) }}">{{ i }}</a>
+                        </li>
+                    {% endfor %}
+                    <li class="page-item {% if page == pages %} disabled {% endif %}">
+                        <a class="page-link" href="{{ path('doctors_list',{ 'page' : page +1 }) }}">&raquo;</a>
+                    </li>
+                </ul>
+            </div>
+    </div>
+{% include "partials/_modal.html.twig" with {form:form , modalID:"add_doctor",User:"Docteur"} %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function handleDelete (){
+            $('button[data-action="delete"]').click(function(){
+                const target = this.dataset.target;
+                $(target).remove();
+            });
+        }
+
+        handleDelete();
+    </script>
+{% endblock %}

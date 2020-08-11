@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface
 {
@@ -63,19 +64,62 @@ class User implements UserInterface
     private $age;
 
     /**
-     * @ORM\ManyToMany(targetEntity=randezvous::class)
-     */
-    private $randezvous;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Role::class, mappedBy="Users")
+     * @ORM\ManyToMany(targetEntity=Role::class, mappedBy="Users",cascade={"persist", "remove"})
      */
     private $userRoles;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isDoctor;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="patients")
+     * @ORM\JoinTable(name="patients",joinColumns={
+     *          @ORM\JoinColumn(name="doctor_id",referencedColumnName="id")
+     *          },
+     *          inverseJoinColumns={@ORM\JoinColumn(name="patient_id",referencedColumnName="id")})
+     */
+    private $patients;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="doctor")
+     * 
+     */
+    private $doctor;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Randezvous::class, mappedBy="parts")
+     */
+    private $randezvouses;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Patientdata::class, mappedBy="personne")
+     */
+    private $patientdatas;
+
     public function __construct()
     {
-        $this->randezvous = new ArrayCollection();
         $this->userRoles = new ArrayCollection();
+        $this->doctor = new ArrayCollection();
+        $this->patients = new ArrayCollection();
+        $this->randezvouses = new ArrayCollection();
+        $this->patientdatas = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -132,9 +176,7 @@ class User implements UserInterface
 
     public function getRoles(){
         $roles=$this->userRoles->map(function ($role)
-        {
-            return $role->getTitle();
-        })->toArray();
+        { return $role->getTitle();})->toArray();
         $roles[]='ROLE_USER';
         return $roles;    
     }
@@ -195,32 +237,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|randezvous[]
-     */
-    public function getRandezvous(): Collection
-    {
-        return $this->randezvous;
-    }
-
-    public function addRandezvous(randezvous $randezvous): self
-    {
-        if (!$this->randezvous->contains($randezvous)) {
-            $this->randezvous[] = $randezvous;
-        }
-
-        return $this;
-    }
-
-    public function removeRandezvous(randezvous $randezvous): self
-    {
-        if ($this->randezvous->contains($randezvous)) {
-            $this->randezvous->removeElement($randezvous);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Role[]
      */
     public function getUserRoles(): Collection
@@ -247,5 +263,183 @@ class User implements UserInterface
 
         return $this;
     }
-}
 
+    public function getIsDoctor(): ?bool
+    {
+        return $this->isDoctor;
+    }
+
+    public function setIsDoctor(?bool $isDoctor): self
+    {
+        $this->isDoctor = $isDoctor;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getDoctor(): Collection
+    {
+        return $this->doctor;
+    }
+
+    public function addDoctor(self $doctor): self
+    {
+        if (!$this->doctor->contains($doctor)) {
+            $this->doctor[] = $doctor;
+        }
+
+        return $this;
+    }
+
+    public function removeDoctor(self $doctor): self
+    {
+        if ($this->doctor->contains($doctor)) {
+            $this->doctor->removeElement($doctor);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getPatients(): Collection
+    {
+        return $this->patients;
+    }
+
+    public function addPatient(self $patient): self
+    {
+        if (!$this->patients->contains($patient)) {
+            $this->patients[] = $patient;
+            $patient->addDoctor($this);
+        }
+
+        return $this;
+    }
+
+    public function removePatient(self $patient): self
+    {
+        if ($this->patients->contains($patient)) {
+            $this->patients->removeElement($patient);
+            $patient->removeDoctor($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Randezvous[]
+     */
+    public function getRandezvouses(): Collection
+    {
+        return $this->randezvouses;
+    }
+
+    public function addRandezvouse(Randezvous $randezvouse): self
+    {
+        if (!$this->randezvouses->contains($randezvouse)) {
+            $this->randezvouses[] = $randezvouse;
+            $randezvouse->addPart($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRandezvouse(Randezvous $randezvouse): self
+    {
+        if ($this->randezvouses->contains($randezvouse)) {
+            $this->randezvouses->removeElement($randezvouse);
+            $randezvouse->removePart($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist(){
+        
+        if(empty($this->age)){
+            $date= new \DateTime();
+            $dif = $date->diff($this->birthdate);
+            $this->age = $dif->days/365;}
+        
+        if(empty($this->avatar) && $this->gender=="Homme"){
+            $this->avatar="/images/M-avatar.jpg";
+        }
+        elseif(empty($this->avatar) && $this->gender=="Femme"){
+            $this->avatar="/images/F-avatar.jpg";
+        }
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Patientdata[]
+     */
+    public function getPatientdatas(): Collection
+    {
+        return $this->patientdatas;
+    }
+
+    public function addPatientdata(Patientdata $patientdata): self
+    {
+        if (!$this->patientdatas->contains($patientdata)) {
+            $this->patientdatas[] = $patientdata;
+            $patientdata->setPersonne($this);
+        }
+
+        return $this;
+    }
+
+    public function removePatientdata(Patientdata $patientdata): self
+    {
+        if ($this->patientdatas->contains($patientdata)) {
+            $this->patientdatas->removeElement($patientdata);
+            // set the owning side to null (unless already changed)
+            if ($patientdata->getPersonne() === $this) {
+                $patientdata->setPersonne(null);
+            }
+        }
+
+        return $this;
+    }
+}

@@ -1,0 +1,77 @@
+{% extends 'partials/_SideNav.html.twig' %}
+
+
+{% block main %}
+           <div class="container-fluid">
+                <div class="row">
+                    <div class="col-3 my-auto">
+                        <p class="card-header text-center text-bold"><i class="fas fa-heart fa-4x  text-danger"></i><span class="ml-2" style="font-size: 40px;" id="val"></span></p>
+                    </div>
+                    <div class="col-8 bg-white border-dark shadow-lg card">
+                        <div class="card-header"> Courbe de tension</div>
+                        <canvas id="blood"></canvas>
+                    </div>
+                </div>
+            </div> 
+<script>
+    function executeQuery(){   
+       $.ajax({  
+          url:        '/dashboard/patients/{{id}}/data',  
+          type:       'POST',   
+          dataType:   'json',  
+          async:      true,  
+
+          success: function(param, status) {
+              var tension=[];
+              var oxygene=[];
+             for(i = 0; i < param.length; i++) {
+                prs=Object.values(param[i]);
+                tension.push(prs[0]);  
+             }
+
+            console.log(tension); 
+            $('#val').text(tension[tension.length - 1]);
+            $('#val').show();   
+            
+            var chartData = {
+            labels: ["S", "M", "T", "W", "T", "F", "S"],
+            datasets: [{
+                data: tension ,
+                label: "Courbe de tension",
+                borderColor:'rgb(0,0,255)',
+                fill:false,
+                }]};
+
+            var chLine = document.getElementById("blood");
+            if (chLine) {
+            new Chart(chLine, {
+            type: 'line',
+            data: chartData,
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: false
+                                    }
+            }]
+            },
+            legend: {
+            display: true
+            }}});}
+          },  
+          error : function(xhr, textStatus, errorThrown) {
+             alert('Ajax request failed.');  
+          }  
+       });
+       updateCall();}    
+       
+        $(document).ready(function() {
+        executeQuery();
+        });
+
+        function updateCall(){
+        setTimeout(function(){executeQuery()}, 10000);
+        }
+
+</script>
+{% endblock %}

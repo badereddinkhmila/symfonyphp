@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\randezvous;
+use App\Entity\Randezvous;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

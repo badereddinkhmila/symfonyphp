@@ -1,0 +1,77 @@
+{% extends "partials/_SideNav.html.twig" %}
+
+{% block main %}
+{% for label , message in app.flashes %}
+    <div role="alert" class="alert alert-{{label}} alert-dismissible">
+        <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
+        <h2 class="alert-heading">Succès!</h2>
+        <hr>
+        {% for msg in message %}
+        <p> <i class="fas fa-user-plus"></i> {{ msg | raw }} </p>        
+        {% endfor %}
+    </div>
+{% endfor %}
+    <div class="container-fluid">
+        <div class="card-header text-capitalize bg-1-lightpink ml-auto"> <h5>Gestion des patients</h5> <button data-target="#add_patient" data-toggle="modal" class="btn btn-dark text-white"><i class="fas fa-plus-circle"></i><span>Ajouter</span> </button></div>   
+        <br> 
+        <br>
+            <table class="table table-hover table-bordered table-light">
+            <thead>
+                <tr>
+                <th scope="col">Prénom</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Avatar</th>
+                <th scope="col">Age</th>
+                <th scope="col">Date de naissance</th>
+                <th></th>                
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                 {% if 'ROLE_ADMIN' not  in user.getRoles and 'ROLE_DOCTOR' not in user.getRoles %}
+                <tr id="block_{{user.id}}">
+                    <th scope="row">{{ user.firstname }}</th>
+                    <th scope="row">{{ user.lastname }}</th>
+                    <td>{{ user.email }}</td>
+                    <td>    
+                        <img class="avatar avatar-small" src="{{ user.avatar }}" alt="image de {{ user.firstname }}">
+                    </td>
+                    <td>{{user.age}}</td>
+                    <td>{{user.birthdate | date("m/d/Y")}}</td>
+                    <td>
+                        <a href="{{path('account_profile',{'id':user.id})}} ">
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="visiter son profil" title="Consultez profil">
+                                <i class="fas fa-id-card-alt"></i>
+                            </button>
+                        </a>
+                            <button type="button" data-action="delete" data-target="#block_{{user.id}}" class="btn btn-danger btn-sm"data-toggle="tooltip" data-placement="top" title="Supprimer utilisateur">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        <a href="{{path('patient_data',{'id':user.id})}} ">
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="visualisez données">
+                                <i class="fas fa-id-card-alt"></i>
+                            </button>
+                        </a>    
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+            </table>
+    </div>  
+{% include "partials/_modal.html.twig" with {modalID:"add_patient",form:form,User:"Patient"} %}      
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function handleDelete (){
+            $('button[data-action="delete"]').click(function(){
+                const target = this.dataset.target;
+                $(target).remove();
+            });
+        }
+
+        handleDelete();
+    </script>
+{% endblock %}

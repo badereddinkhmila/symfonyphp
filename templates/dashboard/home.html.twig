@@ -1,0 +1,156 @@
+{% extends "partials/_SideNav.html.twig" %}
+
+{% block main %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.js"></script>
+    <div class="container">
+            <div class="row mt-3 pt-3" style="background-color: #eeeeee">
+            <div class="col-md-6">
+                <!-- Card group -->
+                <div class="card-group">
+
+                <!-- Card -->
+                <div class="card mb-4 bg-light">
+
+                    <!-- Card content -->
+                    <div class="card-body">
+
+                    <!-- Title -->
+                    <h6 class="card-title">Patients:</h6>
+                    <!-- Text -->
+                    
+                    
+                    <p class="card-text text-primary"><i class="fas fa-users fa-3x"></i><span class="ml-2 counter" style="font-size: 30px;">987</span></p>
+
+                    </div>
+                    <!-- Card content -->
+
+                </div>
+                <!-- Card -->
+
+                <!-- Card -->
+                <div class="card mb-4 bg-light">
+
+                    <!-- Card content -->
+                    <div class="card-body">
+                    <!-- Title -->
+                    <h6 class="card-title">Randez-Vous: </h6>
+                    <!-- Text -->
+                    <p class="card-text text-success"><i class="fas fa-clock fa-3x"></i></i><span class="ml-2 counter" style="font-size: 30px;">123</span></p>
+                    </div>
+                    <!-- Card content -->
+
+                </div>
+                <!-- Card -->
+
+                </div>
+                <!-- Card group -->
+            </div>
+
+            
+
+            <div class="col-md-6">
+                <!-- Card group -->
+                <div class="card-group">
+        
+                    <!-- Card -->
+                    <div class="card mb-4 bg-light">
+        
+                    <!-- Card content -->
+                    <div class="card-body">
+        
+                        <!-- Title -->
+                        <h6 class="card-title">Réclamations:</h6>
+                        <!-- Text -->
+                        
+                        
+                        <p class="card-text text-danger"><i class="fas fa-tools fa-3x"></i><span class="ml-2 counter" style="font-size: 30px;">765</span></p>
+        
+                    </div>
+                    <!-- Card content -->
+        
+                    </div>
+                    <!-- Card -->
+        
+                    <!-- Card -->
+                    <div class="card mb-4 bg-light">
+        
+                    <!-- Card content -->
+                    <div class="card-body">
+                        <!-- Title -->
+                        <h6 class="card-title">Les paquets MySignal: </h6>
+                        <!-- Text -->
+                        <p class="card-text text-info"><i class="fas fa-toolbox fa-3x"></i><span class="ml-2 counter" style="font-size: 30px;">567</span></p>
+                    </div>
+                    <!-- Card content -->
+        
+                    </div>
+                    <!-- Card -->
+        
+                </div>
+                <!-- Card group -->
+                </div>
+            </div>
+  </div>
+    <div class="row mt-5">
+        <div class="col">
+            <a href="#" style='text-decoration:none;color:inherit;'>
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Liste des patients</h4>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                            <th scope="col">Type</th>
+                            <th scope="col">Column heading</th>
+                            <th scope="col">Column heading</th>
+                            <th scope="col">Column heading</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-light">
+                            <th scope="row">Light</th>
+                            <td>Column content</td>
+                            <td>Column content</td>
+                            <td>Column content</td>
+                            </tr>  
+                        </tbody>
+                    </table> 
+                </div>
+            </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="#" style="text-decoration:none;color:inherit;">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Listes des randez-vous</h4>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                            <th scope="col">Type</th>
+                            <th scope="col">Column heading</th>
+                            <th scope="col">Column heading</th>
+                            <th scope="col">Column heading</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-light">
+                            <th scope="row">Light</th>
+                            <td>Column content</td>
+                            <td>Column content</td>
+                            <td>Column content</td>
+                            </tr>  
+                        </tbody>
+                    </table> 
+                </div>
+            </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".counter").counterUp({delay:5,time:1000});
+ </script>
+{% endblock %}

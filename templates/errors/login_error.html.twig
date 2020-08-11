@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+{% block body %}
+  <style>
+  #error{
+        display:flex;
+        justify-content:center;
+        height:100vh;
+    }
+  </style>
+  <body class="container mt-xl-5" id='error'>
+    <div class='bg-white row'>
+      <div class="col-lg-3">
+        <img alt='#' src="/images/404.png" />
+      </div>
+
+      <div class="col-lg-8">
+        <h1 class="text-danger" style="font-size: 60px;">404</h1>
+        <h3> Oops verifiez votre identifiants </h3>
+        <div>
+          <a href="{{ path('welcome_page') }}" class='btn btn-outline-dark'>
+          <i class="fas fa-arrow-alt-circle-left"></i><span> Page de connexion</span></a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+{% endblock %}

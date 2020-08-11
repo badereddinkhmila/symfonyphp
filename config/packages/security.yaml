@@ -32,21 +32,11 @@ security:
             form_login:
                 login_path: admin_login
                 check_path: admin_login
+                default_target_path: dash_home
+                failure_path : login_error
             logout:
                 path: admin_logout
                 target: welcome_page
-        
-        docteur:
-            pattern: ^/doctor
-            anonymous: true
-            provider: in_database
-            
-            form_login: 
-                login_path: doctor_login
-                check_path: doctor_login
-            logout:
-                path: doctor_logout
-                target: welcome_page    
         main:
             anonymous: true
             lazy: true
@@ -54,9 +44,11 @@ security:
             form_login:
                 login_path: User_login
                 check_path: User_login
+                default_target_path: dash_home
+                failure_path : login_error
             
             logout:
-                path: account_logout
+                path: User_logout
                 target: welcome_page
 
             # activate different ways to authenticate
@@ -69,11 +61,9 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         #- { path: ^/profil, roles: ROLE_USER }
-        - { path: ^/doctor/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^doctor, roles: ROLE_DOCTOR}
         - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        
     role_hierarchy:
         ROLE_DOCTOR: ROLE_USER
         ROLE_ADMIN: ROLE_DOCTOR
+        
