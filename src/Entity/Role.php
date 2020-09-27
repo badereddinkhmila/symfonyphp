@@ -12,10 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Role
 {
-    /**
+     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer",unique=true)
      */
     private $id;
 

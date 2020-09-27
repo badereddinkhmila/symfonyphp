@@ -1,77 +1,73 @@
-{% extends 'partials/_SideNav.html.twig' %}
-
-
+{% extends 'partials/_sideNav2.html.twig' %}
 {% block main %}
-           <div class="container-fluid">
-                <div class="row">
-                    <div class="col-3 my-auto">
-                        <p class="card-header text-center text-bold"><i class="fas fa-heart fa-4x  text-danger"></i><span class="ml-2" style="font-size: 40px;" id="val"></span></p>
-                    </div>
-                    <div class="col-8 bg-white border-dark shadow-lg card">
-                        <div class="card-header"> Courbe de tension</div>
-                        <canvas id="blood"></canvas>
-                    </div>
+        <div id="list"></div>
+        <div class="row-md-6 card bg-light" id="parentdiv">
+        <div class="card-header bg-1-lightpink text-right" style="max-height:60px;">
+            <div class="text-center d-inline-flex mr-5">Membre:<h6>{{user.firstname|upper}} {{user.lastname|upper}}</h6></div>
+            <div class="d-inline-flex mr-auto">Email: <h6>{{user.email}}</h6></div>
+        </div>
+            <div class="card-img-overlay">
+                <img src="{{user.avatar}}" alt="#" class="avatar avatar-meduim">
+            </div>
+            <div class="card-body row">
+            <div class="col-2"></div>
+                <div class="col-3">
+                    <div class="card-text d-inline-flex"><h6>Adresse: </h6>{{user.address}}</div><hr>
+                    <div class="card-text d-inline-flex"><h6>Numéro: </h6>{{user.phone}}</div> <hr>
                 </div>
-            </div> 
-<script>
-    function executeQuery(){   
-       $.ajax({  
-          url:        '/dashboard/patients/{{id}}/data',  
-          type:       'POST',   
-          dataType:   'json',  
-          async:      true,  
-
-          success: function(param, status) {
-              var tension=[];
-              var oxygene=[];
-             for(i = 0; i < param.length; i++) {
-                prs=Object.values(param[i]);
-                tension.push(prs[0]);  
-             }
-
-            console.log(tension); 
-            $('#val').text(tension[tension.length - 1]);
-            $('#val').show();   
-            
-            var chartData = {
-            labels: ["S", "M", "T", "W", "T", "F", "S"],
-            datasets: [{
-                data: tension ,
-                label: "Courbe de tension",
-                borderColor:'rgb(0,0,255)',
-                fill:false,
-                }]};
-
-            var chLine = document.getElementById("blood");
-            if (chLine) {
-            new Chart(chLine, {
-            type: 'line',
-            data: chartData,
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: false
-                                    }
-            }]
-            },
-            legend: {
-            display: true
-            }}});}
-          },  
-          error : function(xhr, textStatus, errorThrown) {
-             alert('Ajax request failed.');  
-          }  
-       });
-       updateCall();}    
-       
-        $(document).ready(function() {
-        executeQuery();
+                <div class="col-4 ml-1">
+                    <div class="card-text d-inline-flex"><h6>Âge: </h6>{{user.age}}</div><hr>
+                    <div class="card-text d-inline-flex"><h6>Date de naissance: </h6> {{user.birthdate|date('d/m/yy')}}</div> <hr>
+                </div>
+                <div class="col-2 ml-1">
+                    <div class="card-text d-inline-flex"><h6>Taille: </h6>180 cm</div><hr>
+                    <div class="card-text d-inline-flex"><h6>Poids: </h6>82 kg</div><hr>
+                </div>
+            </div>
+            <div class="card-footer text-center bg-1-lightpink">Date d'ajout: {{user.createdAt|date('d/m/yy')}} </div>
+        </div>
+         <!--<div class="my-auto"  id="loader"><img src="/images/spinner.svg" alt="#" class="avatar avatar-max my-auto"></div>
+            -->   
+        <div class="row container-fluid bg-white mt-5">
+        </div>
+        <div class="row card bg-white">
+            <div id="chartContainer" class="charts"></div>
+        </div>  
+{% endblock %}
+{% block javascript %}
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script src="https://cdn.zingchart.com/modules/zingchart-zoom-buttons.min.js"></script>
+    <script src="{{asset('js/data.js')}}"></script>
+    <script src="{{asset('js/chart.min.js')}}"></script>
+<script language = "javascript">  
+      $(document).ready(function(){
+        //$("#loader").show();
+        var tensions=[];
+        var ids=[];
+        const userId="{{user.id}}";
+        let LastId = 0; 
+        $.get( "/dashboard/patients/"+userId+"/data",function( data ) {
+            dt=Object.values(data);  
+            for(var i=0;i < dt.length; i++){
+                temp=Object.values(dt[i]);
+                ids.push(temp[0])
+                tensions.push(temp[1]);
+                LastId=temp[0];
+            }
+        }).done(function(){
+         $("#loader").hide();
         });
-
-        function updateCall(){
-        setTimeout(function(){executeQuery()}, 10000);
-        }
-
-</script>
+        
+        setInterval(function(){
+            let lastid =JSON.stringify({"lastid":""+LastId+""});
+            $.post("/dashboard/patients/"+userId+"/data",lastid,function(response) {
+           if( JSON.stringify(response) !== "[]"){
+            for(var i=0;i < response.length; i++){
+                tmp=Object.values(response[i]);
+                LastId=tmp[0];
+            }}
+        }); 
+        }, 5000);
+      });
+   </script>
 {% endblock %}

@@ -4046,10 +4046,10 @@ input[type="button"].btn-block {
 }
 .custom-file-input[disabled] ~ .custom-file-label,
 .custom-file-input:disabled ~ .custom-file-label {
-  background-color: #e9ecef;
+  background-color: #ffb4e6;
 }
-.custom-file-input:lang(en) ~ .custom-file-label::after {
-  content: "Browse";
+.custom-file-input:lang(fr) ~ .custom-file-label::after {
+  content: "Image";
 }
 .custom-file-input ~ .custom-file-label[data-browse]::after {
   content: attr(data-browse);

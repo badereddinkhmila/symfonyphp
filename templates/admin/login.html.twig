@@ -1,32 +1,24 @@
-{% extends 'admin/admin.html.twig' %}
+{% extends 'partials/_sideNav2.html.twig' %}
 
-{% block content %}
+{% block main %}
     <style>
-    #login{
-        display:flex;
-        justify-content:center;
-        height:100vh;
-    }
     .form-group >label:before {
     content: "*  ";
     color:tomato;}
     </style>
-
-
-    <div id="login">
-    <div class="col-md-4">
-        <div class="card bg-light mt-5 shadow">
+    <div class="container d-flex mt-xl-5">
+    <div class="col-5 mx-auto mt-xl-5">
+        <div class="card bg-light shadow">
                 <div class="card-header">
                     <h4 class="card-title text-center">
-                        <i class="fas fa-lock"></i>
-                        Connexion d'administration
+                        <i class="fas fa-door-open"></i>
+                        Connexion Agent DHCSys
                     </h4>    
                 </div>
                 <div class="card-body">
-                        <br>
                         <form action="{{ path('admin_login') }}" method="post">
                             <div class="form-group">
-                                <i class="fas fa-envelope"></i>
+                                <i class="far fa-user-circle"></i>
                                 <label for="_username">Email</label>
                                 <input type="email" class="form-control" name="_username" placeholder="Email..." required>
                             </div>
@@ -35,6 +27,7 @@
                                 <label for="_password">Mot de passe</label>
                                 <input type="password" class="form-control" name="_password" required placeholder="Mot de passe...">
                             </div>
+                            <hr>
                             <div class="form-group text-center">
                                 <button type="submit" class="btn bg-1-lightpink">
                                 <i class="fas fa-sign-in-alt"></i>
@@ -46,9 +39,8 @@
                             </div>
                         </form>
                 </div>
-        <br>
         </div>
     </div>
-    </div>
+</div>
 
 {% endblock %}

@@ -47,4 +47,54 @@ class PatientdataRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    
+    public function findLast($patie): array
+    {
+        return $this->createQueryBuilder('patientdata')
+            ->andWhere('p.personne = :pers')
+            ->setParameter('pers',$patie)
+            ->orderBy('patientdata.id','DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findByPersonne($patie): array
+    {
+        return $this->createQueryBuilder('patientdata')
+            ->andWhere('patientdata.personne = :pers')
+            ->setParameter('pers',$patie)
+            ->orderBy('patientdata.id','DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    
+    public function findOneByRow($val,$patie): array
+    {
+        $qb=$this->createQueryBuilder('p')
+            ->where('p.id > :param')
+            ->andWhere('p.personne = :pers')
+            ->setParameter('pers',$patie)
+            ->setParameter('param',$val)
+            ->getQuery();
+            return $qb->execute();
+        ;
+    }
+    
+
+   /* public function findOneByLast(): ?Patientdata
+    {
+        return $this->createQueryBuilder('p')
+        ->add('select', 'p')
+        ->add('from', 'Patientdata p')
+        ->add('orderBy', 'p.id DESC')
+        
+        ->getQuery()
+        ->getResult();
+    }*/
+
+
 }

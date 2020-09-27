@@ -1,10 +1,10 @@
-{% extends "partials/_SideNav.html.twig" %}
+{% extends "partials/_sideNav2.html.twig" %}
 
 {% block main %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.js"></script>
+
+    
     <div class="container">
-            <div class="row mt-3 pt-3" style="background-color: #eeeeee">
+            <div class="row mt-3 pt-3 bg-secondary">
             <div class="col-md-6">
                 <!-- Card group -->
                 <div class="card-group">
@@ -150,7 +150,10 @@
     </div>
 </div>
 
-<script>
-    $(".counter").counterUp({delay:5,time:1000});
- </script>
+
 {% endblock %}
+ {% block javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.js"></script>
+    <script>$(".counter").counterUp({delay:5,time:1000});</script>
+ {% endblock %}

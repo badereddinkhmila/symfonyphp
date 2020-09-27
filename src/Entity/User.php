@@ -16,8 +16,8 @@ class User implements UserInterface
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer",unique=true)
      */
     private $id;
 
@@ -80,13 +80,13 @@ class User implements UserInterface
      *          },
      *          inverseJoinColumns={@ORM\JoinColumn(name="patient_id",referencedColumnName="id")})
      */
-    private $patients;
+    private $doctor;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="doctor")
      * 
      */
-    private $doctor;
+    private $patients;
 
     /**
      * @ORM\ManyToMany(targetEntity=Randezvous::class, mappedBy="parts")

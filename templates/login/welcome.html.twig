@@ -1,14 +1,13 @@
-{% extends 'partials/_SideNav.html.twig' %}
-
+{% extends 'partials/_sideNav2.html.twig' %}
 
 {% block main %}
         <div class="row mt-xl-5">
-            <div class="col-6 mt-xl-5">
-                <a href="{{ path('User_login') }}" style="text-decoration:none;">
-                    <div class="card md-3 text-center card-b-bg text-white justify-content-center">
+            <div class="col-5 mt-xl-5 mx-auto">
+                <a href="{{ path('User_login') }}">
+                    <div class="card md-3 text-center justify-content-center" id="login-card">
                         <div class="row justify-content-center">
-                            <img src="/images/d-a-login.jpg" class="mt-4 mr-1 rounded img-thumbnail shadow-lg" alt="#" style="max-width:150px;max-height:80px;">
-                            <img src="/images/p-a-login.png" class="mt-4 rounded img-thumbnail shadow-lg" alt="#" style="max-width:150px;max-height:80px;">        
+                            <img src="/images/d-a-login.jpg" class="mt-4 mr-1 rounded img-thumbnail shadow-lg" alt="#" id="login-avatar">
+                            <img src="/images/p-a-login.png" class="mt-4 rounded img-thumbnail shadow-lg" alt="#" id="login-avatar">        
                         </div>    
                         <div class="card-body">
                             <h5 class="card-title">Connexion Client</h5>
@@ -19,12 +18,12 @@
                     </div>
                 </a>
             </div>
-            <div class="col-6 mt-xl-5">
-                <a href="{{ path('admin_login') }}" style="text-decoration:none;">
-                <div class="card md-3 text-center text-white card-b-bg">
-                    <img src="/images/login1.svg" class="mt-4 rounded img-thumbnail shadow-lg" alt="#" style="align-self: center;max-width:150px;max-height:80px;">
+            <div class="col-5 mt-xl-5 mx-auto">
+                <a href="{{ path('admin_login') }}">
+                <div class="card md-3 text-center" id="login-card">
+                    <img src="/images/login1.svg" class="mt-4 rounded img-thumbnail shadow-lg" alt="#" id="login-avatar">
                     <div class="card-body">
-                        <h5 class="card-title">Connexion Administrateur</h5>
+                        <h5 class="card-title">Connexion Agent DHCSys</h5>
                     </div>
                     <div class="card-body">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>

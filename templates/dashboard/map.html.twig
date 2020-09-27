@@ -1,0 +1,34 @@
+{% extends "partials/_sideNav2.html.twig" %}
+{% block title %}position des patients{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="/map/leaflet.css">
+{% endblock %}
+{% block main %}
+        <div id="mapid" class="bg-light" style="width:100%;height:100%;"></div>
+{% endblock %}
+
+
+{% block javascript %}
+<script src="/map/leaflet-src.js"></script>
+</script>
+<script type="text/javascript">
+   var mymap = L.map('mapid').setView([	34.747847, 10.766163], 8);
+/*L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'sk.eyJ1IjoiYmFkZXJlZGRpbmUta2htaWxhIiwiYSI6ImNrZXVmemUyZjJ5Mjgyem1xZ3FwcnllcXMifQ.c68nSCUianO2JsMS4H2KSw'
+}).addTo(mymap);*/
+ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(mymap);
+
+var marker = L.marker([34.747847, 10.766163]).addTo(mymap);
+marker.bindPopup("<b>{{app.user.firstname}}</b><br><img src='{{app.user.avatar}}' class='avatar avatar-small'>").openPopup();
+
+</script>   
+    
+{% endblock %}

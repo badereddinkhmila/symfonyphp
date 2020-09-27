@@ -1,0 +1,32 @@
+{#{% form_theme form _self %}
+
+{% block integer_widget %}
+    <div class="integer_widget">
+        {% set type = type|default('number') %}
+        {{ block('form_widget_simple') }}
+    </div>
+{% endblock %}
+#}
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-12">
+            {{ form_row(form.description) }}
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-12">
+        {{ form_row(form.dated_for) }}
+        </div>
+        <div class="col-12">
+        {{form_row(form.end_in)}}
+        </div>
+    </div>
+    <div class="col-12">
+        {{form_row(form.parts)}}
+    </div>
+    <hr>
+    <div class="text-center">
+        <button class="btn bg-1-lightpink text-center" type="submit" id="formsubmit"><i class="far fa-save"></i> Enregistrer</button>
+    </div>
+ {{ form_end(form) }}
+

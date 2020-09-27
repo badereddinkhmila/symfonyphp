@@ -2,18 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\PatientdataRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PatientdataRepository;
 
 /**
  * @ORM\Entity(repositoryClass=PatientdataRepository::class)
  */
 class Patientdata
 {
-    /**
+     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer",unique=true)
      */
     private $id;
 
@@ -44,6 +44,7 @@ class Patientdata
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="patientdatas")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $personne;
 
@@ -63,7 +64,8 @@ class Patientdata
     private $aptitude;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
@@ -185,9 +187,9 @@ class Patientdata
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTime();
 
         return $this;
     }

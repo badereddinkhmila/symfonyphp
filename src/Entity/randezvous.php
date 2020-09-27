@@ -2,19 +2,24 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTime;
+use DateInterval;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=RandezvousRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Randezvous
 {
-    /**
+     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer",unique=true)
      */
     private $id;
 
@@ -34,6 +39,7 @@ class Randezvous
     private $created_at;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="datetime")
      */
     private $dated_for;
@@ -42,6 +48,21 @@ class Randezvous
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="randezvouses")
      */
     private $parts;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $color;
+
+    /**
+     * @ORM\Column(type="time")
+     */
+    private $end_in;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $type;
 
 
     public function __construct()
@@ -127,4 +148,48 @@ class Randezvous
 
         return $this;
     }
+    /**
+    * @ORM\PrePersist
+    *
+    */
+public function createTimestamps(): void
+{
+    $this->setCreatedAt(new \DateTime('now'));    
+}
+
+public function getColor(): ?string
+{
+    return $this->color;
+}
+
+public function setColor(string $color): self
+{
+    $this->color = $color;
+
+    return $this;
+}
+
+public function getEndIn(): ?\DateTimeInterface
+{
+    return $this->end_in;
+}
+
+public function setEndIn(\DateTimeInterface $end_in): self
+{
+    $this->end_in = $end_in;
+
+    return $this;
+}
+
+public function getType(): ?string
+{
+    return $this->type;
+}
+
+public function setType(string $type): self
+{
+    $this->type = $type;
+
+    return $this;
+}
 }

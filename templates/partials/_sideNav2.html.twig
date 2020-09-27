@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/style4.css')}}">
+    <script src="{{asset('js/jquery.js')}}"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" rel="stylesheet">
+    {% block style %}
+        
+    {% endblock %}
+    </head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <div id="sidebar" class="shadow">
+            <div class="sidebar-header">
+                {% if app.user %}
+                <img src="{{app.user.avatar}} "class="avatar avatar-meduim" alt="#">
+                <div class="user-info">
+                    <spann class="user-name"><strong><em>{{app.user.firstname}}</em></strong>
+                    <em>{{app.user.lastname}}</em>
+                    </spann>
+                    <spann class="user-role">
+                        <strong>Patient</strong> 
+                    </spann>
+                    <spann class="user-status">
+                      <i class="fas fa-circle text-success"></i>
+                      <spann>En ligne</spann>
+                    </spann>
+                </div>    
+                {% else %}
+                <img src="{{asset('images/A-avatar.png')}}" class="avatar avatar-meduim" alt="#">
+                <div class="user-info">
+                    <spann class="user-name"><strong>Visiteur</strong>
+                    <em>Anonyme</em>
+                    </spann>
+                    <spann class="user-role">
+                        <strong>inconnu</strong> 
+                    </spann>
+                    <spann class="user-status">
+                      <i class="fas fa-circle text-danger"></i>
+                      <spann>Hors ligne</spann>
+                    </spann>
+                </div>
+                {% endif %}
+            </div>
+        <div class="sidebar-wrapper">
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="{{path('dash_home')}}">
+                        <i class="fas fa-home"></i>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-chart-line"></i>
+                        Pages
+                    </a>
+                    <ul class="collapse list-unstyled" id="pageSubmenu">
+                        <li>
+                            <a href="#">Page 1</a>
+                        </li>
+                        <li>
+                            <a href="#">Page 2</a>
+                        </li>
+                        <li>
+                            <a href="#">Page 3</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="far fa-calendar-alt"></i>
+                        Consultations
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-map-marked-alt"></i>
+                        Carte
+                    </a>
+                </li>
+                <hr>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-book"></i>
+                        Documentation
+                    </a>
+                </li>
+                <hr>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-desktop"></i>
+                        Profil
+                    </a>
+                </li>
+                <hr>
+                <li class="mb-0">    
+                    <a href="#">
+                        <i class="fas fa-door-open"></i>
+                        Connexion
+                    </a>
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- Page Content  -->
+        <div id="content">
+                <nav class="navbar navbar-expand-lg shadow">
+                        <a type="button" id="sidebarCollapse" class="btn mr-1">
+                            <i class="fas fa-bars fa-2x"></i>
+                        </a>
+                        <a href="{{path('welcome_page')}}">
+                        <div class="navbar-brand" id="textlogo"></div>
+                        </a>
+                        <a class="d-inline-block d-lg-none ml-auto navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <i class="fas fa-arrow-down"></i>
+                        </a>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="nav navbar-nav ml-auto">
+                                <li class="nav-item align-self-center col">
+                                    <a class="nav-link" href="#"><i class="fas fa-calendar-alt fa-2x"></i><span class="badge badge-pill badge-danger notification">333</span></a>
+                                </li>
+                                <li class="nav-item align-self-center col">
+                                    <a class="nav-link" href="#"><i class="fas fa-tools fa-2x"></i><span class="badge badge-pill badge-danger notification">10</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item d-flex align-self-center col">
+                                    <i class="fas fa-sun align-self-center mr-2"></i>
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                        <label class="custom-control-label" for="customSwitch1"></label>
+                                    </div>
+                                    <i class="fas fa-moon align-self-center"></i>
+                                </li>
+                                <li class="align-self-center col ml-2">
+                                    {% if app.user %}
+                                        <img src="{{app.user.avatar}}" alt="#" class="avatar avatar-small">   
+                                    {% else %}
+                                    <img src="{{asset('images/A-avatar.png')}}" alt="#" class="avatar avatar-small">
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </div>
+                </nav>
+                <div id="page-content">
+                    {% block main %}
+
+                    {% endblock %}
+                </div>
+            </div>
+    </div>
+    
+    
+    <script src="/js/popper.min.js" ></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if($('.user-name').text().length>77){
+                $('.user-name em').hide();
+            }
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+                if($('#sidebar').hasClass('active')){
+                    $(this).html('<i class="fas fa-times fa-2x"></i>');
+                }
+                else{
+                    $(this).html('<i class="fas fa-bars fa-2x"></i>');
+                }
+            });
+
+
+            var customSwitch1=document.getElementById('customSwitch1'); 
+            if(customSwitch1){
+                initTheme();
+
+                $('#customSwitch1').change(function(){
+                    resetTheme(); 
+                });
+                function initTheme() {
+                    var darkThemeSelected = (localStorage.getItem('customSwitch1') !== null && localStorage.getItem('customSwitch1') === 'dark');
+                    customSwitch1.checked = darkThemeSelected;
+                    darkThemeSelected ? document.body.setAttribute('data-theme', 'dark') : document.body.removeAttribute('data-theme');
+                };
+
+                function resetTheme() {
+                    if(customSwitch1.checked) { 
+                        document.body.setAttribute('data-theme', 'dark');
+                        localStorage.setItem('customSwitch1', 'dark'); 
+                    } else {
+                        document.body.removeAttribute('data-theme');
+                        localStorage.removeItem('customSwitch1');
+                    } 
+                };
+            }
+        });
+        $(window).resize(function() {
+        if (window.innerWidth <= 830) {$('#sidebar').addClass('active');}
+            else{
+                $('#sidebar').removeClass('active');
+            }
+        });
+    </script>
+   
+   {% block javascript %}
+        
+    {% endblock %}
+</body>
+</html>

@@ -46,6 +46,7 @@ security:
                 check_path: User_login
                 default_target_path: dash_home
                 failure_path : login_error
+                always_use_default_target_path: true
             
             logout:
                 path: User_logout

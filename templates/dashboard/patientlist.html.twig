@@ -1,77 +1,122 @@
-{% extends "partials/_SideNav.html.twig" %}
-
+{% extends "partials/_sideNav2.html.twig" %}
+{% block title %}liste des patients{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="/css/Datatables.css">
+{% endblock %}
 {% block main %}
+
 {% for label , message in app.flashes %}
     <div role="alert" class="alert alert-{{label}} alert-dismissible">
         <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
+        {% if label == 'warning' %}
+        <h2 class="alert-heading">Succès!</h2>
+        <hr>
+        {% for msg in message %}
+        <p> <i class="fas fa-user-slash"></i> {{ msg | raw }} </p>        
+        {% endfor %}
+        {% elseif label=='success' %}
         <h2 class="alert-heading">Succès!</h2>
         <hr>
         {% for msg in message %}
         <p> <i class="fas fa-user-plus"></i> {{ msg | raw }} </p>        
         {% endfor %}
+        {% endif %}
     </div>
 {% endfor %}
-    <div class="container-fluid">
-        <div class="card-header text-capitalize bg-1-lightpink ml-auto"> <h5>Gestion des patients</h5> <button data-target="#add_patient" data-toggle="modal" class="btn btn-dark text-white"><i class="fas fa-plus-circle"></i><span>Ajouter</span> </button></div>   
-        <br> 
-        <br>
-            <table class="table table-hover table-bordered table-light">
-            <thead>
+        <div class="card-header text-capitalize d-flex flex-row m-3">
+            <h5 class="col-9">Gestion des patients</h5>
+            <div class="col">
+                <button id="newpat" class="btn btn-dark text-white float-right">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Ajouter</span>
+                </button>
+            </div>
+        </div>   
+        <div class="bg-white container-fluid d-flex m-3">
+            <img src="/images/spinner.svg" id="loader" class="float-center">
+            <table id="datatable" class="table table-striped table-bordered table-light row-border compact display mt-5" style="width:100%;">
+                <thead>
                 <tr>
-                <th scope="col">Prénom</th>
-                <th scope="col">Nom</th>
-                <th scope="col">Email</th>
-                <th scope="col">Avatar</th>
-                <th scope="col">Age</th>
-                <th scope="col">Date de naissance</th>
-                <th></th>                
+                    <th scope="col">Prénom</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Avatar</th>
+                    <th scope="col">Email</th>
+                    <th scope="col"></th>                
                 </tr>
-            </thead>
+                </thead>
             <tbody>
-                {% for user in users %}
-                 {% if 'ROLE_ADMIN' not  in user.getRoles and 'ROLE_DOCTOR' not in user.getRoles %}
-                <tr id="block_{{user.id}}">
-                    <th scope="row">{{ user.firstname }}</th>
-                    <th scope="row">{{ user.lastname }}</th>
-                    <td>{{ user.email }}</td>
-                    <td>    
-                        <img class="avatar avatar-small" src="{{ user.avatar }}" alt="image de {{ user.firstname }}">
-                    </td>
-                    <td>{{user.age}}</td>
-                    <td>{{user.birthdate | date("m/d/Y")}}</td>
-                    <td>
-                        <a href="{{path('account_profile',{'id':user.id})}} ">
-                            <button type="button" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="visiter son profil" title="Consultez profil">
-                                <i class="fas fa-id-card-alt"></i>
-                            </button>
-                        </a>
-                            <button type="button" data-action="delete" data-target="#block_{{user.id}}" class="btn btn-danger btn-sm"data-toggle="tooltip" data-placement="top" title="Supprimer utilisateur">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        <a href="{{path('patient_data',{'id':user.id})}} ">
-                            <button type="button" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="visualisez données">
-                                <i class="fas fa-id-card-alt"></i>
-                            </button>
-                        </a>    
-                    </td>
-                </tr>
-                {% endif %}
-                {% endfor %}
             </tbody>
             </table>
-    </div>  
-{% include "partials/_modal.html.twig" with {modalID:"add_patient",form:form,User:"Patient"} %}      
+        </div>  
+    {% include "partials/_modal.html.twig" with {modalID:"add_patient",form:form,User:"Patient"} %}
+    <div tabindex="-1" class="modal fade" id="confirmModal" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+                <div class="modal-header  bg-1-lightpink">
+                    <div class=><span><i class="fas fa-user-alt fa-3x mr-3"></i></span></div>
+                    <i class="fas fa-window-close fa-2x close" type="button" aria-hidden="true" data-dismiss="modal"></i>
+                </div>
+                <div class="modal-body">
+                    <form method="post" id="formdel">
+                        <button type="submit" id="confdel" class="btn btn-outline-warning">Confirmer suppression</button>
+                    </form>
+                </div>
+        </div>               
+    </div>
+
+
+
+
 {% endblock %}
 
-{% block javascripts %}
-    <script>
-        function handleDelete (){
-            $('button[data-action="delete"]').click(function(){
-                const target = this.dataset.target;
-                $(target).remove();
-            });
-        }
+{% block javascript %}
+<script src="/js/Datatable.js"></script>
+<script src="/js/Datatables.bootstrap.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#datatable").hide();
+            $("#loader").show();
+            $.ajax({
+                url:"/dashboard/patients",
+                method:"GET",
+                dataType:"json",
+                async:true,
+                success:function(data){
+                    $('#datatable').DataTable({
+                        "pagingType": "full_numbers",
+                        "language": {
+                        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                        },
+                        data:data,
+                        columns:[
+                            {'data':'firstname'},
+                            {'data':'lastname'},
+                            {"render": function (data, type, JsonResultRow, meta) {
+                                return '<img class="avatar avatar-small" src="'+JsonResultRow.avatar+'">';
+                            }},
+                            {'data':'email'},
+                            {"render":function(data,type,JsonResultRow,meta){
+                                return '<button class="btn btn-sm btn-outline-danger m-1 delete" id="'+JsonResultRow.id+'"><i class="fas fa-trash"></i></button><a href="/dashboard/patient/'+JsonResultRow.id+'" class="btn btn-sm btn-outline-info m-1"><i class="fas fa-id-card-alt"></i></a><a href="/dashboard/patients/'+JsonResultRow.id+'/data" class="btn btn-sm btn-outline-primary m-1"><i class="fas fa-chart-line"></i></a>'
+                            }
+                            }
 
-        handleDelete();
+                        ],
+                        
+                    })
+                }
+            }).done(function(){
+                $("#loader").hide();
+                $("#datatable").show();
+            });
+        });
+    var user_id;
+    $(document).on('click','.delete',function(){
+        user_id=$(this).attr('id');
+        $('#confirmModal').modal('show');
+        $('#formdel').attr("action","/dashboard/patients/"+user_id+"/delete");
+        });
+    $(document).on('click','#newpat',function(){
+        $('#add_patient').modal('show');
+    });
     </script>
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends "partials/_SideNav.html.twig" %}
+{% extends "partials/_sideNav2.html.twig" %}
 
 {% block main %}
 {% for labels , message in app.flashes %}
@@ -71,16 +71,6 @@
     </div>
 {% include "partials/_modal.html.twig" with {form:form , modalID:"add_doctor",User:"Docteur"} %}
 {% endblock %}
-
 {% block javascripts %}
-    <script>
-        function handleDelete (){
-            $('button[data-action="delete"]').click(function(){
-                const target = this.dataset.target;
-                $(target).remove();
-            });
-        }
 
-        handleDelete();
-    </script>
 {% endblock %}

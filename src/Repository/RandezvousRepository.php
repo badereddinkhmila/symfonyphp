@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+
 use App\Entity\Randezvous;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,19 +23,16 @@ class RandezvousRepository extends ServiceEntityRepository
     // /**
     //  * @return Randezvous[] Returns an array of Randezvous objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function findLast()
     {
         return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('r.id', 'DESC')
+            ->setMaxResults(1)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Randezvous
