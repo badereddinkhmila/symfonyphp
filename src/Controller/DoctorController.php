@@ -32,7 +32,7 @@ class DoctorController extends AbstractController
      * @Route("/dashboard/patients",name="doctor_dashboard")
      * 
      */
-    public function Patients(UserRepository $repo,Request $request,UserPasswordEncoderInterface $encoder,RoleRepository $rp){
+    public function Patients(Request $request,UserPasswordEncoderInterface $encoder,RoleRepository $rp){
 
         if ($request->isXmlHttpRequest() && $_SERVER['REQUEST_METHOD'] =='GET') {
             $patients=$this->getUser()->getDoctor();  
@@ -52,12 +52,11 @@ class DoctorController extends AbstractController
         }
         
         
-        $doc=$this->getUser();
+            $doc=$this->getUser();
             $user=new User();
             $form=$this->createForm(UserFormType::class,$user);
             $form->handleRequest($request);
             $manager=$this->getDoctrine()->getManager();
-            // set default role as doctor 
             $role = $rp->find(3);
             if( $form->isSubmitted() && $form->isValid() ){
                 //upload d'image

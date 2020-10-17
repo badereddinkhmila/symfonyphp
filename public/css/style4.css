@@ -1,15 +1,16 @@
 :root{
   --color-bg:#ffffff;
   --txt-color:#31353D;
-  --hover-bg:rgb(235, 233, 233);
+  --hover-bg:rgb(243, 241, 241);
   --txtlogo:url('/images/textlogo.png');
   --sh-color:#76d1df;
+  /*--sh-color:#2196f3;*/
 }
 
 [data-theme="dark"] {
   --color-bg: #31353D;
   --txt-color:#ffffff;
-  --hover-bg:rgb(110, 110, 110);
+  --hover-bg:rgb(98, 98, 98);
   --txtlogo:url('/images/d-textlogo.png');
   --sh-color:lightpink;
 }
@@ -65,6 +66,7 @@ body {
     align-items: stretch;
     overflow: hidden;
     height: 100vh;
+    opacity: 1.0;
 }
 
 #sidebar {
@@ -81,8 +83,8 @@ body {
 
 #textlogo{
     content: var(--txtlogo);
-    height: 30px;
-    width: 100px;
+    height: 40px;
+    width: 150px;
 }
 
 #sidebar.active {
@@ -118,6 +120,10 @@ body {
     display: block;
     font-size: 1.8em;
     margin-bottom: 5px;
+}
+
+i.nav-icon {
+  font-size: 1.7em
 }
 
 #sidebar.active ul ul a {
@@ -224,8 +230,9 @@ ul ul a {
     padding-left: 30px !important;
 }
 
+
 ul ul a:before {
-content: "\f111";
+  content: "\f890";
   font-family: "Font Awesome 5 Free";
   font-weight: 400;
   font-style: normal;
@@ -240,7 +247,7 @@ content: "\f111";
 }
 
 ul ul a:hover::before {
-  color: lightpink;
+  color: var(--sh-color);
 }
 /* ---------------------------------------------------
     CONTENT STYLE
@@ -304,61 +311,66 @@ ul ul a:hover::before {
     max-height:600px;
     border-color: #b8bfce;
   }
-  .bg-1-pink{
+
+.bg-1-pink{
       background-color: #e75874;
   }
-  .bg-1-red{
+.bg-1-red{
     background-color: #be1558;
   }
-  .bg-1-lightpink {
+.bg-1-lightpink {
     background:#fbcbc9;
   }
-  .bg-1-dark{
+.bg-1-dark{
     background-color: #322514;
   }
   
-  .bg-2-light{
+.bg-2-light{
     background-color: #aed6dc;
   }
-  .bg-2-break{
+.bg-2-break{
     background-color: #ff9a8d;
   }
-  .bg-2-dark{
+.bg-2-dark{
     background-color: #4a536b;
   }
   
-  .bg-material-ui{
+.bg-material-ui{
     background-color: #2196f3;
   }
   
-  .card-h-bg{
+.card-h-bg{
     background-color:#e52165;
   }
-  .card-b-bg{
+.card-b-bg{
     background-color: #31353D;
   }
   
-  .avatar {
+.avatar {
       max-width: 128px;
       max-height: 128px;
       border-radius: 50%;
   }
   
-  .avatar-meduim{
+.avatar-meduim{
     max-width: 64px;
     max-height: 64px;
     border: solid 2px var(--sh-color);
     background: var(--sh-color);
   }
   
-  .avatar-small{
+.avatar-small{
     max-width: 32px;
     max-height: 32px;
   }
   
-  .card  {
+.card  {
     border-top-right-radius: 20px;
     border-bottom-left-radius:20px;
+    color:inherit;
+    background: inherit;
+    width: 100%;
+    height: 100%;
   }
   .card .card-header{
      border-top-right-radius: 20px;
@@ -396,27 +408,26 @@ a:link {
     text-decoration: none;
   }
 
-  #loader{
-    justify-self: center;
-    align-self:center ;
-  }
 /*     calendar related css    */
   .ui-tooltip, .arrow:after {
-    background: lightpink;
-    border: 2px solid white;
+    z-index: 999;
+    background-color:var(--color-bg);
+    border: 1px solid var(--sh-color);
   }
   .ui-tooltip {
-    max-width:200px;
-    max-height:150px;  
-    border-top-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    max-width:300px;
+    max-height:300px;
+    background:var(--color-bg);
+    border-top-right-radius:20px; 
+    border-bottom-left-radius:20px; 
+    color: var(--txt-color);
     font: bold 14px "Helvetica Neue", Sans-Serif;
-    text-transform: uppercase;
-    box-shadow: 0 0 7px grey;
-    z-index:1;
+    box-shadow: 0px 0px 3px grey;
+    border: 2px solid var(--sh-color);
+    z-index:999;
   }
+
   .arrow {
-    color:#ffffff;
     width: 70px;
     height: 16px;
     overflow: hidden;
@@ -424,6 +435,7 @@ a:link {
     left: 50%;
     margin-left: -35px;
     bottom: -16px;
+    
   }
   .arrow.top {
     top: -16px;
@@ -449,26 +461,35 @@ a:link {
     top: auto;
   }
 
+.image-profile{
+  width: 200px;
+  height: 100px;
+}
+
   #external-events {
-    min-width: 100%;
-    border: 2px solid white;
     background: whitesmoke;
+    align-self: center;
+    justify-self: center;
   }
   
   #external-events .fc-event {
     cursor: grab;
-    margin: 3px 0;
+    margin: 5px;
+    padding: 10px;
+    width:100%;
   }
   
   #calendar-container {
     z-index: 1;
-    padding: 10px;
-    background: whitesmoke;
+    min-height: 500px;
+    max-height: 100%;
+    background: white;
   }
   
   #calendar {
-    max-width: 100%;
-    margin: 20px auto;
+    padding: 10px;
+    min-width: 100%;
+    min-height:100%;
   }
 
   a .notification {
@@ -480,6 +501,10 @@ a:link {
 .nav-link:hover i::before{
   color: var(--sh-color);
 }    
+
+.nav.navbar-nav .active .nav-link{
+    color:var(--sh-color);
+}
 
 .shadow {
   -moz-box-shadow:    5px 3px 5px 6px var(--txt-color);
@@ -496,14 +521,13 @@ a:link {
    width: 100%;
 }
 
-
 #formContainer{
   width: 100%;
   height: 100%;
 }
 
 hr {
-  color: var(--txt-color);
+  background: var(--txt-color);
 }
 
 #login-card{
@@ -517,9 +541,74 @@ hr {
   max-height:80px;
 }
 
-.spinner{
-  max-width: 33%;
-  max-height: 33%;
-  justify-self: center;
-  align-self: center;
+.card  {
+  border-top-right-radius: 20px;
+  border-bottom-left-radius:20px;
 }
+.card .card-header{
+   border-top-right-radius: 20px;
+}
+.form-group > label:before {
+  content: "* ";
+  color:tomato;
+}
+
+
+.spinner{
+  justify-self: center;
+  align-self:center ;
+}
+
+.fa-custom-size {
+  max-width: 20px;
+  max-height: 17px;
+}
+
+#sidebar-logo{
+  position: relative;
+  margin-top: 0;
+  width: 100%;
+  max-height: 100%;
+}
+
+.card-counter{
+  box-shadow: 2px 2px 10px #DADADADA;
+  margin: 5px;
+  padding: 15px 10px;
+  background-color: #fff;
+  height: 100px;
+  border-radius: 5px;
+  transition: 0.5s linear all;
+  color: #FFF;
+  }
+
+  .card-counter:hover i{
+    transition: 0.5s linear all; 
+  }
+
+  .card-counter i{
+    font-size: 5em;
+    opacity: 0.2;
+  }
+
+  .fa-ticket-alt{
+  transform:rotate(20deg);
+  }
+  .card-counter .count-numbers{
+    position: absolute;
+    right: 35px;
+    top: 20px;
+    font-size: 32px;
+    display: block;
+  }
+
+  .card-counter .count-name{
+    position: absolute;
+    right: 35px;
+    top: 65px;
+    font-style: italic;
+    text-transform: capitalize;
+    opacity: 0.6;
+    display: block;
+    font-size: 18px;
+  }

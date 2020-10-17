@@ -1,13 +1,9 @@
-{#{% form_theme form _self %}
-
-{% block integer_widget %}
-    <div class="integer_widget">
-        {% set type = type|default('number') %}
-        {{ block('form_widget_simple') }}
-    </div>
-{% endblock %}
-#}
 {{ form_start(form) }}
+    <div class="row">
+        <div class="col-12">
+            {{ form_row(form.type) }}
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             {{ form_row(form.description) }}
@@ -26,7 +22,7 @@
     </div>
     <hr>
     <div class="text-center">
-        <button class="btn bg-1-lightpink text-center" type="submit" id="formsubmit"><i class="far fa-save"></i> Enregistrer</button>
+        <button class="btn text-center bg-material-ui text-white" type="submit" id="formsubmit"><i class="far fa-save fa-2m"></i> Enregistrer</button>
     </div>
  {{ form_end(form) }}
 

@@ -5,17 +5,21 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserFormType;
 use App\Repository\RoleRepository;
+use App\Repository\UserRepository;
 use App\Service\PaginationService;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-
+/**
+ * @Route("/admin")
+ */
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/admin/login", name="admin_login")
+     * @Route("/login", name="admin_login")
      */
     public function adminlogin()
     {
@@ -23,74 +27,87 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/login/error", name="login_error")
+     * @Route("/login/error", name="login_error")
      */
-    public function loginerror(){
+    public function loginerror()
+    {
         return $this->render('errors/login_error.html.twig');
     }
 
     /**
-     * @Route("/admin/home",name="admin_home")
+     * @Route("/home",name="admin_home")
      */
     public function adminhome()
     {
         return $this->render('admin/home.html.twig');
     }
 
-     /**
-     * @Route("/admin/logout",name="admin_logout")
+    /**
+     * @Route("/json/doctors",name="json_doctors",methods={"GET"})
+     * @param UserRepository $repository
+     * @return JsonResponse
      */
-
-    public function logout(){
-        return $this->redirectToRoute('welcome_page');
+    public function Doctors(UserRepository $repository)
+    {
+        $doctors = $repository->findByisDoctor(true);
+        $jsonData = array();
+        $idx = 0;
+        foreach ($doctors as $pt) {
+            $temp = [
+                'id' => $pt->getId(),
+                'firstname' => $pt->getFirstname(),
+                'lastname' => $pt->getLastname(),
+                'avatar' => $pt->getAvatar(),
+                'email' => $pt->getEmail(),
+            ];
+            $jsonData[$idx++] = $temp;
+        }
+        return new JsonResponse($jsonData);
     }
 
     /**
-     * @Route("/admin/docteurs/{page?1}",name="doctors_list",requirements={"page":"\d+"})
+     * @Route("/docteurs",name="doctors_list")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @param RoleRepository $rp
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
 
-     public function manage_users(PaginationService $ps,Request $request,UserPasswordEncoderInterface $encoder,RoleRepository $rp,$page){
-   
-            $user=new User();
-            $form=$this->createForm(UserFormType::class,$user);
-            $form->handleRequest($request);
-            $manager=$this->getDoctrine()->getManager();
-            // set default role as doctor 
-            $role = $rp->findRole(2);
-            if( $form->isSubmitted() && $form->isValid() ){
-                //upload d'image
-                if( !empty($user->getAvatar())){
-                $image=$form->get('avatar')->getData();
-                $fichier=" /uploads/" . md5(uniqid()) . '.' . $image->guessExtension();
-                $image->move($this->getParameter('images_directory'),$fichier);
+    public function manage_users(Request $request, UserPasswordEncoderInterface $encoder, RoleRepository $rp)
+    {
+
+        $user = new User();
+        $form = $this->createForm(UserFormType::class, $user);
+        $form->handleRequest($request);
+        $manager = $this->getDoctrine()->getManager();
+        // set default role as doctor
+        $role = $rp->find(2);
+        if ($form->isSubmitted() && $form->isValid()) {
+            //upload d'image
+            if (!empty($user->getAvatar())) {
+                $image = $form->get('avatar')->getData();
+                $fichier = " /uploads/" . md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move($this->getParameter('images_directory'), $fichier);
                 $user->setAvatar($fichier);
-                }
-                // encoder le mot de passe
-                $hash=$encoder->encodePassword($user,$user->getPassword());
-                $user->setPassword($hash);
-                // default values in form
-                $user->setIsDoctor(true);
-                $user->addUserRole($role[0]);
-                $manager->persist($user);
-                $manager->flush();
-                $this->addFlash(
-                    'success',
-                    "Le Docteur <strong>{$user->getFirstname()} {$user->getLastname()}</strong> a bien été crée"
-                );
-                return $this->redirectToRoute('doctors_list');}
+            }
+            // encoder le mot de passe
+            $hash = $encoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($hash);
+            // default values in form
+            $user->setIsDoctor(true);
+            $user->addUserRole($role);
+            $manager->persist($user);
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                "Le Docteur <strong>{$user->getFirstname()} {$user->getLastname()}</strong> a bien été crée"
+            );
+            return $this->redirectToRoute('doctors_list');
+        }
 
-        //pagination
-        $ps->setEntityClass(User::class)
-           ->setPage($page)
-           ->setLimit(10);
-        return $this->render('/admin/users/userslist.html.twig',[
-            'users'=>$ps->getData(),
-            'form'=>$form->createView(),
-            'pages'=>$ps->getPages(),
-            'page'=>$page,
 
+        return $this->render('/admin/users/Doctorslist.html.twig', [
+            'form' => $form->createView()
         ]);
-     }
-
-
+    }
 }

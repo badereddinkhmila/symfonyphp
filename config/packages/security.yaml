@@ -35,7 +35,7 @@ security:
                 default_target_path: dash_home
                 failure_path : login_error
             logout:
-                path: admin_logout
+                path: User_logout
                 target: welcome_page
         main:
             anonymous: true

@@ -5,17 +5,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
     <title>{% block title %}{% endblock %}</title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <link rel="icon" href="{{ asset('images/favicon.ico') }}" />
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{asset('css/style4.css')}}">
-    <script src="{{asset('js/jquery.js')}}"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" rel="stylesheet">
-    {% block style %}
-        
+    <link rel="stylesheet" href="{{asset('css/style4.css')}}">
+    {% block style %}        
     {% endblock %}
-    </head>
+</head>
+
 <body>
     <div class="wrapper">
         <!-- Sidebar  -->
@@ -98,48 +96,62 @@
                 <hr>
                 <li>
                     <a href="#">
-                        <i class="fas fa-desktop"></i>
+                        <i class="fas fa-chalkboard-teacher"></i>
                         Profil
                     </a>
                 </li>
                 <hr>
+                {% if app.user %}
                 <li class="mb-0">    
-                    <a href="#">
+                    <a href="{{path('User_logout')}}">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Déconnexion
+                    </a>
+                </li>
+                {% else %}
+                <li class="mb-0">    
+                    <a href="{{path('welcome_page')}}">
                         <i class="fas fa-door-open"></i>
                         Connexion
                     </a>
                 </li>
+                {% endif %}
+                <hr>
+                <li class="d-flex">
+                    <img src="{{asset('images/favicon.ico')}}" alt="#" id="sidebar-logo">
+                </li>
             </ul>
+        
         </div>
-        </div>
+    </div>
         <!-- Page Content  -->
         <div id="content">
                 <nav class="navbar navbar-expand-lg shadow">
                         <a type="button" id="sidebarCollapse" class="btn mr-1">
-                            <i class="fas fa-bars fa-2x"></i>
+                            <i class="fas fa-bars nav-icon"></i>
                         </a>
                         <a href="{{path('welcome_page')}}">
                         <div class="navbar-brand" id="textlogo"></div>
                         </a>
                         <a class="d-inline-block d-lg-none ml-auto navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <i class="fas fa-arrow-down"></i>
+                            <i class="fas fa-arrow-down" id="navbar-togg"></i>
                         </a>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="nav navbar-nav ml-auto">
                                 <li class="nav-item align-self-center col">
-                                    <a class="nav-link" href="#"><i class="fas fa-calendar-alt fa-2x"></i><span class="badge badge-pill badge-danger notification">333</span></a>
+                                    <a class="nav-link" href="#"><i class="nav-icon fas fa-calendar-alt"></i><span class="badge badge-pill badge-danger notification">9+</span></a>
                                 </li>
                                 <li class="nav-item align-self-center col">
-                                    <a class="nav-link" href="#"><i class="fas fa-tools fa-2x"></i><span class="badge badge-pill badge-danger notification">10</span>
+                                    <a class="nav-link" href="#"><i class="fas fa-tools nav-icon"></i><span class="badge badge-pill badge-danger notification">9+</span>
                                     </a>
                                 </li>
                                 <li class="nav-item d-flex align-self-center col">
-                                    <i class="fas fa-sun align-self-center mr-2"></i>
+                                    <i class="far fa-sun align-self-center mr-2"></i>
                                     <div class="custom-control custom-switch">
                                         <input type="checkbox" class="custom-control-input" id="customSwitch1">
                                         <label class="custom-control-label" for="customSwitch1"></label>
                                     </div>
-                                    <i class="fas fa-moon align-self-center"></i>
+                                    <i class="far fa-moon align-self-center"></i>
                                 </li>
                                 <li class="align-self-center col ml-2">
                                     {% if app.user %}
@@ -159,11 +171,19 @@
             </div>
     </div>
     
-    
-    <script src="/js/popper.min.js" ></script>
-    <script src="/js/bootstrap.min.js"></script>
+    <script src="{{asset('js/jquery.js')}}"></script>
+    <script src="{{asset('js/popper.min.js')}}" ></script>
+    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    {% block javascript %}
+        
+    {% endblock %}
     <script type="text/javascript">
         $(document).ready(function () {
+            
+            if($('navbar-toggler').attr('aria-expanded')==true){
+            console.log(this);    
+            }
+
             if($('.user-name').text().length>77){
                 $('.user-name em').hide();
             }
@@ -171,10 +191,10 @@
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
                 if($('#sidebar').hasClass('active')){
-                    $(this).html('<i class="fas fa-times fa-2x"></i>');
+                    $(this).html('<i class="fas fa-times nav-icon"></i>');
                 }
                 else{
-                    $(this).html('<i class="fas fa-bars fa-2x"></i>');
+                    $(this).html('<i class="fas fa-bars nav-icon"></i>');
                 }
             });
 
@@ -211,8 +231,6 @@
         });
     </script>
    
-   {% block javascript %}
-        
-    {% endblock %}
+   
 </body>
 </html>

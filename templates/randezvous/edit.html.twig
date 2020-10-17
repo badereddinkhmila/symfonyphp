@@ -1,9 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Edit Randezvous{% endblock %}
-
-{% block body %}
-    <h1>Edit Randezvous</h1>
-    {{ include('randezvous/_form.html.twig') }}
-    <button type="button" class="btn btn-danger" id="deleteEvent" data-id><i class="far fa-trash-alt"></i> Supprimer</button>
-{% endblock %}
+{{ include('randezvous/_form.html.twig') }}
+<div class="text-center mt-1">
+    <button type="button" class="btn btn-danger align-content-end" id="deleteEvent"><i class="far fa-trash-alt"></i> Supprimer</button>
+</div>
