@@ -1,27 +1,10 @@
-{% extends "base.html.twig" %}
+{% extends "partials/_sideNav2.html.twig" %}
 {% block body %}
-  <style>
-  #error{
-        display:flex;
-        justify-content:center;
-        height:100vh;
-    }
-  </style>
-  <body class="container mt-xl-5" id='error'>
-    <div class='bg-white row'>
-      <div class="col-lg-3">
-        <img alt='#' src="/images/404.png" />
+      <div clss="contianer" id='error'>
+          <div class="text-center mt-5">
+                <h1 class=text-danger> <span style="font-weight: bolder">O</span>ops </h1> <h5>vérifiez vos identifiants de connexion</h5>
+                  <a href="{{ path('welcome_page') }}" class='btn text-danger'>
+                  <i class="fas fa-arrow-alt-circle-left"></i><span> Page de connexion</span></a>
+          </div>
       </div>
-
-      <div class="col-lg-8">
-        <h1 class="text-danger" style="font-size: 60px;">404</h1>
-        <h3> Oops verifiez votre identifiants </h3>
-        <div>
-          <a href="{{ path('welcome_page') }}" class='btn btn-outline-dark'>
-          <i class="fas fa-arrow-alt-circle-left"></i><span> Page de connexion</span></a>
-        </div>
-      </div>
-    </div>
-  </body>
-</html>
-{% endblock %}
+{% endblock%}

@@ -10,12 +10,21 @@
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('css/style4.css')}}">
-    {% block style %}        
+    <script src="{{asset('js/jquery.js')}}"></script>
+    <script src="{{asset('js/popper.min.js')}}" ></script>
+    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    {% block style %}
     {% endblock %}
 </head>
-
+{% block body %}
 <body>
     <div class="wrapper">
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <img src="{{ asset('images/nyc.png') }}" alt="#" class="bgimageopacity">
+        {% else %}
+            <img src="{{ asset('images/w-h.jpg') }}" alt="#" class="bgimageopacity">
+        {% endif %}
         <!-- Sidebar  -->
         <div id="sidebar" class="shadow">
             <div class="sidebar-header">
@@ -54,13 +63,13 @@
                 <li>
                     <a href="{{path('dash_home')}}">
                         <i class="fas fa-home"></i>
-                        Home
+                        <span>Home</span>
                     </a>
                 </li>
                 <li>
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <i class="fas fa-chart-line"></i>
-                        Pages
+                        <span>Pages</span>
                     </a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
                         <li>
@@ -77,27 +86,27 @@
                 <li>
                     <a href="#">
                         <i class="far fa-calendar-alt"></i>
-                        Consultations
+                        <span>Consultations</span>
                     </a>
                 </li>
                 <li>
                     <a href="#">
                         <i class="fas fa-map-marked-alt"></i>
-                        Carte
+                        <span>Carte</span>
                     </a>
                 </li>
                 <hr>
                 <li>
                     <a href="#">
                         <i class="fas fa-book"></i>
-                        Documentation
+                        <span>Documentation</span>
                     </a>
                 </li>
                 <hr>
                 <li>
                     <a href="#">
                         <i class="fas fa-chalkboard-teacher"></i>
-                        Profil
+                        <span>Profil</span>
                     </a>
                 </li>
                 <hr>
@@ -105,14 +114,14 @@
                 <li class="mb-0">    
                     <a href="{{path('User_logout')}}">
                         <i class="fas fa-sign-out-alt"></i>
-                        Déconnexion
+                        <span>Déconnexion</span>
                     </a>
                 </li>
                 {% else %}
                 <li class="mb-0">    
                     <a href="{{path('welcome_page')}}">
                         <i class="fas fa-door-open"></i>
-                        Connexion
+                        <span>Connexion</span>
                     </a>
                 </li>
                 {% endif %}
@@ -171,9 +180,7 @@
             </div>
     </div>
     
-    <script src="{{asset('js/jquery.js')}}"></script>
-    <script src="{{asset('js/popper.min.js')}}" ></script>
-    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+
     {% block javascript %}
         
     {% endblock %}
@@ -189,7 +196,7 @@
             }
 
             $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
+                $('#sidebar,#content').toggleClass('active');
                 if($('#sidebar').hasClass('active')){
                     $(this).html('<i class="fas fa-times nav-icon"></i>');
                 }
@@ -224,13 +231,12 @@
             }
         });
         $(window).resize(function() {
-        if (window.innerWidth <= 830) {$('#sidebar').addClass('active');}
+        if (window.innerWidth <= 830) {$('#sidebar,#content').addClass('active');}
             else{
-                $('#sidebar').removeClass('active');
+                $('#sidebar,#content').removeClass('active');
             }
         });
     </script>
-   
-   
 </body>
+{% endblock body %}
 </html>

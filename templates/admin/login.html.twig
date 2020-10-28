@@ -1,46 +1,48 @@
 {% extends 'partials/_sideNav2.html.twig' %}
 
 {% block main %}
-    <style>
-    .form-group >label:before {
-    content: "*  ";
-    color:tomato;}
-    </style>
     <div class="container d-flex mt-xl-5">
-    <div class="col-5 mx-auto mt-xl-5">
-        <div class="card bg-light shadow">
+        <div class="col-5 mx-auto mt-xl-5">
+            <div class="card bg-light shadow">
                 <div class="card-header">
                     <h4 class="card-title text-center">
                         <i class="fas fa-door-open"></i>
-                        Connexion Agent DHCSys
-                    </h4>    
+                        Agent DHCSys
+                    </h4>
                 </div>
                 <div class="card-body">
-                        <form action="{{ path('admin_login') }}" method="post">
-                            <div class="form-group">
-                                <i class="far fa-user-circle"></i>
-                                <label for="_username">Email</label>
-                                <input type="email" class="form-control" name="_username" placeholder="Email..." required>
-                            </div>
-                            <div class="form-group">
-                                <i class="fas fa-key"></i>
-                                <label for="_password">Mot de passe</label>
-                                <input type="password" class="form-control" name="_password" required placeholder="Mot de passe...">
-                            </div>
-                            <hr>
-                            <div class="form-group text-center">
-                                <button type="submit" class="btn bg-1-lightpink">
+                    <div class="d-flex row">
+                        <div class="col-4"></div>
+                        <img src="/images/login1.svg" class="rounded img-thumbnail shadow-lg col-2 align-self-center"
+                             alt="#" id="login-avatar">
+                    </div>
+                    <br>
+                    <form action="{{ path('admin_login') }}" method="post">
+                        <div class="form-group">
+                            <i class="far fa-user-circle"></i>
+                            <label for="_username">Email</label>
+                            <input type="email" class="form-control" name="_username" required>
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-key"></i>
+                            <label for="_password">Mot de passe</label>
+                            <input type="password" class="form-control" name="_password" required>
+                        </div>
+                        <hr>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn bg-1-lightpink">
                                 <i class="fas fa-sign-in-alt"></i>
-                                connexion !</button>
-                                <a href="{{ path('welcome_page') }}" class="btn bg-1-lightpink">
+                                connexion !
+                            </button>
+                            <a href="{{ path('welcome_page') }}" class="btn">
                                 <i class="fas fa-arrow-circle-left"></i>
-                                Page d'acceuil</a>
-
-                            </div>
-                        </form>
+                                Page d'acceuil
+                            </a>
+                        </div>
+                    </form>
                 </div>
+            </div>
         </div>
     </div>
-</div>
 
 {% endblock %}

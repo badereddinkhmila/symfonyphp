@@ -20,9 +20,6 @@ use Symfony\Component\Validator\Constraints\File;
 class UserFormType extends AbstractType
 {
 
-    /**
-     * 
-     */
     public function getConfig($label,$classes){
             return[
                 'label'=>$label,

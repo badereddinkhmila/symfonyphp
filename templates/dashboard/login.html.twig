@@ -12,8 +12,12 @@
                 </h4>    
             </div>
             <div class="card-body ml-2">
+                <div class="row justify-content-center">
+                    <img src="/images/d-a-login.jpg" class=" mr-1 rounded img-thumbnail shadow-lg" alt="#" id="login-avatar">
+                    <img src="/images/p-a-login.png" class="rounded img-thumbnail shadow-lg" alt="#" id="login-avatar">
+                </div>
                 <br>
-                <form action="{{ path('User_login') }}" method="post" >
+                <form action="{{ path('User_login') }}" method="post">
                     <div class="form-group row">
                         <i class="far fa-user-circle mr-2"></i>
                             <label for="_username">Email</label>
