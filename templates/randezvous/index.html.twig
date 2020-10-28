@@ -1,0 +1,271 @@
+{% extends "partials/_sideNav2.html.twig"%}
+{% block title%}Randez-vous{% endblock  %}
+{% block style %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.2/main.css" />
+<style>
+    .wrap
+    {
+        padding-top: 30px;
+    }
+
+    .glyphicon
+    {
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+
+    small
+    {
+        display: block;
+        color: #888;
+    }
+
+    .well
+    {
+        border: 1px solid blue;
+    }
+</style>
+{% endblock  %}
+
+{% block main %}
+    <div class="container d-flex">   
+        <div id='external-events' class="container col-3 ml-auto">
+            <div class="row">
+                <strong class="card-title col-10">Randez-vous</strong>
+                <i class="fas fa-info-circle col-2 mr-auto"></i>
+            </div>
+            <hr>
+                <div class="row">
+                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-danger'>
+                        <div class='fc-event-main'>Urgent</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-warning'>
+                        <div class='fc-event-main'>Réaliser des tests</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-success'>
+                        <div class='fc-event-main'>Controle régulier</div>
+                    </div>
+                </div>
+        </div>
+        <div id='calendar-container' class="container m-1 d-flex col-9">
+            <img src="{{asset('images/spinner.svg')}}" alt="#" class="spinner">
+            <div id='calendar'></div>
+        </div>    
+    </div>        
+        <div class="modal fade hidden" id="newevent" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Nouveau Randez-vous</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="fas fa-times-circle"></i></span>
+                        </button>
+                    </div>
+                    <div class="modal-body d-flex justify-content-center align-content-lg-center">
+                        <img src="{{asset('images/spinner.svg')}}" alt="#" class="spinner">
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div class="modal fade hidden" id="upevent" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Changer Randez-vous</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="fas fa-times-circle"></i></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="{{asset('images/spinner.svg')}}" alt="#" class="spinner">
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        
+        <div class="modal fade hidden" id="confirm" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmer suppression du Randez-vous</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="fas fa-times-circle"></i></span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <h5>Voulez vous vraiment annuler ce randez-vous !</h5>
+                        <p>Cette étape est irréversible</p>
+                        <hr>
+                        <button class="btn bg-warning" id="confdel"><i class="fas fa-danger"></i>Confirmer</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+{% endblock main %}
+
+{% block javascript %}
+    <script src="{{asset('js/jqueryui.js')}}"></script> 
+    <script src="{{asset('js/fullcalendar.js')}}"></script>
+<script>
+$(document).ready(function() {
+        var Draggable = FullCalendar.Draggable;
+
+        var containerEl = document.getElementById('external-events');
+
+        new Draggable(containerEl, {
+            itemSelector: '.fc-event',
+            eventData: function(eventEl) {
+            return {
+                title: eventEl.innerText
+            };
+            }
+        });
+
+
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'timeGridWeek',
+          locale:'fr',
+          displayEventTime: false,
+          themeSystem:'bootstrap',
+          timeZone:'Europe/paris',
+          headerToolbar:{
+            left:'prev,next today',
+            center:'title',
+            right:'timeGridWeek,timeGridDay,listWeek'
+            },
+          buttonText: {
+            today:"aujourd'hui",
+            month:"mois",
+            week:"semaine",
+            day:"jour",
+            list:"liste"
+            },
+            events:'/dashboard/randezvous/list',
+            editable:true,
+            droppable: true,
+            drop: function(info){
+                $("#newevent").modal('show');
+                let rdv=[];
+                if($(info.draggedEl).hasClass("bg-success")){
+                    rdv[0]="#32CD32";
+                }
+                else if($(info.draggedEl).hasClass("bg-warning")){
+                    rdv[0]="#FF8C00";
+                }
+                else {
+                    rdv[0]="#FF6347";
+                }
+                rdv[1]=$(info.draggedEl).text();
+                rdv[2]=info.date;
+                let jrdv=JSON.stringify(rdv);
+            //"save after drop"
+                $.post('/dashboard/randezvous/new',jrdv).done(function(){
+                }).done(function(){
+                    $.get('/dashboard/randezvous/newe',function(response){
+                    $('.spinner').hide(); 
+                    $("#newevent .modal-body").html(`${response}`);
+                    });
+                });
+            },
+            loading:function(state){
+                if(state==false){
+                    $("#calendar-container img").hide();
+                    $('#calendar').show();
+                }
+                else{
+                    $('#calendar').hide();
+                }
+            },
+            eventResizableFromStart:true,
+            weekends:false,
+            weekNumbers:true,
+            nowIndicator:true,
+            slotMinTime:'08:00:00',
+            slotMaxTime:'18:00:00',
+            eventClick: function(info) {
+                let id=info.event.id;
+                $.get(`/dashboard/randezvous/${id}/edit`,function(response) { 
+                    $("#upevent .modal-body").html(`${response}`);
+                    $("#upevent").modal('show');
+                    $("#formsubmit").click(function(){
+                        setTimeout(calendar.refetchEvents(),2000);
+                    });
+                    $('#deleteEvent').click(function(){
+                    $('#confirm').modal('show');
+                    $("#upevent").modal('hide');
+                    $('#confdel').click(function(){
+                        $.ajax({
+                            method:'DELETE',
+                            url:`/dashboard/randezvous/${id}`,
+                            success:function(){
+                                calendar.refetchEvents();
+                                $('#confirm').modal('hide');
+                            }
+                        });
+                        });
+                    });
+                });
+            },
+            eventMouseEnter:function(MouseEnter){
+                if(MouseEnter.event.extendedProps.firstname!== undefined )
+                {
+                    $(function(){
+                    $(MouseEnter.el).tooltip({
+                    items: MouseEnter.el,
+                    html:true,
+                    position: {
+                        my: "center bottom",
+                        at: "center top-20",
+                        collision:"non flip",
+                        using: function( position, feedback ) {
+                        $( this ).css( position );
+                        $( "<div>" )
+                            .addClass( "arrow" )
+                            .addClass( feedback.vertical )
+                            .addClass( feedback.horizontal )
+                            .appendTo( this );
+                        }
+                    },      
+                    content:`<div class="card d-flex">
+                                <img id='login-avatar' src='${MouseEnter.event.extendedProps.avatar}'/>
+                                <div class="card-body d-block">
+                                    <div class="card-subtitle col-6">Prénom:${MouseEnter.event.extendedProps.firstname}</div>
+                                    <div class="card-subtitle col-6">Nom: ${MouseEnter.event.extendedProps.lastname}</div>
+                                    <hr> 
+                                    <div class="card-text row">
+                                        <em>Description:</em>    
+                                        <div class="overflow-auto" style='height:50px;'>${MouseEnter.event.extendedProps.description}</div>
+                                    </div>
+                                </div>
+                            </div>`,
+                    hide: { effect: "fade", duration: 500 },
+                });
+                });
+                }
+            },
+            eventMouseLeave:function(){     
+             $('.ui-tooltip').hide();
+            },
+            dayMaxEventRows: true, // for all non-TimeGrid views
+            views: {
+                timeGrid: {
+                dayMaxEventRows: 6 // adjust to 6 only for timeGridWeek/timeGridDay
+                }
+            }
+
+        });
+        calendar.on('eventChange',(e)=>{
+        });        
+        calendar.render();
+      });
+
+</script>
+{% endblock  %}
