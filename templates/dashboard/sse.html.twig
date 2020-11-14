@@ -1,0 +1,18 @@
+{% extends "partials/_sideNav2.html.twig" %}
+
+
+{% block main %}
+
+{% endblock %}
+ {% block javascript %}
+
+ <script type="text/javascript">
+        $(document).ready(() => {
+            const hub='http://localhost:3000/.well-known/mercure?topic=http://avcdocteur.com/sse-data';
+            const eventSource = new EventSource(hub, {withCredentials : true});
+            eventSource.onmessage = e => {
+            console.log(JSON.parse(e.data))
+         }
+        });
+</script>
+ {% endblock %}

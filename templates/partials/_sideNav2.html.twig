@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% block title %}{% endblock %}</title>
     <link rel="icon" href="{{ asset('images/favicon.ico') }}" />
@@ -86,7 +86,7 @@
                 <li>
                     <a href="#">
                         <i class="far fa-calendar-alt"></i>
-                        <span>Consultations</span>
+                        <span>Randez-vous</span>
                     </a>
                 </li>
                 <li>
@@ -99,7 +99,7 @@
                 <li>
                     <a href="#">
                         <i class="fas fa-book"></i>
-                        <span>Documentation</span>
+                        <span>Guide</span>
                     </a>
                 </li>
                 <hr>
@@ -143,7 +143,7 @@
                         <div class="navbar-brand" id="textlogo"></div>
                         </a>
                         <a class="d-inline-block d-lg-none ml-auto navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <i class="fas fa-arrow-down" id="navbar-togg"></i>
+                            <i class="far fa-caret-square-down" id="navbar-togg"></i>
                         </a>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="nav navbar-nav ml-auto">
@@ -186,11 +186,6 @@
     {% endblock %}
     <script type="text/javascript">
         $(document).ready(function () {
-            
-            if($('navbar-toggler').attr('aria-expanded')==true){
-            console.log(this);    
-            }
-
             if($('.user-name').text().length>77){
                 $('.user-name em').hide();
             }
@@ -230,8 +225,12 @@
                 };
             }
         });
+        if (window.innerWidth <= 830) {
+            $('#sidebar,#content').addClass('active');
+        }
         $(window).resize(function() {
-        if (window.innerWidth <= 830) {$('#sidebar,#content').addClass('active');}
+        if (window.innerWidth <= 830) {
+            $('#sidebar,#content').addClass('active');}
             else{
                 $('#sidebar,#content').removeClass('active');
             }

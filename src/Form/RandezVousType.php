@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class RandezvousType extends AbstractType
+class RandezVousType extends AbstractType
 { 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {   

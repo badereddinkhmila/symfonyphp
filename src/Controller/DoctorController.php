@@ -4,33 +4,46 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserFormType;
+use App\Mercure\Cookies\CookieGenerator;
+use App\Messages\message\IotMessage;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PatientdataRepository;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Class DoctorController
+ * @package App\Controller
+ * @Route ("/dashboard")
+ * @IsGranted("ROLE_USER")
+ */
 class DoctorController extends AbstractController
 {
     /**
-     * @Route("/dashboard",name="dash_home")
-     * @IsGranted("ROLE_USER")
+     * @Route("/",name="dash_home")
+     * @return Response
      */
-
-    public function home() {
-       return $this->render('dashboard/home.html.twig'); 
+    public function home(): Response
+    {
+        return  $this->render('dashboard/home.html.twig', []);
     }
 
+
     /**
-     * @Route("/dashboard/patients",name="doctor_dashboard")
-     * 
+     * @Route("/patients",name="doctor_dashboard")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @param RoleRepository $rp
+     * @return JsonResponse|RedirectResponse|Response
      */
     public function Patients(Request $request,UserPasswordEncoderInterface $encoder,RoleRepository $rp){
 
@@ -88,10 +101,13 @@ class DoctorController extends AbstractController
             'form'=>$form->createView(),
         ]);  
     }
-    
+
     /**
-     * @Route("/dashboard/patients/{id}/delete",name="delete_patient")
-     * 
+     * @Route("/patients/{id}/delete",name="delete_patient")
+     * @param $id
+     * @param EntityManagerInterface $manager
+     * @param UserRepository $rp
+     * @return RedirectResponse
      */
     public function deletePatient($id,EntityManagerInterface $manager,UserRepository $rp){
         $user=$rp->find($id);
@@ -107,8 +123,7 @@ class DoctorController extends AbstractController
     }
 
      /**
-     * @Route("/dashboard/patients/map",name="map_patient")
-     * 
+     * @Route("/patients/map",name="map_patient")
      */
     public function mapPatient(){
         return $this->render('/dashboard/map.html.twig');
@@ -117,8 +132,10 @@ class DoctorController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/patient/{id?}",name="patient_profile",requirements={"page":"\d+"})
-     * @IsGranted("ROLE_USER")
+     * @Route("/patient/{id?}",name="patient_profile",requirements={"page":"\d+"})
+     * @param UserRepository $repo
+     * @param $id
+     * @return Response
      */
     public function Patient(UserRepository $repo ,$id){
             
@@ -128,9 +145,14 @@ class DoctorController extends AbstractController
     
     }
 
-     /**
-     * @Route("/dashboard/patients/{id?}/data",name="patient_data",requirements={"id":"\d+"})
-     * @IsGranted("ROLE_USER")
+    /**
+     * @Route("/patients/{id?}/data",name="patient_data",requirements={"id":"\d+"})
+     * @param Request $request
+     * @param UserRepository $repo
+     * @param PatientdataRepository $rp
+     * @param EntityManagerInterface $em
+     * @param $id
+     * @return JsonResponse|Response
      */
     public function PatientData(Request $request,UserRepository $repo,PatientdataRepository $rp ,EntityManagerInterface $em,$id) {
             
@@ -179,6 +201,19 @@ class DoctorController extends AbstractController
                 return $this->render('dashboard/data.html.twig',[
                     'user'=>$user]);            
     }
+
+
+    /**
+     * @Route ("/ssedata" , name="sse_stream")
+     * @param CookieGenerator $cookieGenerator
+     * @return Response
+     */
+    public function SSE_stream (CookieGenerator $cookieGenerator){
+        $response=$this->render('dashboard/sse.html.twig');
+        $response->headers->setCookie($cookieGenerator->generate());
+        return $response;
+    }
+
 
 
 }

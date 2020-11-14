@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -15,7 +16,8 @@ class AccountController extends AbstractController
      */
     public function home()
     {
-        return $this->render('login/welcome.html.twig');
+        return $this->render('login/welcome.html.twig',[
+        ]);
     }
 
     /**
@@ -37,8 +39,12 @@ class AccountController extends AbstractController
 
     /**
      * @Route("dashboard/account/{id}", name="account_profile",requirements={"id":"\d+"})
+     * @param Request $req
+     * @param EntityManagerInterface $manager
+     * @param $id
+     * @return Response
      */
-    public function profil(Request $req,EntityManagerInterface $manager,$id)
+    public function profile(Request $req,EntityManagerInterface $manager,$id)
     {   
         $user=$manager->getRepository(User::class)->find($id);
 

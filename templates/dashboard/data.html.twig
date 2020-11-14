@@ -35,12 +35,12 @@
         </div>  
 {% endblock %}
 {% block javascript %}
-    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
-    <script src="https://cdn.zingchart.com/modules/zingchart-zoom-buttons.min.js"></script>
-    <script src="{{asset('js/data.js')}}"></script>
-    <script src="{{asset('js/chart.min.js')}}"></script>
+<script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+<script src="https://cdn.zingchart.com/modules/zingchart-zoom-buttons.min.js"></script>
+<script src="{{asset('js/data.js')}}"></script>
+<script src="{{asset('js/chart.min.js')}}"></script>
 <script language = "javascript">  
-      $(document).ready(function(){
+      /*$(document).ready(function(){
         //$("#loader").show();
         var tensions=[];
         var ids=[];
@@ -68,6 +68,13 @@
             }}
         }); 
         }, 5000);
-      });
+      });*/
+        $(document).ready(() => {
+            const hub='http://localhost:3000/.well-known/mercure?topic=http://avcdocteur.com/sse-data';
+            const eventSource = new EventSource(hub, {withCredentials : true});
+            eventSource.onmessage = e => {
+            console.log(JSON.parse(e.data))
+         }
+        });
    </script>
 {% endblock %}

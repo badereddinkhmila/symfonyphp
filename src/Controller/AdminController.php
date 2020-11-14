@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Form\UserFormType;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
-use App\Service\PaginationService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/admin")
+ * @IsGranted ("ROLE_ADMIN")
  */
 class AdminController extends AbstractController
 {
@@ -49,7 +50,7 @@ class AdminController extends AbstractController
      */
     public function Doctors(UserRepository $repository)
     {
-        $doctors = $repository->findByisDoctor(true);
+        $doctors = $repository->findByDoctor(true);
         $jsonData = array();
         $idx = 0;
         foreach ($doctors as $pt) {
