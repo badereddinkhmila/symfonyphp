@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PatientdataRepository;
+use DateTime;
 
 /**
  * @ORM\Entity(repositoryClass=PatientdataRepository::class)
@@ -11,31 +12,41 @@ use App\Repository\PatientdataRepository;
 class Patientdata
 {
      /**
+     * @ORM\Id() 
+     * @ORM\Column(type="string",nullable=false)
+     */
+    private $device_id;
+
+    /**
      * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer",unique=true)
+     * @ORM\Column(type="datetime", nullable=false)
      */
-    private $id;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $tension;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $oxygene;
+    private $collect_time;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $glucose;
+    private $blood_pressure;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $poids;
+    private $heart_beat;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $oxygen_level;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $blood_sugar;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $weight;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -43,81 +54,78 @@ class Patientdata
     private $temperature;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="patientdatas")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", nullable=true)
      */
-    private $personne;
+    private $location;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $gatewayid;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $longitude;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $aptitude;
-
-    /**
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
-    public function getId(): ?int
+    public function getDeviceid(): ?string
     {
-        return $this->id;
+        return $this->device_id;
+    }
+    public function setDeviceid(?string $device_id): self
+    {
+        $this->device_id = $device_id;
+
+        return $this;
+    }
+    public function getBloodpressure(): ?float
+    {
+        return $this->blood_pressure;
     }
 
-    public function getTension(): ?int
+    public function setBloodpressure(?float $blood_pressure): self
     {
-        return $this->tension;
-    }
-
-    public function setTension(?int $tension): self
-    {
-        $this->tension = $tension;
+        $this->blood_pressure = $blood_pressure;
 
         return $this;
     }
 
-    public function getOxygene(): ?int
+    public function getHeartbeat(): ?float
     {
-        return $this->oxygene;
+        return $this->heart_beat;
     }
 
-    public function setOxygene(?int $oxygene): self
+    public function setHeartbeat(?float $heart_beat): self
     {
-        $this->oxygene = $oxygene;
+        $this->heart_beat = $heart_beat;
 
         return $this;
     }
 
-    public function getGlucose(): ?float
+    public function getOxygen(): ?float
     {
-        return $this->glucose;
+        return $this->oxygen_level;
     }
 
-    public function setGlucose(?float $glucose): self
+    public function setOxygen(?float $oxygen_level): self
     {
-        $this->glucose = $glucose;
+        $this->oxygen_level = $oxygen_level;
 
         return $this;
     }
 
-    public function getPoids(): ?float
+    public function getSugar(): ?float
     {
-        return $this->poids;
+        return $this->blood_sugar;
     }
 
-    public function setPoids(?float $poids): self
+    public function setSugar(?float $blood_sugar): self
     {
-        $this->poids = $poids;
+        $this->blood_sugar = $blood_sugar;
+
+        return $this;
+    }
+
+    public function getWeight(): ?float
+    {
+        return $this->weight;
+    }
+
+    public function setWeight(?float $weight): self
+    {
+        $this->weight = $weight;
 
         return $this;
     }
@@ -134,62 +142,26 @@ class Patientdata
         return $this;
     }
 
-    public function getPersonne(): ?User
+    public function getLocation(): ?string
     {
-        return $this->personne;
+        return $this->location;
     }
 
-    public function setPersonne(?User $personne): self
+    public function setLocation(?string $location): self
     {
-        $this->personne = $personne;
+        $this->location = $location;
 
         return $this;
     }
 
-    public function getGatewayid(): ?string
+    public function getCollectTime(): ?\DateTimeInterface
     {
-        return $this->gatewayid;
+        return $this->collect_time;
     }
 
-    public function setGatewayid(string $gatewayid): self
+    public function setCollectTime(?\DateTimeInterface $collect_time): self
     {
-        $this->gatewayid = $gatewayid;
-
-        return $this;
-    }
-
-    public function getLongitude(): ?string
-    {
-        return $this->longitude;
-    }
-
-    public function setLongitude(?string $longitude): self
-    {
-        $this->longitude = $longitude;
-
-        return $this;
-    }
-
-    public function getAptitude(): ?string
-    {
-        return $this->aptitude;
-    }
-
-    public function setAptitude(?string $aptitude): self
-    {
-        $this->aptitude = $aptitude;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(): self
-    {
-        $this->createdAt = new \DateTime();
+        $this->collect_time = $collect_time;
 
         return $this;
     }

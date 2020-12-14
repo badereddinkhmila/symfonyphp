@@ -1,5 +1,7 @@
 {% extends "partials/_sideNav2.html.twig" %}
 {%  block style %}
+<link rel="stylesheet" href="/css/B4datatables.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.bootstrap4.min.css">
 {% endblock %}
 {% block main %}
     {% for labels , message in app.flashes %}
@@ -12,22 +14,22 @@
             {% endfor %}
         </div>
     {% endfor %}
-    <div class="container-fluid">
-        <div class="card-header text-capitalize bg-1-lightpink shadow-lg row">
-            <span class="col-10"><h5>Liste des docteurs</h5></span>
-            <span class="col-2"><button data-target="#add_doctor" data-toggle="modal" title='Ajouter docteur' class="btn btn-md bg-2-dark text-light rounded-circle" type="button"><i class="fas fa-plus fa-xs"></i><i class="fas fa-user-md"></i></button></span>
+    <div class="container-fluid m-2">
+        <div class="card-body my-title bg-1-lightpink shadow row rounded d-flex align-content-center">
+            <span class="text-bold mr-auto">Liste des docteurs</span>
+            <span class="ml-auto"><button data-target="#add_doctor" data-toggle="modal" title='Ajouter docteur' class="btn btn-md bg-2-dark text-light" type="button"><i class="fas fa-plus"></i><i class="fas fa-user-md"></i></button></span>
         </div>
         <br>
-        <div class="d-flex mt-3 container-fluid justify-content-center">
+        <div class="d-flex mt-3 align-items-center justify-content-center container-fluid bg-light shadow">
             <img src="{{ asset('images/spinner.svg') }}" id="loader" class="spinner">
-            <table id="datatable" class="table table-striped table-bordered table-light row-border compact display m-3 hover">
+            <table id="datatable" class="table table-striped table-bordered table-light row-border compact display hover m-1 w-100">
                 <thead>
                 <tr>
-                    <th scope="col"><i class="far fa-id-card mr-2"></i>Prénom</th>
-                    <th scope="col"><i class="far fa-id-card mr-2"></i>Nom</th>
-                    <th scope="col"><i class="fas fa-camera-retro fa-2x mr-2"></i>Avatar</th>
-                    <th scope="col"><i class="fas fa-at fa-2x mr-2"></i>Email</th>
-                    <th scope="col"><i class="fas fa-cogs fa-2x"></i></th>
+                    <th scope="col"><i class="fas fa-user-md "></i>Prénom</th>
+                    <th scope="col"><i class="fa  fa-user-md "></i>Nom</th>
+                    <th scope="col"><i class="fas fa-camera-retro"></i>Avatar</th>
+                    <th scope="col"><i class="fas fa-at"></i>Email</th>
+                    <th scope="col"><i class="fas fa-cogs"></i></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,8 +40,10 @@
     {% include "partials/_modal.html.twig" with {form:form , modalID:"add_doctor",User:"Docteur"} %}
 {% endblock %}
 {% block javascript %}
-    <script src="{{ asset("js/Datatable.js") }}"></script>
+    <script src="{{ asset("js/JQdatatable.js") }}"></script>
     <script src="{{ asset('js/Datatables.bootstrap.js') }}"></script>
+    <script src="{{asset("js/responsivetables.js")}}"></script>
+    <script src="{{asset("js/DtB4resp.js")}}"></script>
     <script type="text/javascript">
     $(document).ready(function(){
     $("#datatable").hide();
@@ -52,6 +56,7 @@
         success:function(data){
             $('#datatable').DataTable({
             "pagingType": "full_numbers",
+            responsive:true,
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
         },
@@ -59,14 +64,14 @@
             columns:[
             {'data':'firstname'},
             {'data':'lastname'},
-            {"render": function (data, type, JsonResultRow, meta) {
+            {'data':'avatar',"render": function (data, type, JsonResultRow, meta) {
             return '<img class="avatar avatar-small" src="'+JsonResultRow.avatar+'">';
             }},
             {'data':'email'},
-            {"render":function(data,type,JsonResultRow,meta){
+            {'data':'id',"render":function(data,type,JsonResultRow,meta){
                 return '<button class="btn btn-sm btn-outline-danger m-1 delete" id="'+JsonResultRow.id+'"><i class="fas fa-trash"></i></button><a href="/dashboard/patient/'+JsonResultRow.id+'" class="btn btn-sm btn-outline-info m-1"><i class="fas fa-id-card-alt"></i></a>'
+                }
             }
-        }
 
             ],
         })
@@ -81,8 +86,5 @@
     $('#confirmModal').modal('show');
     $('#formdel').attr("action","/dashboard/patients/"+user_id+"/delete");
 });
-    /*$(document).on('click','#newpat',function(){
-    $('#add_patient').modal('show');
-    });*/
 </script>
 {% endblock %}

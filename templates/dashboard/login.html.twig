@@ -3,15 +3,16 @@
 {% block title %}Connexion docteur{% endblock %}
 
 {% block main %}  
-    <div class="col-5 mx-auto">
-        <div class="card bg-light shadow-lg mt-xl-5 mb-xl-5">
+<div class="container-fluid d-flex justify-content-center align-items-center">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+        <div class="card bg-light shadow-lg">
             <div class="card-header bg-1-lightpink">
-                <h4 class="card-title text-center">
-                    <i class="fa fa-door-open mr-lg-1"></i>
+                <h4 class="text-center card-title my-title">
+                    <img class="avatar-small" src="{{asset('images/login.svg')}}" alt="">
                         Accedez Votre Espace  
                 </h4>    
             </div>
-            <div class="card-body ml-2">
+            <div class="card-body">
                 <div class="row justify-content-center">
                     <img src="/images/d-a-login.jpg" class=" mr-1 rounded img-thumbnail shadow-lg" alt="#" id="login-avatar">
                     <img src="/images/p-a-login.png" class="rounded img-thumbnail shadow-lg" alt="#" id="login-avatar">
@@ -21,19 +22,20 @@
                     <div class="form-group row">
                         <i class="far fa-user-circle mr-2"></i>
                             <label for="_username">Email</label>
-                            <input type="email" class="form-control" name="_username" placeholder="Email..." required>
+                            <input type="email" class="form-control" name="_username" required>
                     </div>
                     <div class="form-group row">
-                        <i class="fas fa-key mr-2"></i>
+                        <i class="fab fa-keycdn mr-2"></i>
                         <label for="_password">Mot de passe</label>
-                        <input type="password" class="form-control" name="_password" required placeholder="Mot de passe...">
+                        <input type="password" class="form-control" name="_password" required>
                     </div>
                     <br>
                     <hr >
-                    <div class="form-group text-center mt-3">
-                        <button type="submit" class="btn bg-1-lightpink mr-5">
-                            <i class="fas fa-lock-open"></i>
-                            connexion </button>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn bg-1-lightpink">
+                            <i class="fas fa-sign-in-alt mr-2"></i>
+                            Connexion
+                        </button>
                             <a href="{{ path('welcome_page') }}" class="btn bg-2-lightpink">
                             <i class="fas fa-arrow-circle-left"></i>
                             Page d'acceuil </a>
@@ -42,5 +44,6 @@
             </div>
         </div>
     </div>                    
+</div>    
 {% endblock %}
 

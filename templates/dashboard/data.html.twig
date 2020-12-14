@@ -1,80 +1,245 @@
 {% extends 'partials/_sideNav2.html.twig' %}
 {% block main %}
-        <div id="list"></div>
-        <div class="row-md-6 card bg-light" id="parentdiv">
-        <div class="card-header bg-1-lightpink text-right" style="max-height:60px;">
-            <div class="text-center d-inline-flex mr-5">Membre:<h6>{{user.firstname|upper}} {{user.lastname|upper}}</h6></div>
-            <div class="d-inline-flex mr-auto">Email: <h6>{{user.email}}</h6></div>
-        </div>
-            <div class="card-img-overlay">
-                <img src="{{user.avatar}}" alt="#" class="avatar avatar-meduim">
-            </div>
-            <div class="card-body row">
-            <div class="col-2"></div>
-                <div class="col-3">
-                    <div class="card-text d-inline-flex"><h6>Adresse: </h6>{{user.address}}</div><hr>
-                    <div class="card-text d-inline-flex"><h6>Numéro: </h6>{{user.phone}}</div> <hr>
-                </div>
-                <div class="col-4 ml-1">
-                    <div class="card-text d-inline-flex"><h6>Âge: </h6>{{user.age}}</div><hr>
-                    <div class="card-text d-inline-flex"><h6>Date de naissance: </h6> {{user.birthdate|date('d/m/yy')}}</div> <hr>
-                </div>
-                <div class="col-2 ml-1">
-                    <div class="card-text d-inline-flex"><h6>Taille: </h6>180 cm</div><hr>
-                    <div class="card-text d-inline-flex"><h6>Poids: </h6>82 kg</div><hr>
-                </div>
-            </div>
-            <div class="card-footer text-center bg-1-lightpink">Date d'ajout: {{user.createdAt|date('d/m/yy')}} </div>
-        </div>
-         <!--<div class="my-auto"  id="loader"><img src="/images/spinner.svg" alt="#" class="avatar avatar-max my-auto"></div>
-            -->   
-        <div class="row container-fluid bg-white mt-5">
-        </div>
-        <div class="row card bg-white">
-            <div id="chartContainer" class="charts"></div>
-        </div>  
+	<div class="container-fluid m-1 mb-5">
+		<div class="row d-flex justify-content-center">
+			<div class="card card-inverse shadow rounded col-12 col-md-8">
+				<div class="card-block m-1 m-sm-3">
+					<div class="row">
+						<div class="col-12 col-sm-8">
+							<span class="badge my-title my-small-title">
+								<strong><img class="avatar-small" src="{{asset('images/patient.svg')}}">
+									Patient:</strong>
+								{{user.firstname}}
+								{{user.lastname}}
+							</span>
+							<p class="card-text">
+								<strong>
+									<i class="far fa-paper-plane avatar-small"></i>
+									Email :
+								</strong>
+								{{user.email}}
+							</p>
+							<p class="card-text">
+								<strong>
+									<i class="fas fa-thumbtack avatar-small"></i>
+									Adresse :
+								</strong>
+								{{user.address}}
+							</p>
+							<p class="card-text">
+								<strong><img src="{{asset('images/body-scan.svg')}}" class="avatar-small" alt="">
+									Info :
+								</strong>
+								<span class="badge bg-light my-title my-small-title">
+									<i class="fas fa-birthday-cake"></i>
+									{{user.birthdate|date('d-m-Y')}}</span>
+								<span class="badge bg-light my-title my-small-title"><img src="{{asset('images/growing-up.svg')}}" alt="" class="avatar-micro">{{user.age}}
+									ans</span>
+								<span class="badge bg-light my-title my-small-title">
+									<i class="fas fa-ruler-vertical"></i>
+									180 cm</span>
+								<span class="badge bg-light my-title my-small-title">
+									<i class="fas fa-weight"></i>
+									80 kg</span>
+							</p>
+						</div>
+						<div class="col-md-4 col-sm-4 text-center mt-3">
+							<img class="avatar-large rounded shadow img-thumbnail" src="{{user.avatar}}" alt="">
+						</div>
+						<div class="col-md-4 col-sm-4 text-center">
+							<h2>
+								<strong class="my-title">
+									5
+								</strong>
+							</h2>
+							<button class="btn btn-block btn-md shadow bg-1-lightpink">
+								<img src="{{asset('images/detector.svg')}}" class="avatar-micro">
+								Capteurs
+							</button>
+						</div>
+						<div class="col-md-4 col-sm-4 text-center">
+							<h2>
+								<strong class="my-title">1</strong>
+							</h2>
+							<button class="btn bg-2-light btn-block btn-md shadow">
+								<img class="avatar-micro" src="{{asset('images/meeting.svg')}}" alt="">
+								Randez-vous
+							</button>
+						</div>
+						<div class="col-md-4 col-sm-4 text-center">
+							<h2>
+								<strong class="my-title">3</strong>
+							</h2>
+							<button type="button" class="btn bg-2-break btn-block btn-md shadow">
+								<img class="avatar-micro" src="{{asset('images/error.svg')}}" alt="">
+								Réclamations
+							</button>
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-12">
+							<div class="badge w-100 card-b-bg text-white">
+								<img src="{{asset('images/add.svg')}}" alt="" class="avatar-small mr-2">
+								joindre le :
+								{{user.createdAt | date('d-m-Y')}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--<div class="my-auto"  id="loader"><img src="/images/spinner.svg" alt="#" class="avatar avatar-max my-auto"></div>-->
+
+		<div class="row card rounded shadow mt-3 mb-5">
+			<div class="m-1">
+				<ul class="nav nav-tabs d-md-flex justify-content-md-center ml-3 m-md-0" id="myTab" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link active" data-toggle="tab" href="#tab1" role="tab" aria-controls="blood sugar" aria-expanded="true">
+							<img class="avatar-small" src="{{asset('images/gluc.svg')}}" alt="">
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#tab2" role="tab" aria-controls="blood sugar" aria-expanded="true">
+							<img class="avatar-small" src="{{asset('images/thermometer.svg')}}" alt="">
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#tab3" role="tab" aria-controls="o2 blood" aria-expanded="true">
+							<img class="avatar-small" src="{{asset('images/oxygen.svg')}}" alt="">
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#tab4" role="tab" aria-controls="blood pressure" aria-expanded="true">
+							<img class="avatar-small" src="{{asset('images/bp.svg')}}" alt="">
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#tab5" role="tab" aria-controls="heart rate" aria-expanded="true">
+							<img class="avatar-small" src="{{asset('images/hb.svg')}}" alt="">
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#tab6" role="tab" aria-controls="weight" aria-expanded="true">
+							<img class="avatar-small" src="{{asset('images/weigh.svg')}}" alt="">
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content container-fluid" id="myTabContent">
+					<div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="1-tab">
+						<div class="tab-pane-header text-center">
+							<span class="card-title my-title">Glycémie</span>
+							<p class="card-text mb-2">Taux de glucose dans le sang.</p>
+							<div class="row d-flex justify-items-center m-1">
+								<div class="col-12 card col-md-7 shadow overflow-auto">
+									<div id="chart-line2" class="h-75 mt-1"></div>
+									<div id="chart-line" class="h-25"></div>
+								</div>
+								<div class="col-12 card col-md-4 mt-md-0 mt-2 ml-md-auto shadow charts">
+									<div id="chart" class="charts"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade show" id="tab2" role="tabpanel" aria-labelledby="2-tab">
+						<div class="tab-pane-header text-center">
+							<span class="card-title mb-2 my-title">Température Corporelle</span>
+							<div class="row d-flex justify-items-center m-1">
+								<div class="col-12 card col-md-7 shadow overflow-auto">
+									<div id="chart-line2" class="h-75 mt-1"></div>
+									<div id="chart-line" class="h-25"></div>
+								</div>
+								<div class="col-12 card col-md-4 mt-md-0 mt-2 ml-md-auto shadow charts">
+									<div id="chart" class="charts"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade show" id="tab3" role="tabpanel" aria-labelledby="3-tab">
+						<div class="tab-pane-header text-center">
+							<span class="card-title my-title">Saturation en Oxygéne O2</span>
+							<p class="card-text mb-2">Taux d'oxygène contenu dans les globules rouges après leur passage dans les poumons.</p>
+							<div class="row d-flex justify-items-center">
+								<div class="col-12 card col-md-7 shadow overflow-auto">
+									<div id="chart-line2" class="h-75 mt-1"></div>
+									<div id="chart-line" class="h-25"></div>
+								</div>
+								<div class="col-12 card col-md-4 mt-md-0 mt-2 ml-md-auto shadow charts">
+									<div id="chart" class="charts"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade show" id="tab4" role="tabpanel" aria-labelledby="4-tab">
+						<div class="tab-pane-header text-center">
+							<span class="card-title my-title">Tension Artérielle </span>
+							<p class="card-text mb-2">C’est la pression qui règne à l’intérieur des artères.</p>
+							<div class="row d-flex justify-items-center m-1">
+								<div class="col-12 card col-md-7 shadow overflow-auto">
+									<div id="chart-line2" class="h-75 mt-1"></div>
+									<div id="chart-line" class="h-25"></div>
+								</div>
+								<div class="col-12 card col-md-4 mt-md-0 mt-2 ml-md-auto shadow charts">
+									<div id="chart" class="charts"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade show" id="tab5" role="tabpanel" aria-labelledby="5-tab">
+						<div class="tab-pane-header text-center">
+							<span class="card-title my-title">Fréquence Cardiaque</span>
+							<p class="card-text mb-2">Décrit le nombre de battements mesurés par minute (BPM).</p>
+							<div class="row d-flex justify-items-center m-1">
+								<div class="col-12 card col-md-7 shadow overflow-auto">
+									<div id="chart-line2" class="h-75 mt-1"></div>
+									<div id="chart-line" class="h-25"></div>
+								</div>
+								<div class="col-12 card col-md-4 mt-md-0 mt-2 ml-md-auto shadow charts">
+									<div id="chart" class="charts"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade show" id="tab6" role="tabpanel" aria-labelledby="6-tab">
+						<div class="tab-pane-header text-center">
+							<span class="card-title my-title mb-2">Poids Corporel</span>
+							<div class="row d-flex justify-items-center m-1">
+								<div class="col-12 card col-md-7 shadow overflow-auto">
+									<div id="chart-line2" class="h-75 mt-1"></div>
+									<div id="chart-line" class="h-25"></div>
+								</div>
+								<div class="col-12 card col-md-4 mt-md-0 mt-2 ml-md-auto shadow charts">
+									<div id="chart" class="charts"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.container -->
+	</div>
 {% endblock %}
 {% block javascript %}
-<script src="https://cdn.zingchart.com/zingchart.min.js"></script>
-<script src="https://cdn.zingchart.com/modules/zingchart-zoom-buttons.min.js"></script>
-<script src="{{asset('js/data.js')}}"></script>
-<script src="{{asset('js/chart.min.js')}}"></script>
-<script language = "javascript">  
-      /*$(document).ready(function(){
+	<script src="{{asset('js/apexchart.js')}}"></script>
+	<script src="{{asset('js/data.js')}}"></script>
+	<script language="javascript">
+		$(document).ready(function () {
+if (location.hash !== '') 
+$('a[href="' + location.hash + '"]').tab('show');
+
+
+return $('a[data-toggle="tab"]').on('shown', function (e) {
+return location.hash = $(e.target).attr('href').substr(1);
+});
+});
+/*$(document).ready(function(){
         //$("#loader").show();
-        var tensions=[];
-        var ids=[];
-        const userId="{{user.id}}";
-        let LastId = 0; 
-        $.get( "/dashboard/patients/"+userId+"/data",function( data ) {
-            dt=Object.values(data);  
-            for(var i=0;i < dt.length; i++){
-                temp=Object.values(dt[i]);
-                ids.push(temp[0])
-                tensions.push(temp[1]);
-                LastId=temp[0];
-            }
-        }).done(function(){
-         $("#loader").hide();
-        });
-        
-        setInterval(function(){
-            let lastid =JSON.stringify({"lastid":""+LastId+""});
-            $.post("/dashboard/patients/"+userId+"/data",lastid,function(response) {
-           if( JSON.stringify(response) !== "[]"){
-            for(var i=0;i < response.length; i++){
-                tmp=Object.values(response[i]);
-                LastId=tmp[0];
-            }}
-        }); 
-        }, 5000);
+        const hub = 'http://localhost:3000/.well-known/mercure?topic=http://avcdocteur.com/sse-data';
+        const eventSource = new EventSource(hub, {withCredentials: true});
+        eventSource.onmessage = e => {
+        console.log(JSON.parse(e.data))
+        }
       });*/
-        $(document).ready(() => {
-            const hub='http://localhost:3000/.well-known/mercure?topic=http://avcdocteur.com/sse-data';
-            const eventSource = new EventSource(hub, {withCredentials : true});
-            eventSource.onmessage = e => {
-            console.log(JSON.parse(e.data))
-         }
-        });
-   </script>
+	</script>
 {% endblock %}

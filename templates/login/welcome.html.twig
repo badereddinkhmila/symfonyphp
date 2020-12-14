@@ -1,9 +1,9 @@
 {% extends 'partials/_sideNav2.html.twig' %}
 
 {% block main %}
-<div class="container d-flex h-100">
-    <div class="row d-grid align-content-center justify-content-center">
-            <div class="col-6 col-sm-6 col-md-5">
+<div class="container-fluid d-flex hv-100">
+    <div class="row align-content-center align-content-sm-center justify-content-center justify-content-sm-center">
+            <div class="col-12 col-sm-6 col-md-6 mt-2 mt-md-auto mt-sm-auto">
                 <a href="{{ path('User_login') }}">
                     <div class="card text-center justify-content-center" id="login-card">
                         <div class="row justify-content-center">
@@ -11,7 +11,7 @@
                             <img src="/images/p-a-login.png" class="mt-4 rounded img-thumbnail shadow-lg" alt="#" id="login-avatar">        
                         </div>    
                         <div class="card-body">
-                            <h5 class="card-title">Docteur-Patient</h5>
+                            <h5 class="card-title">Docteur ou Patient</h5>
                         </div>
                         <div class="card-body">
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -19,12 +19,13 @@
                     </div>
                 </a>
             </div>
-            <div class="col-6 col-sm-6 col-md-5">
+
+            <div class="col-12 col-md-6 col-sm-6 mt-2 mt-md-auto mt-sm-auto">
                 <a href="{{ path('admin_login') }}">
-                <div class="card text-center" id="login-card">
+                <div class="card text-center justify-content-center" id="login-card">
                     <img src="/images/login1.svg" class="mt-4 rounded img-thumbnail shadow-lg" alt="#" id="login-avatar">
                     <div class="card-body">
-                        <h5 class="card-title">Agent DHCSys</h5>
+                        <h5 class="card-title">Mandataire DHCSYS</h5>
                     </div>
                     <div class="card-body">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>

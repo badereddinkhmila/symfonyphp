@@ -15,25 +15,11 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/admin")
- * @IsGranted ("ROLE_ADMIN")
+ *@IsGranted("ROLE_ADMIN")
  */
 class AdminController extends AbstractController
 {
-    /**
-     * @Route("/login", name="admin_login")
-     */
-    public function adminlogin()
-    {
-        return $this->render('admin/login.html.twig');
-    }
-
-    /**
-     * @Route("/login/error", name="login_error")
-     */
-    public function loginerror()
-    {
-        return $this->render('errors/login_error.html.twig');
-    }
+    
 
     /**
      * @Route("/home",name="admin_home")
@@ -51,6 +37,7 @@ class AdminController extends AbstractController
     public function Doctors(UserRepository $repository)
     {
         $doctors = $repository->findByDoctor(true);
+        dump($doctors);
         $jsonData = array();
         $idx = 0;
         foreach ($doctors as $pt) {

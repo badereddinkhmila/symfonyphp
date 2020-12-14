@@ -6,7 +6,7 @@ namespace App\Controller;
 use DateTime;
 use DateInterval;
 use App\Entity\Randezvous;
-use App\Form\RandezvousType;
+use App\Form\RandezVousType;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
 use App\Repository\RandezvousRepository;
@@ -35,37 +35,40 @@ class RandezvousController extends AbstractController
      * @Route("/list",name="randezvous_list")
      */
     public function randez_vous_list(RandezvousRepository $rp){
+
         $rdv=$rp->findAll();
         $rdvs=array();
         $index=0;
         foreach($rdv as $rd){
-            $temp = array(
-                'id'=>$rd->getId(),
-                'title' => $rd->getType(),
-                'description'=>$rd->getDescription(),
-                'start'=>$rd->getDatedFor()->format('Y-m-d H:i:s'),
-                'backgroundColor'=>$rd->getColor(),
-                'color'=>$rd->getColor(),
-                'end'=>$rd->getEndIn()->format('Y-m-d H:i:s')
-            );
-        if ($rd->getParts()->first()->getId() == $this->getUser()->getId()) {
-            $usr=$rd->getParts()->last();
-            $tmp=array(
-                'id'=>$usr->getId(),
-                'firstname'=>$usr->getFirstname(),
-                'lastname'=>$usr->getLastname(),
-                'avatar'=>$usr->getAvatar(),
-            );
-        }
-        else{$usr=$rd->getParts()->first();
-            $tmp=array(
-                'id'=>$usr->getId(),
-                'firstname'=>$usr->getFirstname(),
-                'lastname'=>$usr->getLastname(),
-                'avatar'=>$usr->getAvatar());
-        }
-            $rdvs[$index++] = $temp+$tmp;    
-        }
+            if($rd->getParts()->contains($this->getUser())){
+                $temp = array(
+                    'id'=>$rd->getId(),
+                    'title' => $rd->getType(),
+                    'description'=>$rd->getDescription(),
+                    'start'=>$rd->getDatedFor()->format('Y-m-d H:i:s'),
+                    'backgroundColor'=>$rd->getColor(),
+                    'color'=>$rd->getColor(),
+                    'end'=>$rd->getEndIn()->format('Y-m-d H:i:s'),
+                );
+                if ($rd->getParts()->first()->getId() == $this->getUser()->getId()) {
+                    $usr=$rd->getParts()->last();
+                    $tmp=array(
+                        'id'=>$usr->getId(),
+                        'firstname'=>$usr->getFirstname(),
+                        'lastname'=>$usr->getLastname(),
+                        'avatar'=>$usr->getAvatar(),
+                    );
+                }
+                else{
+                    $usr=$rd->getParts()->first();
+                    $tmp=array(
+                        'id'=>$usr->getId(),
+                        'firstname'=>$usr->getFirstname(),
+                        'lastname'=>$usr->getLastname(),
+                        'avatar'=>$usr->getAvatar());
+                }
+                $rdvs[$index++] = $temp+$tmp;    }
+            }
         
         return new JsonResponse($rdvs); 
     }
@@ -119,7 +122,7 @@ class RandezvousController extends AbstractController
         }
     $options['action']=$this->generateUrl('randezvous_pt2');
     $options['method']='POST';
-    $form = $this->createForm(RandezvousType::class,$rdv,$options);
+    $form = $this->createForm(RandezVousType::class,$rdv,$options);
     $form->handleRequest($request);
     if($form->isSubmitted() && $form->isValid()){
         $id=$form->get('parts')->getViewData()[0];
@@ -137,38 +140,41 @@ class RandezvousController extends AbstractController
     /**
      * @Route("/{id}/edit", name="randezvous_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request,RoleRepository $rp,RandezvousRepository $repo,$id): Response
-    {   $user=$this->getUser();
+    public function edit(Request $request,RoleRepository $rp,RandezvousRepository $repo,$id)
+    {   
+        $user=$this->getUser();
         $randezvous=$repo->find($id);
         $form=null;
         $role = $rp->find(2);
                 if($user->getUserRoles()->contains($role))
-                {  $pat=$user->getDoctor();
-                   $form = $this->createForm(RandezvousType::class,$randezvous,[
-                        'choi'=>$pat,
+                {  $doctor=$user->getDoctor();
+                   $form = $this->createForm(RandezVousType::class,$randezvous,[
+                        'choi'=>$doctor,
                         'name'=>'Patients',
                         'state'=>false,
                    ]); 
                 }                   
                 else{
-                    $doc=$user->getPatients();
-                    $form = $this->createForm(RandezvousType::class,$randezvous,[
-                        'choi'=>$doc,
+                    $pats=$user->getPatients();
+                    $form = $this->createForm(RandezVousType::class,$randezvous,[
+                        'choi'=>$pats,
                         'state'=>true
                     ]);
-                }
-        if($request->isXmlHttpRequest() && $_SERVER['REQUEST_METHOD'] =='GET'){        
+                }        
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
+                $desc=$form->get('description')->getData();
+                echo $desc;
+                dump($desc);
                 $part=$form->get('parts')->getData();
-                dump($part);
-                $randezvous->addPart($part);
+                $randezvous->addPart($part->first());
+                $randezvous->setDescription($desc);
                 $this->getDoctrine()->getManager()->flush();
             }
+
             return $this->render('randezvous/edit.html.twig', [
                 'form' => $form->createView(),
             ]);
-        }
     }
 
     /**

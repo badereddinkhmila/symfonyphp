@@ -11,9 +11,9 @@ namespace App\Messages\message;
 class IotMessage
 {
     /**
-     * @var string
+     * @var array
      */
-    private string $content;
+    private array $content;
 
     /**
      * IotMessage constructor.
@@ -23,9 +23,9 @@ class IotMessage
         $this->content=$content;
     }
     /**
-     * @return string
+     * @return array
      */
-    public function getContent(): string
+    public function getContent(): array
     {
         return $this->content;
     }

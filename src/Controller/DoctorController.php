@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserFormType;
 use App\Mercure\Cookies\CookieGenerator;
-use App\Messages\message\IotMessage;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,7 +12,6 @@ use App\Repository\PatientdataRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -61,6 +59,7 @@ class DoctorController extends AbstractController
                 );   
                 $jsonData[$idx++] = $temp;  
             } 
+            dump($jsonData);
             return new JsonResponse($jsonData); 
         }
         
@@ -146,7 +145,7 @@ class DoctorController extends AbstractController
     }
 
     /**
-     * @Route("/patients/{id?}/data",name="patient_data",requirements={"id":"\d+"})
+     * @Route("/patient/{id?}/data",name="patient_data",requirements={"id":"\d+"})
      * @param Request $request
      * @param UserRepository $repo
      * @param PatientdataRepository $rp
@@ -157,46 +156,7 @@ class DoctorController extends AbstractController
     public function PatientData(Request $request,UserRepository $repo,PatientdataRepository $rp ,EntityManagerInterface $em,$id) {
             
                     $user=$repo->find($id);
-                    $data=$user->getPatientdatas();   
-                
-                if ($request->isXmlHttpRequest() && $_SERVER['REQUEST_METHOD'] =='POST')  {  
-                    $LastId=json_decode($request->getContent(),true);
-                    $last=intval($LastId["lastid"]);   
-                    if(true){                            
-                        $datas=$rp->findOneByRow($last,$id);
-                        if(!empty($datas)){    
-                            $jsonData = array();  
-                            $idx = 0;  
-                            foreach($datas as $dt) {  
-                                $temp = array(
-                                    'id' => $dt->getId(),  
-                                    'tension' => $dt->getTension(),  
-                                );   
-                                $jsonData[$idx++] = $temp; 
-                            }
-                            return new JsonResponse($jsonData);
-                        }
-                        else{
-                            return new JsonResponse($datas);
-                        }    
-                    }
-                    else    {
-                       return new JsonResponse("bad request");
-                    }
-                } 
-
-                if ($request->isXmlHttpRequest() && $_SERVER['REQUEST_METHOD'] =='GET') {  
-                    $jsonData = array();  
-                    $idx = 0;  
-                    foreach($data as $dt) {  
-                        $temp = array(
-                            'id' => $dt->getId(),  
-                            'tension' => $dt->getTension(),   
-                        );   
-                        $jsonData[$idx++] = $temp;  
-                    } 
-                    return new JsonResponse($jsonData); 
-                }
+                    $date=$user->getBirthdate();
 
                 return $this->render('dashboard/data.html.twig',[
                     'user'=>$user]);            
@@ -213,7 +173,5 @@ class DoctorController extends AbstractController
         $response->headers->setCookie($cookieGenerator->generate());
         return $response;
     }
-
-
 
 }

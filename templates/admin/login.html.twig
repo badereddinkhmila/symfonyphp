@@ -1,47 +1,49 @@
 {% extends 'partials/_sideNav2.html.twig' %}
 
 {% block main %}
-    <div class="container d-flex mt-xl-5">
-        <div class="col-xs-6 mx-auto mt-xl-5">
-            <div class="card bg-light shadow">
-                <div class="card-header">
-                    <h4 class="card-title text-center">
-                        <i class="fas fa-door-open"></i>
-                        Agent DHCSys
+
+
+<div class="container-fluid d-flex justify-content-center align-items-center">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+        <div class="card bg-light shadow-lg">
+            <div class="card-header w-100 bg-material-ui">
+                    <h4 class="card-title text-center my-title">
+                        <img src="{{asset('images/login.svg')}}" class="avatar-small">
+                        Mandataire DHCSYS
                     </h4>
                 </div>
-                <div class="card-body">
-                    <div class="row" style="display: grid;">
-                        <img src="/images/login1.svg" class="shadow-lg align-self-center"
+            <div class="card-body">
+                <div class="row align-content-center justify-content-center">
+                        <img src="/images/login1.svg" class="shadow align-self-center"
                              alt="#" id="login-avatar">
                     </div>
-                    <br>
-                    <form action="{{ path('admin_login') }}" method="post">
-                        <div class="form-group">
-                            <i class="far fa-user-circle"></i>
-                            <label for="_username">Email</label>
-                            <input type="email" class="form-control" name="_username" required>
-                        </div>
-                        <div class="form-group">
-                            <i class="fas fa-key"></i>
-                            <label for="_password">Mot de passe</label>
-                            <input type="password" class="form-control" name="_password" required>
-                        </div>
-                        <hr>
-                        <div class="form-group text-center">
-                            <button type="submit" class="btn bg-1-lightpink">
-                                <i class="fas fa-sign-in-alt"></i>
-                                connexion !
-                            </button>
-                            <a href="{{ path('welcome_page') }}" class="btn">
-                                <i class="fas fa-arrow-circle-left"></i>
-                                Page d'acceuil
-                            </a>
-                        </div>
-                    </form>
-                </div>
+                <br>
+                <form action="{{ path('admin_login') }}" method="post">
+                            <div class="form-group">
+                                <i class="far fa-user-circle"></i>
+                                <label for="_username">Email</label>
+                                <input type="email" class="form-control" name="_username" required>
+                            </div>
+                            <div class="form-group">
+                                <i class="fab fa-keycdn"></i>
+                                <label for="_password">Mot de passe</label>
+                                <input type="password" class="form-control" name="_password" required>
+                            </div>
+                            <hr>
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn bg-material-ui">
+                                    <i class="fas fa-sign-in-alt mr-2"></i>
+                                    Connexion
+                                </button>
+                                <a href="{{ path('welcome_page') }}" class="btn">
+                                    <i class="fas fa-arrow-circle-left"></i>
+                                    Page d'acceuil
+                                </a>
+                            </div>
+                </form>
             </div>
         </div>
-    </div>
+    </div>                    
+</div>    
 
 {% endblock %}

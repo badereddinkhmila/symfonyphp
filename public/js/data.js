@@ -1,87 +1,194 @@
 window.addEventListener('load', () => {
-    let chartConfig = {
-      type: 'line',
-      globals: {
-        fontFamily: 'Lucida Sans Unicode'
-      },
-      plotarea: {
-        margin: '50px 40px 40px 80px'
-      },
-      scaleX: {
-        item: {
-          fontSize: '10px'
-        },
-        transform: {
-          type: 'date'
-        },
-        zooming: true
-      },
-      scaleY: {
-        autoFit: true,
-        guide: {
-          lineStyle: 'solid'
-        },
-        item: {
-          fontSize: '10px'
-        },
-        label: {
-          text: 'VOLUMES'
-        },
-        minValue: 'auto',
-        short: true
-      },
-      preview: {
-        adjustLayout: true,
-        borderWidth: '1px',
-        handle: {
-          height: '20px',
-          lineWidth: '0px'
-        }
-      },
-      noData: {
-        text: 'No data found',
-        backgroundColor: '#efefef'
-      },
-      // if fetching data remotely define an empty series
-      series: [{}]
-    };
-    // render the chart right away
-    zingchart.render({
-      id: 'chartContainer',
-      data: chartConfig
-    });
-    // ONLY ONCE we have loaded the zoom-button module
-    zingchart.loadModules('zoom-buttons', () => {
-      // fetch the data remotely
-      fetch('https://cdn.zingchart.com/datasets/timeseries-sample-data-2019.json')
+    fetch('https://cdn.zingchart.com/datasets/timeseries-sample-data-2019.json')
         .then(res => res.json())
         .then(timeseriesData => {
-          // assign data
-          chartConfig.series[0].values = timeseriesData.values;
-          // destroy the chart since we have to render the
-          // chart with a module. if there is no module,
-          // just use set data like the catch statement
-          zingchart.exec('myChart', 'destroy');
-          // render chart with width and height to
-          // fill the parent container CSS dimensions
-          zingchart.render({
-            id: 'chartContainer',
-            data: chartConfig,
-            height: '100%',
-            width: '100%',
-            modules: 'zoom-buttons'
-          });
-        })
-        .catch(e => {
-          // if error, render blank chart
-          console.error('--- error fetching data from: https://cdn.zingchart.com/datasets/timeseries-sample-data.json ---');
-          chartConfig.title = {};
-          chartConfig.title.text = 'Error Fetching https://cdn.zingchart.com/datasets/timeseries-sample-data.json';
-          // just exec setdata api method since we don't need to render the zoom modules
-          // https://www.zingchart.com/docs/api/methods/
-          zingchart.exec('chartContainer', 'setdata', {
-            data: chartConfig
-          });
+            // assign data
+            var data = timeseriesData.values;
+
+            var options = {
+                series: [{
+                    data: data
+                }],
+                chart: {
+                    id: 'chart2',
+                    type: 'line',
+                    height: 370,
+                    zoom: {
+                        type: 'x',
+                        enabled: true,
+                        autoScaleYaxis: true
+                    },
+                    toolbar: {
+                        autoSelected: 'zoom',
+                        show: true
+                    }
+                },
+
+                theme: {
+                    monochrome: {
+                        enabled: true,
+                        color: '#f9a3a4',
+                        shadeTo: 'light',
+                        shadeIntensity: 0.3
+                    },
+                    palette: 'palette4' // upto palette10
+                },
+                animations: {
+                    enabled: true,
+                    easing: 'linear',
+                    speed: 2000,
+                    animateGradually: {
+                        enabled: true,
+                        delay: 150
+                    },
+                    dynamicAnimation: {
+                        enabled: true,
+                        speed: 350
+                    }
+                },
+                stroke: {
+                    curve: 'smooth',
+                    width: 3
+                },
+                dataLabels: {
+                    enabled: false
+                },
+
+                fill: {
+                    opacity: 1,
+                },
+                markers: {
+                    size: 0
+                },
+                xaxis: {
+                    type: 'datetime'
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#chart-line2"), options);
+            chart.render();
+
+            var jaugeoption = {
+                series: [67],
+                chart: {
+                    height: 350,
+                    type: 'radialBar',
+                    offsetY: -10
+                },
+                plotOptions: {
+                    radialBar: {
+                        startAngle: -135,
+                        endAngle: 135,
+                        dataLabels: {
+                            name: {
+                                fontSize: '16px',
+                                color: undefined,
+                                offsetY: 120
+                            },
+                            value: {
+                                offsetY: 76,
+                                fontSize: '22px',
+                                color: undefined,
+                                formatter: function(val) {
+                                    return val + "%";
+                                }
+                            }
+                        }
+                    }
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shade: 'light',
+                        shadeIntensity: 0.15,
+                        inverseColors: false,
+                        opacityFrom: 1,
+                        opacityTo: 1,
+                        stops: [0, 50, 65, 91]
+                    },
+                },
+                responsive: [{
+                    breakpoint: undefined,
+                    options: {},
+                }],
+
+                animations: {
+                    enabled: true,
+                    easing: 'easein',
+                    speed: 2000,
+                    animateGradually: {
+                        enabled: true,
+                        delay: 150
+                    },
+                    dynamicAnimation: {
+                        enabled: true,
+                        speed: 350
+                    }
+                },
+                stroke: {
+                    dashArray: 4
+                },
+                labels: ['Median Ratio'],
+            };
+
+            var jauge = new ApexCharts(document.querySelector("#chart"), jaugeoption);
+            jauge.render();
+
+
+
+
+
+            var optionsLine = {
+                series: [{
+                    data: data
+                }],
+                responsive: [{
+                    breakpoint: undefined,
+                    options: {},
+                }],
+                chart: {
+                    id: 'chart1',
+                    height: 100,
+                    type: 'area',
+                    brush: {
+                        target: 'chart2',
+                        enabled: true
+                    },
+                    selection: {
+                        enabled: true,
+                        xaxis: {
+                            //min: new Date('19 Jun 2017').getTime(),
+                            //max: new Date().getTime()
+                        }
+                    },
+                },
+                colors: ['#008FFB'],
+                grid: {
+                    borderColor: '#e7e7e7',
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                        opacity: 0.5
+                    },
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        opacityFrom: 0.91,
+                        opacityTo: 0.1,
+                    }
+                },
+                xaxis: {
+                    type: 'datetime',
+                    tooltip: {
+                        enabled: false
+                    }
+                },
+                yaxis: {
+                    tickAmount: 2
+                }
+            };
+
+            var brushLine = new ApexCharts(document.querySelector("#chart-line"), optionsLine);
+            brushLine.render();
         });
-  });
 });

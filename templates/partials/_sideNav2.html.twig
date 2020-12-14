@@ -9,6 +9,7 @@
     <link rel="icon" href="{{ asset('images/favicon.ico') }}" />
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap">
     <link rel="stylesheet" href="{{asset('css/style4.css')}}">
     <script src="{{asset('js/jquery.js')}}"></script>
     <script src="{{asset('js/popper.min.js')}}" ></script>
@@ -19,7 +20,6 @@
 {% block body %}
 <body>
     <div class="wrapper">
-
         {% if is_granted('ROLE_ADMIN') %}
             <img src="{{ asset('images/nyc.png') }}" alt="#" class="bgimageopacity">
         {% else %}
@@ -27,15 +27,22 @@
         {% endif %}
         <!-- Sidebar  -->
         <div id="sidebar" class="shadow">
-            <div class="sidebar-header">
+            <div class="sidebar-header sticky-top">
                 {% if app.user %}
-                <img src="{{app.user.avatar}} "class="avatar avatar-meduim" alt="#">
+                <img src="{{app.user.avatar}} "class="avatar avatar-meduim mr-1" alt="#">
                 <div class="user-info">
                     <spann class="user-name"><strong><em>{{app.user.firstname}}</em></strong>
                     <em>{{app.user.lastname}}</em>
                     </spann>
                     <spann class="user-role">
-                        <strong>Patient</strong> 
+                        <strong>{% if is_granted('ROLE_ADMIN') %}
+                                    Admin
+                                {% elseif is_granted('ROLE_DOCTOR') %}
+                                    Docteur
+                                {% else %}
+                                    Patient
+                                {% endif %}
+                        </strong> 
                     </spann>
                     <spann class="user-status">
                       <i class="fas fa-circle text-success"></i>
@@ -43,13 +50,10 @@
                     </spann>
                 </div>    
                 {% else %}
-                <img src="{{asset('images/A-avatar.png')}}" class="avatar avatar-meduim" alt="#">
+                <img src="{{asset('images/A-avatar.png')}}" class="avatar avatar-meduim mr-1" alt="#">
                 <div class="user-info">
                     <spann class="user-name"><strong>Visiteur</strong>
                     <em>Anonyme</em>
-                    </spann>
-                    <spann class="user-role">
-                        <strong>inconnu</strong> 
                     </spann>
                     <spann class="user-status">
                       <i class="fas fa-circle text-danger"></i>
@@ -58,18 +62,18 @@
                 </div>
                 {% endif %}
             </div>
-        <div class="sidebar-wrapper">
+        <div class="sidebar-wrapper h-100 w-100">
             <ul class="list-unstyled components">
                 <li>
                     <a href="{{path('dash_home')}}">
-                        <i class="fas fa-home"></i>
-                        <span>Home</span>
+                        <i class="avatar-small" id="home-logo"></i>
+                        <span>Menu</span>
                     </a>
                 </li>
                 <li>
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Pages</span>
+                        <i class="avatar-small" id="dash-logo"></i>
+                        <span>Données</span>
                     </a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
                         <li>
@@ -85,27 +89,33 @@
                 </li>
                 <li>
                     <a href="#">
-                        <i class="far fa-calendar-alt"></i>
+                        <i class="avatar-small" id="calendar-logo"></i>
                         <span>Randez-vous</span>
                     </a>
                 </li>
                 <li>
                     <a href="#">
-                        <i class="fas fa-map-marked-alt"></i>
+                        <i class="avatar-small" id="compl-logo"></i>
+                        <span>Randez-vous</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="avatar-small" id="map-logo"></i>
                         <span>Carte</span>
                     </a>
                 </li>
                 <hr>
                 <li>
                     <a href="#">
-                        <i class="fas fa-book"></i>
+                        <i class="avatar-small" id="guide-logo"></i>
                         <span>Guide</span>
                     </a>
                 </li>
                 <hr>
                 <li>
                     <a href="#">
-                        <i class="fas fa-chalkboard-teacher"></i>
+                        <i class="avatar-small" id="profil-logo"></i>
                         <span>Profil</span>
                     </a>
                 </li>
@@ -113,20 +123,20 @@
                 {% if app.user %}
                 <li class="mb-0">    
                     <a href="{{path('User_logout')}}">
-                        <i class="fas fa-sign-out-alt"></i>
+                        <i class="avatar-small" id="logout-logo"></i>
                         <span>Déconnexion</span>
                     </a>
                 </li>
                 {% else %}
                 <li class="mb-0">    
                     <a href="{{path('welcome_page')}}">
-                        <i class="fas fa-door-open"></i>
+                        <i class="avatar-small" id="login-logo"></i>
                         <span>Connexion</span>
                     </a>
                 </li>
                 {% endif %}
                 <hr>
-                <li class="d-flex">
+                <li class="d-flex mb-auto">
                     <img src="{{asset('images/favicon.ico')}}" alt="#" id="sidebar-logo">
                 </li>
             </ul>
@@ -135,44 +145,44 @@
     </div>
         <!-- Page Content  -->
         <div id="content">
-                <nav class="navbar navbar-expand-lg shadow">
-                        <a type="button" id="sidebarCollapse" class="btn mr-1">
-                            <i class="fas fa-bars nav-icon"></i>
-                        </a>
-                        <a href="{{path('welcome_page')}}">
+                <nav class="navbar navbar-expand-lg shadow sticky-top">
+                        <div id="sidebarCollapse" class="mr-2 d-none d-md-flex bg-theme">
+                            <i class="fas fa-bars"></i>
+                        </div>
+                        <a href="{{path('welcome_page')}}" class="d-flex ml-1 w-50 justify-content-end justify-content-lg-start">
                         <div class="navbar-brand" id="textlogo"></div>
                         </a>
                         <a class="d-inline-block d-lg-none ml-auto navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <i class="far fa-caret-square-down" id="navbar-togg"></i>
                         </a>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="nav navbar-nav ml-auto">
-                                <li class="nav-item align-self-center col">
-                                    <a class="nav-link" href="#"><i class="nav-icon fas fa-calendar-alt"></i><span class="badge badge-pill badge-danger notification">9+</span></a>
-                                </li>
-                                <li class="nav-item align-self-center col">
-                                    <a class="nav-link" href="#"><i class="fas fa-tools nav-icon"></i><span class="badge badge-pill badge-danger notification">9+</span>
+                            <div class="ml-md-auto d-flex justify-content-lg-end">
+                                <div class="nav-item d-flex align-self-center justify-content-center col-2 col-lg-2">
+                                    <a class="nav-link" href="#"><i class="avatar-micro nav-icon" id="cal-alert-logo"></i><span class="badge badge-pill badge-danger notification">9+</span></a>
+                                </div>
+                                <div class="nav-item d-flex align-self-center justify-content-center col-2 col-lg-2">
+                                    <a class="nav-link" href="#"><i class="avatar-micro nav-icon" id="compl-logo"></i><span class="badge badge-pill badge-danger notification">9+</span>
                                     </a>
-                                </li>
-                                <li class="nav-item d-flex align-self-center col">
-                                    <i class="far fa-sun align-self-center mr-2"></i>
+                                </div>
+                                <div class="nav-item d-flex align-self-center col-4 col-lg-3 justify-content-center">
+                                    <i class="far fa-sun align-self-center mr-2 ml-1"></i>
                                     <div class="custom-control custom-switch">
                                         <input type="checkbox" class="custom-control-input" id="customSwitch1">
                                         <label class="custom-control-label" for="customSwitch1"></label>
                                     </div>
                                     <i class="far fa-moon align-self-center"></i>
-                                </li>
-                                <li class="align-self-center col ml-2">
+                                </div>
+                                <div class="d-flex align-self-center col-lg-1 col-2 ml-lg-3 justify-content-center">
                                     {% if app.user %}
                                         <img src="{{app.user.avatar}}" alt="#" class="avatar avatar-small">   
                                     {% else %}
                                     <img src="{{asset('images/A-avatar.png')}}" alt="#" class="avatar avatar-small">
                                     {% endif %}
-                                </li>
-                            </ul>
+                                </div>
+                            </div>
                         </div>
                 </nav>
-                <div id="page-content">
+                <div id="page-content" class="mt-5 mb-5 m-sm-auto">
                     {% block main %}
 
                     {% endblock %}
@@ -225,11 +235,11 @@
                 };
             }
         });
-        if (window.innerWidth <= 830) {
+        if (window.innerWidth <= 768) {
             $('#sidebar,#content').addClass('active');
         }
         $(window).resize(function() {
-        if (window.innerWidth <= 830) {
+        if (window.innerWidth <= 768) {
             $('#sidebar,#content').addClass('active');}
             else{
                 $('#sidebar,#content').removeClass('active');

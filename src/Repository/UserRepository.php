@@ -47,11 +47,11 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function findByDoctor($value): ?User
-    {   $qb=$this->createQueryBuilder();
+    public function findByDoctor($value): array
+    {   
 
         return $this->createQueryBuilder('u')
-            ->andWhere('u.patients = :val')
+            ->andWhere('u.isDoctor = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getResult()

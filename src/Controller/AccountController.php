@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AccountController extends AbstractController
 {   
-      /**
+    /**
      * @Route("/",name="welcome_page")
      */
     public function home()
@@ -51,5 +51,19 @@ class AccountController extends AbstractController
         return $this->render('account/profil.html.twig',['user'=>$user]);
     
     }
+    /**
+     * @Route("/admin/login", name="admin_login")
+     */
+    public function adminlogin()
+    {
+        return $this->render('admin/login.html.twig');
+    }
 
+    /**
+     * @Route("/login/error", name="login_error")
+     */
+    public function loginerror()
+    {
+        return $this->render('errors/login_error.html.twig');
+    }
 }
