@@ -3,70 +3,84 @@
 namespace App\Form;
 
 
+use App\Entity\SensorGateway;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Validator\Constraints\File;
 
 class UserFormType extends AbstractType
 {
 
-    public function getConfig($label,$classes){
-            return[
-                'label'=>$label,
-                'attr'=>[
-                    'class'=>$classes,
-                    ]
-                ];
-    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         
         $builder
-            ->add('firstname',TextType::class,$this->getConfig('Prénom',''))
-            ->add('lastname',TextType::class,$this->getConfig('Nom',''))
-            ->add('email',EmailType::class)
-            ->add('password',PasswordType::class)
-            
-            ->add('birthdate',BirthdayType::class,[
-                'widget' => 'single_text',
+            ->add('firstname',TextType::class,[
+                'label'=>'Prénom'
+            ])
+            ->add('lastname',TextType::class,[
+                'label'=>'Nom'
+            ])
+            ->add('email',EmailType::class,[
+                'label'=>'E-mail'
+            ])
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les champs du mot de passe doivent correspondre.',
+                'options' => ['attr' => ['class' => 'password-field']],
+                'required' => true,
+                'first_options'  => ['label' => 'Mot de passe'],
+                'second_options' => ['label' => 'Confirmation'],
             ])
             ->add('gender',ChoiceType::class, [
+                'label'=>'Genre',
                 'choices'=>[
                     'Homme'=>'Homme',
                     'Femme'=>'Femme'
             ]
             ])
-            ->add('age',IntegerType::class,[
-                'required'=>false,
-            ])->add('avatar',FileType::class,[
-                'attr'=>[
-                    'class'=>'form-control-file',
-                ],
-                
+            ->add('birthdate',BirthdayType::class,[
+                'label'=>'Date de naissance',
+                'placeholder' => 'Choisir date',
+                'widget' => 'single_text',
+            ])
+           ->add('avatar',FileType::class,[
+                'attr'=>['class'=>'form-control-file'],
                 'label'=>'Photo de profil',
                 'required'=>false,
                 'constraints' => [new File([
                                             'maxSize' => '200K',
                                             'maxSizeMessage'=>'Le fichier est grand,la taille maximale est {{ limit }} {{ suffix }}',
-                                            'mimeTypes'=>['application/jpeg','application/png','application/jpg'],
+                                            'mimeTypes'=>['image/jpeg','image/png','image/jpg'],
                                             ])]
                 
             ])
             ->add('address',TextType::class,[
-
+                'label'=>'Adresse'
             ])
             ->add('phone',TelType::class,[
-                ]);
+                'label'=>'Numéro portable'
+                ])
+
+            ->add('weight',NumberType::class,[
+                'label'=>'Poids(kg)'
+            ])
+
+            ->add('length',NumberType::class,[
+                'label'=>'Taille(m)'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

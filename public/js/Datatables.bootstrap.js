@@ -68,7 +68,7 @@ $jscomp.polyfill("Array.prototype.find", function(a) { return a ? a : function(b
 })(function(a, b, c, e) {
     var d = a.fn.dataTable;
     a.extend(!0, d.defaults, {
-        dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        dom: "<'row'<'col-12 col-md-6'l><'col-12 col-md-6'f>><'row'<'col-12'tr>><'row'<'col-12 col-md-5'i><'col-12 col-md-7'p>>",
         renderer: "bootstrap"
     });
     a.extend(d.ext.classes, { sWrapper: "dataTables_wrapper dt-bootstrap4", sFilterInput: "form-control form-control-sm", sLengthSelect: "custom-select custom-select-sm form-control form-control-sm", sProcessing: "dataTables_processing card", sPageButton: "paginate_button page-item" });

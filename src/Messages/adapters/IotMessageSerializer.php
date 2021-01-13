@@ -25,7 +25,7 @@ class IotMessageSerializer implements SerializerInterface
 
         $type = $body['type'] ?? '';
         switch ($type) {
-            case 'iotmessage':
+            case 'iot':
                 // Here, you can / should validate the structure of $body
                 $content=array_values($body);
                 //dump($content);

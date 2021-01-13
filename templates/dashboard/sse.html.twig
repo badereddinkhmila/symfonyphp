@@ -2,17 +2,11 @@
 
 
 {% block main %}
-
+    <div class="container-fluid m-5 d-flex justify-content-center align-items-center">
+        <div class="col-6 card shadow rounded m-1 w-100 h-100 mr-auto">
+            <div class="spinner"></div>
+        </div>
+        <div class="col-6 card bg-transparent shadow rounded m-1 w-100 h-100 ml-auto">
+        </div>
+    </div>
 {% endblock %}
- {% block javascript %}
-
- <script type="text/javascript">
-        $(document).ready(() => {
-            const hub='http://localhost:3000/.well-known/mercure?topic=http://avcdocteur.com/sse-data';
-            const eventSource = new EventSource(hub, {withCredentials : true});
-            eventSource.onmessage = e => {
-            console.log(JSON.parse(e.data))
-         }
-        });
-</script>
- {% endblock %}

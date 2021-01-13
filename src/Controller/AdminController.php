@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserFormType;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
+use http\Env\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +25,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/home",name="admin_home")
      */
-    public function adminhome()
+    public function admin_home()
     {
         return $this->render('admin/home.html.twig');
     }

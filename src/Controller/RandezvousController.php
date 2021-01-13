@@ -25,7 +25,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class RandezvousController extends AbstractController
 {
     /**
-     * @Route("/",name="randez_vous")
+     * @Route("/",name="randez_vous", methods={"GET","POST"})
      */
     public function reandez_vous_home(){
         return $this->render('randezvous/index.html.twig');
@@ -138,7 +138,7 @@ class RandezvousController extends AbstractController
 
 
     /**
-     * @Route("/{id}/edit", name="randezvous_edit", methods={"GET","POST"})
+     * @Route("/{id}/test", name="randezvous_edit", methods={"GET","POST"})
      */
     public function edit(Request $request,RoleRepository $rp,RandezvousRepository $repo,$id)
     {   
@@ -163,12 +163,6 @@ class RandezvousController extends AbstractController
                 }        
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                $desc=$form->get('description')->getData();
-                echo $desc;
-                dump($desc);
-                $part=$form->get('parts')->getData();
-                $randezvous->addPart($part->first());
-                $randezvous->setDescription($desc);
                 $this->getDoctrine()->getManager()->flush();
             }
 
@@ -188,26 +182,48 @@ class RandezvousController extends AbstractController
             $entityManager->flush();
             $this->addFlash(
                 'warning',
-                "Le randez-vous a bien été annulée"
+                "Le randez-vous a bien été annulé"
             );
             return $this->redirectToRoute('randezvous_list');
     }
 
      /**
-     * @Route("/test", name="test")
+     * @Route("/{id}/edit", name="test")
      */
 
-    public function test(UserRepository $repo,RandezvousRepository $rdvrep)
-    {   
-        $pat=$repo->find(37);
-        $doc=$repo->find(28);
-        $pats=$doc->getDoctor()->toArray();
-        $doctor=$pat->getPatients()->toArray();
-            return $this->render('randezvous/test.html.twig',[
-                'pats'=>$pats,
-
-                'doctor'=>$doctor,
+    public function test(Request $request,RoleRepository $rp,RandezvousRepository $repo,$id)
+    {
+        $user=$this->getUser();
+        $randezvous=$repo->find($id);
+        $form=null;
+        $role = $rp->find(2);
+        if($user->getUserRoles()->contains($role))
+        {  $doctor=$user->getDoctor();
+            $form = $this->createForm(RandezVousType::class,$randezvous,[
+                'choi'=>$doctor,
+                'name'=>'Patients',
+                'state'=>true,
             ]);
+        }
+        else{
+            $pats=$user->getPatients();
+            $form = $this->createForm(RandezVousType::class,$randezvous,[
+                'choi'=>$pats,
+                'state'=>true
+            ]);
+        }
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $rdv=$form->getData();
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('randez_vous');
+        }
+
+        return $this->render('randezvous/edit.html.twig', [
+            'form' => $form->createView(),
+            'id'=>$id
+        ]);
     }
         
 

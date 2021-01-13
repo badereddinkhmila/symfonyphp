@@ -127,6 +127,8 @@
       <path value="$PROJECT_DIR$/vendor/enqueue/dsn" />
       <path value="$PROJECT_DIR$/vendor/enqueue/null" />
       <path value="$PROJECT_DIR$/vendor/enqueue/rdkafka" />
+      <path value="$PROJECT_DIR$/vendor/symfonycasts/reset-password-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfonycasts/verify-email-bundle" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.4" />

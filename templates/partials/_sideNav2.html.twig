@@ -11,9 +11,14 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap">
     <link rel="stylesheet" href="{{asset('css/style4.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.11/dist/summernote-bs4.min.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="{{asset('js/jquery.js')}}"></script>
     <script src="{{asset('js/popper.min.js')}}" ></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs4-summernote@0.8.10/dist/summernote-bs4.min.js"></script>
+
     {% block style %}
     {% endblock %}
 </head>
@@ -29,7 +34,7 @@
         <div id="sidebar" class="shadow">
             <div class="sidebar-header sticky-top">
                 {% if app.user %}
-                <img src="{{app.user.avatar}} "class="avatar avatar-meduim mr-1" alt="#">
+                <img src="{{app.user.avatar}}" class="avatar avatar-meduim mr-1" alt="#">
                 <div class="user-info">
                     <spann class="user-name"><strong><em>{{app.user.firstname}}</em></strong>
                     <em>{{app.user.lastname}}</em>
@@ -62,117 +67,132 @@
                 </div>
                 {% endif %}
             </div>
-        <div class="sidebar-wrapper h-100 w-100">
-            <ul class="list-unstyled components">
+        <div class="sidebar-wrapper w-100 h-100 d-flex {% if not app.user %}align-items-center{% endif %}">
+            <ul class="list-unstyled sdb-components">
+                {% if app.user %}
                 <li>
-                    <a href="{{path('dash_home')}}">
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{path('admin_home')}}" id="sidebar-ref">
                         <i class="avatar-small" id="home-logo"></i>
-                        <span>Menu</span>
+                        <span>Accueil</span>
                     </a>
+                    {% else%}
+                    <a href="{{path('dash_home')}}" id="sidebar-ref">
+                        <i class="avatar-small" id="home-logo"></i>
+                        <span>Accueil</span>
+                    </a>
+                    {% endif %}
                 </li>
                 <li>
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" id="sidebar-ref">
                         <i class="avatar-small" id="dash-logo"></i>
-                        <span>Données</span>
+                        <span>Panneau</span>
                     </a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
                         <li>
-                            <a href="#">Page 1</a>
+                            {% if is_granted("ROLE_DOCTOR") %}
+                                <a href="{{ path('patient_list') }}" id="ref-pat"><i class="fas fa-users"></i> Patients</a>
+                            {% elseif is_granted("ROLE_ADMIN")  %}
+                                <a href="{{ path('doctors_list') }}" id="ref-pat"><i class="fas fa-user-md"></i> Docteurs</a>
+                            {% endif %}
                         </li>
                         <li>
-                            <a href="#">Page 2</a>
-                        </li>
-                        <li>
-                            <a href="#">Page 3</a>
+                            <a href="#"><i class="fas fa-laptop-house"></i> Dispositifs</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{ path('randez_vous') }}" id="sidebar-ref">
                         <i class="avatar-small" id="calendar-logo"></i>
                         <span>Randez-vous</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{ path('complaint_home') }}" id="sidebar-ref">
                         <i class="avatar-small" id="compl-logo"></i>
-                        <span>Randez-vous</span>
+                        <span>Réclamations</span>
                     </a>
                 </li>
+                {% endif %}
+                {% if is_granted('ROLE_DOCTOR') %}
                 <li>
-                    <a href="#">
+                    <a href="{{ path('map_patient') }}" id="sidebar-ref">
                         <i class="avatar-small" id="map-logo"></i>
                         <span>Carte</span>
                     </a>
                 </li>
-                <hr>
+                {% endif %}
+                {% if app.user %}
+                <hr class="bg-theme-inv">
                 <li>
-                    <a href="#">
-                        <i class="avatar-small" id="guide-logo"></i>
-                        <span>Guide</span>
-                    </a>
-                </li>
-                <hr>
-                <li>
-                    <a href="#">
+                    <a href="{{ path('account_profile',{id:app.user.id}) }}" id="sidebar-ref">
                         <i class="avatar-small" id="profil-logo"></i>
                         <span>Profil</span>
                     </a>
                 </li>
-                <hr>
+                {% endif %}
+                <hr class="bg-theme-inv">
+                <li>
+                    <a href="#" id="sidebar-ref">
+                        <i class="avatar-small" id="guide-logo"></i>
+                        <span>Guide</span>
+                    </a>
+                </li>
+                <hr class="bg-theme-inv">
                 {% if app.user %}
-                <li class="mb-0">    
-                    <a href="{{path('User_logout')}}">
+                <li class="mb-3">
+                    <a href="{{path('User_logout')}}" id="sidebar-ref">
                         <i class="avatar-small" id="logout-logo"></i>
                         <span>Déconnexion</span>
                     </a>
                 </li>
                 {% else %}
                 <li class="mb-0">    
-                    <a href="{{path('welcome_page')}}">
+                    <a href="{{path('welcome_page')}}" id="sidebar-ref">
                         <i class="avatar-small" id="login-logo"></i>
                         <span>Connexion</span>
                     </a>
+                    <hr class="bg-theme-inv">
                 </li>
                 {% endif %}
-                <hr>
-                <li class="d-flex mb-auto">
-                    <img src="{{asset('images/favicon.ico')}}" alt="#" id="sidebar-logo">
-                </li>
             </ul>
-        
+        </div>
+        <div class="d-flex" id="sidebar-logo-container">
+            <img src="{{asset('images/favicon.ico')}}" alt="#" id="sidebar-logo">
         </div>
     </div>
         <!-- Page Content  -->
         <div id="content">
-                <nav class="navbar navbar-expand-lg shadow sticky-top">
-                        <div id="sidebarCollapse" class="mr-2 d-none d-md-flex bg-theme">
-                            <i class="fas fa-bars"></i>
+                <nav class="navbar navbar-expand-md shadow sticky-top d-flex align-items-center">
+                        <div id="sidebarCollapse" class="d-none d-md-flex btn-link">
+                            <div class="hamburger hamburger--elastic btn-link" type="button">
+                                  <span class="hamburger-box">
+                                    <span class="hamburger-inner"></span>
+                                  </span>
+                            </div>
                         </div>
-                        <a href="{{path('welcome_page')}}" class="d-flex ml-1 w-50 justify-content-end justify-content-lg-start">
-                        <div class="navbar-brand" id="textlogo"></div>
+                        <a href="{{path('welcome_page')}}" class="d-flex ml-2 justify-content-md-center">
+                            <div class="navbar-brand" id="textlogo"></div>
                         </a>
-                        <a class="d-inline-block d-lg-none ml-auto navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <i class="far fa-caret-square-down" id="navbar-togg"></i>
+                        <a class="d-inline-block d-md-none ml-auto navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <i class="fas fa-chevron-down" id="navbar-togg"></i>
                         </a>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <div class="ml-md-auto d-flex justify-content-lg-end">
-                                <div class="nav-item d-flex align-self-center justify-content-center col-2 col-lg-2">
+                            <div class="ml-auto align-content-center justify-content-md-end justify-content-center row d-flex">
+                                <div class="nav-item col-2">
                                     <a class="nav-link" href="#"><i class="avatar-micro nav-icon" id="cal-alert-logo"></i><span class="badge badge-pill badge-danger notification">9+</span></a>
                                 </div>
-                                <div class="nav-item d-flex align-self-center justify-content-center col-2 col-lg-2">
+                                <div class="nav-item col-2 mr-1">
                                     <a class="nav-link" href="#"><i class="avatar-micro nav-icon" id="compl-logo"></i><span class="badge badge-pill badge-danger notification">9+</span>
                                     </a>
                                 </div>
-                                <div class="nav-item d-flex align-self-center col-4 col-lg-3 justify-content-center">
-                                    <i class="far fa-sun align-self-center mr-2 ml-1"></i>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                                        <label class="custom-control-label" for="customSwitch1"></label>
+                                <div class="nav-item col-2 m-1 mr-0">
+                                    <div class="custom-control custom-switch theme-switch">
+                                        <input type="checkbox" class="custom-control-input" id="customSwitchTheme">
+                                        <label class="custom-control-label" for="customSwitchTheme"></label>
                                     </div>
-                                    <i class="far fa-moon align-self-center"></i>
                                 </div>
-                                <div class="d-flex align-self-center col-lg-1 col-2 ml-lg-3 justify-content-center">
+                                <div class="col-2 m-1">
                                     {% if app.user %}
                                         <img src="{{app.user.avatar}}" alt="#" class="avatar avatar-small">   
                                     {% else %}
@@ -189,63 +209,15 @@
                 </div>
             </div>
     </div>
-    
-
-    {% block javascript %}
-        
-    {% endblock %}
     <script type="text/javascript">
-        $(document).ready(function () {
-            if($('.user-name').text().length>77){
-                $('.user-name em').hide();
-            }
 
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar,#content').toggleClass('active');
-                if($('#sidebar').hasClass('active')){
-                    $(this).html('<i class="fas fa-times nav-icon"></i>');
-                }
-                else{
-                    $(this).html('<i class="fas fa-bars nav-icon"></i>');
-                }
-            });
-
-
-            var customSwitch1=document.getElementById('customSwitch1'); 
-            if(customSwitch1){
-                initTheme();
-
-                $('#customSwitch1').change(function(){
-                    resetTheme(); 
-                });
-                function initTheme() {
-                    var darkThemeSelected = (localStorage.getItem('customSwitch1') !== null && localStorage.getItem('customSwitch1') === 'dark');
-                    customSwitch1.checked = darkThemeSelected;
-                    darkThemeSelected ? document.body.setAttribute('data-theme', 'dark') : document.body.removeAttribute('data-theme');
-                };
-
-                function resetTheme() {
-                    if(customSwitch1.checked) { 
-                        document.body.setAttribute('data-theme', 'dark');
-                        localStorage.setItem('customSwitch1', 'dark'); 
-                    } else {
-                        document.body.removeAttribute('data-theme');
-                        localStorage.removeItem('customSwitch1');
-                    } 
-                };
-            }
-        });
-        if (window.innerWidth <= 768) {
-            $('#sidebar,#content').addClass('active');
-        }
-        $(window).resize(function() {
-        if (window.innerWidth <= 768) {
-            $('#sidebar,#content').addClass('active');}
-            else{
-                $('#sidebar,#content').removeClass('active');
-            }
-        });
     </script>
+
 </body>
 {% endblock body %}
+{% block javascript %}
+    $(document).ready(function () {
+        $('textarea').Editor()
+    })
+{% endblock %}
 </html>

@@ -6,57 +6,57 @@
 {% endblock  %}
 
 {% block main %}
-	<div class="container-fluid d-md-flex d-block mt-2 mb-5">
-		<div id='external-events' class="container-fluid card d-flex col-12 col-md-3 ml-auto shadow rounded mr-md-1">
+	<div class="container-fluid d-lg-flex d-block mt-2 mb-5">
+		<div id='external-events' class="container-fluid card d-flex col-12 col-lg-3 ml-auto shadow rounded mr-lg-1">
 			<div class="row d-flex align-items-center">
 				<strong class="mr-auto my-title my-small-title m-2">Randez-vous</strong>
 				<img class="avatar-micro ml-auto shadow m-2" src="{{asset('images/meeting.svg')}}" alt="">
 			</div>
 			<hr>
-			<div class="row flex-md-column flex-column d-flex flex-sm-row align-items-md-center justify-items-center">
-				<div class="col-12 col-sm-4 col-md-12">
+			<div class="row flex-lg-column d-flex flex-sm-row align-items-lg-center justify-items-center">
+				<div class="col-12 col-sm-4 col-lg-12">
 					<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-danger'>
-						<div class='fc-event-main'>Urgent</div>
+						<span class='fc-event-main'>Urgent</span>
 					</div>
 				</div>
-				<div class="col-12 col-sm-4 col-md-12">
+				<div class="col-12 col-sm-4 col-lg-12">
 					<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-warning'>
-						<div class='fc-event-main'>Réaliser des tests</div>
+						<span class='fc-event-main'>Réaliser des tests</span>
 					</div>
 				</div>
-				<div class="col-12 col-sm-4 col-md-12">
+				<div class="col-12 col-sm-4 col-lg-12">
 					<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-success'>
-						<div class='fc-event-main'>Controle régulier</div>
+						<span class='fc-event-main'>Controle régulier</span>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div id='calendar-container' class="card shadow rounded mt-2 mb-5 h-100 d-flex col-md-9 col-12">
-			<img src="{{asset('images/spinner.svg')}}" alt="#" class="spinner">
+		<div id='calendar-container' class="card shadow rounded mt-2 p-3 mb-5 h-100 d-flex col-lg-9 col-12">
+			<div class="spinner"></div>
 			<div id='calendar' class="mb-5"></div>
 		</div>
-<div class="modal fade hidden" id="newevent" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title my-title">
-						<i class="far fa-calendar-plus"></i>
-						Nouveau Randez-vous</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">
-							<i class="fas fa-times-circle"></i>
-						</span>
-					</button>
+	<div class="modal fade hidden" id="newevent" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title my-title">
+							<i class="far fa-calendar-plus"></i>
+							Nouveau Randez-vous</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">
+								<i class="far fa-times-circle"></i>
+							</span>
+						</button>
+					</div>
+					<div class="modal-body d-flex justify-content-center align-content-lg-center">
+						<div class="spinner"></div>
+					</div>
 				</div>
-				<div class="modal-body d-flex justify-content-center align-content-lg-center">
-					<img src="{{asset('images/spinner.svg')}}" alt="#" class="spinner">
-				</div>
+				<!-- /.modal-content -->
 			</div>
-			<!-- /.modal-content -->
+			<!-- /.modal-dialog -->
 		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
+		<!-- /.modal -->
 
 	<div class="modal fade hidden" id="upevent" role="dialog">
 		<div class="modal-dialog">
@@ -67,12 +67,12 @@
 						Modifier Randez-vous</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">
-							<i class="fas fa-times-circle"></i>
+							<i class="far fa-times-circle"></i>
 						</span>
 					</button>
 				</div>
-				<div class="modal-body">
-					<img src="{{asset('images/spinner.svg')}}" alt="#" class="spinner">
+				<div class="modal-body d-flex">
+					<div class="spinner"></div>
 				</div>
 			</div>
 			<!-- /.modal-content -->
@@ -88,10 +88,10 @@
 				<div class="modal-header">
 					<h5 class="modal-title my-title">
 						<i class="far fa-calendar-minus"></i>
-						Confirmer suppression du Randez-vous</h5>
+						Supprimer Randez-vous</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">
-							<i class="fas fa-times-circle"></i>
+							<i class="far fa-times-circle"></i>
 						</span>
 					</button>
 				</div>
@@ -112,148 +112,156 @@
 {% endblock main %}
 
 {% block javascript %}
-	<script src="{{asset('js/jqueryui.js')}}"></script>
 	<script src="{{asset('js/fullcalendar.js')}}"></script>
 	<script>
 		$(document).ready(function () {
-var Draggable = FullCalendar.Draggable;
+			var Draggable = FullCalendar.Draggable;
 
-var containerEl = document.getElementById('external-events');
+			var containerEl = document.getElementById('external-events');
 
-new Draggable(containerEl, {
-itemSelector: '.fc-event',
-eventData: function (eventEl) {
-return {title: eventEl.innerText};
-}
-});
+			new Draggable(containerEl, {
+			itemSelector: '.fc-event',
+			eventData: function (eventEl) {
+			return {title: eventEl.innerText};
+			}
+			});
 
 
-var calendarEl = document.getElementById('calendar');
+			var calendarEl = document.getElementById('calendar');
 
-var calendar = new FullCalendar.Calendar(calendarEl, {
-initialView: 'timeGridWeek',
-locale: 'fr',
-displayEventTime: false,
-themeSystem: 'bootstrap',
-timeZone: 'Europe/paris',
-headerToolbar: {
-left: 'prev,next today',
-center: 'title',
-right: 'timeGridWeek,timeGridDay,listWeek'
-},
-buttonText: {
-today: "aujourd'hui",
-month: "mois",
-week: "semaine",
-day: "jour",
-list: "liste"
-},
-events: '/dashboard/randezvous/list',
-editable: true,
-droppable: true,
-drop: function (info) {
-$("#newevent").modal('show');
-let rdv = [];
-if ($(info.draggedEl).hasClass("bg-success")) {
-rdv[0] = "#32CD32";
-} else if ($(info.draggedEl).hasClass("bg-warning")) {
-rdv[0] = "#FF8C00";
-} else {
-rdv[0] = "#FF6347";
-} rdv[1] = $(info.draggedEl).text();
-rdv[2] = info.date;
-let jrdv = JSON.stringify(rdv);
-// "save after drop"
-$.post('/dashboard/randezvous/new', jrdv).done(function () {}).done(function () {
-$.get('/dashboard/randezvous/newe', function (response) {
-$('.spinner').hide();
-$("#newevent .modal-body").html (`${response}`);
-});
-});
-},
-loading: function (state) {
-if (state == false) {
-$("#calendar-container .spinner").hide();
-$('#calendar').show();
-} else {
-$('#calendar').hide();
-}
-},
-eventResizableFromStart: true,
-weekends: false,
-weekNumbers: true,
-nowIndicator: true,
-slotMinTime: '08:00:00',
-slotMaxTime: '18:00:00',
-eventClick: function (info) {
-let id = info.event.id;
-$.post(`/dashboard/randezvous/${id}/edit`, function (response) {
-$("#upevent .modal-body").html (`${response}`);
-$("#upevent").modal('show');
-$("#formsubmit").click(function () {
-setTimeout(calendar.refetchEvents(), 2000);
-});
-$('#deleteEvent').click(function () {
-$('#confirm').modal('show');
-$("#upevent").modal('hide');
-$('#confdel').click(function () {
-$.ajax({
-method: 'DELETE',
-url: `/dashboard/randezvous/${id}`,
-success: function () {
-calendar.refetchEvents();
-$('#confirm').modal('hide');
-}
-});
-});
-});
-});
-},
-eventMouseEnter: function (MouseEnter) {
-if (MouseEnter.event.extendedProps.firstname !== undefined) {
-$(function () {
-    console.log('i got here')
-$(MouseEnter.el).popover({
-    items: MouseEnter.el,
-    trigger: 'focus',
-    placement: 'bottom',
-    html: true,
-    content: function () { 
-        console.log('content');
-        return `
-            <div class="popover" role="tooltip">
-                <div class="arrow text-dark"></div>
-                <h3 class="popover-header">${MouseEnter.event.extendedProps.firstname} ${MouseEnter.event.extendedProps.lastname}</h3>
-                <div class="popover-body">
-                    <div class="container-fluid">
-                <div class="row d-flex justify-content-center">
-                    <img class='avatar-meduim rounded img-thumbnail' src='${MouseEnter.event.extendedProps.avatar}'/>
-                </div>
-                <div class="row justify-content-center">
-                    <p class="my-title my-small-title m-1">Description: </p>    
-                    <p>${MouseEnter.event.extendedProps.description}</p>
-                </div>        
-            </div>
-                </div>
-            </div>
-    `},
-    });
-$(MouseEnter.el).popover('show');
-    });
-    }},
-eventMouseLeave: function () {
-$('.popover').popover('hide');
-},
-dayMaxEventRows: true, // for all non-TimeGrid views
-views: {
-timeGrid: {
-dayMaxEventRows: 6 // adjust to 6 only for timeGridWeek/timeGridDay
-}
-}
+			var calendar = new FullCalendar.Calendar(calendarEl, {
+			initialView: 'timeGridWeek',
+			titleFormat: {
+				year:'2-digit',
+				month: 'short',
+				day: 'numeric',
+			  },
+			height: '100%',
+			locale: 'fr',
+			themeSystem: 'bootstrap',
+			timeZone: 'Europe/paris',
+			headerToolbar: {
+			left: 'prev,next today',
+			center: '',
+			right: 'timeGridWeek timeGridDay listWeek'
+			},
+			footerToolbar: {
+			left: 'prevYear,prev next,nextYear',
+			center: 'title',
+			},
+			buttonText: {
+			today: "aujourd'hui",
+			month: "mois",
+			week: "semaine",
+			day: "jour",
+			list: "liste"
+			},
+			events: '/dashboard/randezvous/list',
+			editable: true,
+			droppable: true,
+			drop: function (info) {
+			$("#newevent").modal('show');
+			let rdv = [];
+			if ($(info.draggedEl).hasClass("bg-success")) {
+			rdv[0] = "#28a745";
+			} else if ($(info.draggedEl).hasClass("bg-warning")) {
+			rdv[0] = "#ffc107";
+			} else {
+			rdv[0] = "#dc3545";
+			} rdv[1] = $(info.draggedEl).text();
+			rdv[2] = info.date;
+			let jrdv = JSON.stringify(rdv);
+			// "save after drop"
+			$.post('/dashboard/randezvous/new', jrdv).done(function () {}).done(function () {
+			$.get('/dashboard/randezvous/newe', function (response) {
+			$('.spinner').hide();
+			$("#newevent .modal-body").html (`${response}`);
+			});
+			});
+			},
+			loading: function (state) {
+			if (state == false) {
+			$("#calendar-container .spinner").hide();
+			$('#calendar').show();
+			} else {
+			$('#calendar').hide();
+			}
+			},
+			eventResizableFromStart: true,
+			weekends: false,
+			allDaySlot:false,
+			weekNumbers: true,
+			nowIndicator: true,
+			slotMinTime: '08:00:00',
+			slotMaxTime: '18:00:00',
+			eventClick: function (info) {
+			let id = info.event.id;
+			$.post(`/dashboard/randezvous/${id}/edit`, function (response) {
+			$("#upevent .modal-body").html (`${response}`);
+			$("#upevent").modal('show');
+			$("#formsubmit").click(function () {
+			setTimeout(calendar.refetchEvents(), 1000);
+			});
+			$('#deleteEvent').click(function () {
+			$('#confirm').modal('show');
+			$("#upevent").modal('hide');
+			$('#confdel').click(function () {
+			$.ajax({
+			method: 'DELETE',
+			url: `/dashboard/randezvous/${id}`,
+			success: function () {
+			calendar.refetchEvents();
+			$('#confirm').modal('hide');
+			}
+			});
+			});
+			});
+			});
+			},
+			eventMouseEnter: function (MouseEnter) {
+			if (MouseEnter.event.extendedProps.firstname !== undefined) {
+			$(function () {
+			$(MouseEnter.el).popover({
+				items: MouseEnter.el,
+				trigger: 'hover',
+				placement: 'left',
+				delay: {
+				   show: "100",
+				   hide: "1500"
+				},
+				html: true,
+				content: function () {
+					return `
+						<div class="popover bg-theme" role="tooltip">
+							<div class="badge my-title w-100 my-small-title sticky-top bg-1-lightpink">${MouseEnter.event.extendedProps.firstname} ${MouseEnter.event.extendedProps.lastname}</div>
+							<div class="popover-body">
+								<div class="row d-flex justify-content-center">
+									<img class='avatar-md img-thumbnail' src='${MouseEnter.event.extendedProps.avatar}'/>
+								</div>
+								<div class="col-12 bg-theme">
+									<em class="my-small-title">Description:</em>
+									<p class="overflow-auto">${MouseEnter.event.extendedProps.description}</p>
+								</div>
+							</div>
+						</div>
+				`},
+				});
+			$(MouseEnter.el).popover('show');
+				});
+				}},
+			/*eventMouseLeave: function () {
+			$('.popover').popover('hide');
+			},*/
+			dayMaxEventRows: true, // for all non-TimeGrid views
+			views: {
+			timeGrid: {
+			dayMaxEventRows: 6 // adjust to 6 only for timeGridWeek/timeGridDay
+			}
+			}
 
-});
-calendar.on('eventChange', (e) => {});
-calendar.render();
-});
+			});
+			calendar.on('eventChange', (e) => {});
+			calendar.render();
+			});
 	</script>
 {% endblock  %}

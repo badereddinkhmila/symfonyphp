@@ -1,0 +1,26 @@
+{% extends 'partials/_sideNav2.html.twig' %}
+
+{% block main %}
+    {% for flashError in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+    <div class="container-fluid row d-flex justify-content-center align-items-center">
+         <div class="card shadow rounded col-12 col-md-8">
+            <div class="my-title card-title text-center">Réinitialiser votre mot de passe</div>
+             <hr>
+            <div class="card-body d-flex">
+                {{ form_start(requestForm) }}
+                    {{ form_row(requestForm.email) }}
+
+                    <div class="my-title my-small-title">
+                            Nous vous enverrons un lien pour réinitialiser votre mot de passe.
+                    </div>
+                    <hr>
+                    <div class="text-center">
+                        <button class="btn btn-primary"><i class="far fa-paper-plane"></i> Envoyer e-mail</button>
+                    </div>
+                {{ form_end(requestForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

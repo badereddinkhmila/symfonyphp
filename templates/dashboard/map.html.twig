@@ -1,16 +1,18 @@
 {% extends "partials/_sideNav2.html.twig" %}
 {% block title %}position des patients{% endblock %}
 {% block style %}
-<link rel="stylesheet" href="/map/leaflet.css">
+    <link rel="stylesheet" href="{{ asset('map/leaflet.css') }}">
 {% endblock %}
+
 {% block main %}
-        <div id="mapid" class="bg-light" style="width:100%;height:100%;"></div>
+    <div class="container-fluid mt-5 mb-5 m-4 p-2 shadow rounded bg-white">
+        <div id="mapid" class="bg-light w-100 h-100"></div>
+    </div>
 {% endblock %}
 
 
 {% block javascript %}
-<script src="/map/leaflet-src.js"></script>
-</script>
+<script src="{{asset('map/leaflet-src.js')}}"></script>
 <script type="text/javascript">
    var mymap = L.map('mapid').setView([	34.747847, 10.766163], 8);
 /*L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {

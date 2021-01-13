@@ -20,7 +20,7 @@ class JwtProvider
     public function __invoke(): string
     {
         return (new Builder())
-            ->withClaim('mercure', ['publish' => ['*']])
+            ->withClaim('mercure', ['publish' => ['*'],'subscribe'=>['*']])
             ->getToken(new Sha256(), new Key($this->secret));
     }
 }

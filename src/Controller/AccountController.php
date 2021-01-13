@@ -16,8 +16,7 @@ class AccountController extends AbstractController
      */
     public function home()
     {
-        return $this->render('login/welcome.html.twig',[
-        ]);
+        return $this->render('login/welcome.html.twig');
     }
 
     /**
@@ -48,7 +47,7 @@ class AccountController extends AbstractController
     {   
         $user=$manager->getRepository(User::class)->find($id);
 
-        return $this->render('account/profil.html.twig',['user'=>$user]);
+        return $this->render('dashboard/profil.html.twig',['user'=>$user]);
     
     }
     /**

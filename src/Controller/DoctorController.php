@@ -2,13 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Role;
 use App\Entity\User;
 use App\Form\UserFormType;
 use App\Mercure\Cookies\CookieGenerator;
+use App\Repository\ResetPasswordRequestRepository;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\PatientdataRepository;
+use App\Repository\TemperatureRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,14 +33,14 @@ class DoctorController extends AbstractController
      * @Route("/",name="dash_home")
      * @return Response
      */
-    public function home(): Response
+    public function home(Request $request): Response
     {
-        return  $this->render('dashboard/home.html.twig', []);
+        return $this->render('dashboard/home.html.twig', []);
     }
 
 
     /**
-     * @Route("/patients",name="doctor_dashboard")
+     * @Route("/patients",name="patient_list")
      * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
      * @param RoleRepository $rp
@@ -59,8 +62,7 @@ class DoctorController extends AbstractController
                 );   
                 $jsonData[$idx++] = $temp;  
             } 
-            dump($jsonData);
-            return new JsonResponse($jsonData); 
+            return new JsonResponse($jsonData);
         }
         
         
@@ -70,6 +72,10 @@ class DoctorController extends AbstractController
             $form->handleRequest($request);
             $manager=$this->getDoctrine()->getManager();
             $role = $rp->find(3);
+            if ($form->isSubmitted() && !$form->isValid()) {
+                return $this->render('dashboard/new.html.twig', [
+                    'form' => $form->createView(),]);
+            }
             if( $form->isSubmitted() && $form->isValid() ){
                 //upload d'image
                 if( !empty($user->getAvatar())){
@@ -92,7 +98,7 @@ class DoctorController extends AbstractController
                     'success',
                     "Le Patient <strong>{$user->getFirstname()} {$user->getLastname()}</strong> a bien été crée"
                 );
-                return $this->redirectToRoute('doctor_dashboard');}
+                return $this->redirectToRoute('patient_list');}
 
         //view
       return $this->render('dashboard/patientlist.html.twig',[
@@ -108,21 +114,24 @@ class DoctorController extends AbstractController
      * @param UserRepository $rp
      * @return RedirectResponse
      */
-    public function deletePatient($id,EntityManagerInterface $manager,UserRepository $rp){
+    public function deletePatient($id,EntityManagerInterface $manager,UserRepository $rp,ResetPasswordRequestRepository $pwdrp){
         $user=$rp->find($id);
-        $manager->remove($user);
-        $manager->flush();
+        $pswdreq=$pwdrp->findBySomeUser($user);
+        foreach ($pswdreq as $pwdreq){
+            $manager->remove($pwdreq);
+            $manager->flush();
+        }
+            $manager->remove($user);
+            $manager->flush();
         $this->addFlash(
             'warning',
             "Le Patient <strong>{$user->getFirstname()} {$user->getLastname()}</strong> a bien été supprimée"
         );
-        return $this->redirectToRoute('doctor_dashboard');
-
-        
+        return $this->redirectToRoute('patient_list');
     }
 
      /**
-     * @Route("/patients/map",name="map_patient")
+     * @Route("/map",name="map_patient")
      */
     public function mapPatient(){
         return $this->render('/dashboard/map.html.twig');
@@ -146,32 +155,54 @@ class DoctorController extends AbstractController
 
     /**
      * @Route("/patient/{id?}/data",name="patient_data",requirements={"id":"\d+"})
+     * @param CookieGenerator $cookieGenerator
      * @param Request $request
      * @param UserRepository $repo
-     * @param PatientdataRepository $rp
-     * @param EntityManagerInterface $em
      * @param $id
-     * @return JsonResponse|Response
+     * @return Response
      */
-    public function PatientData(Request $request,UserRepository $repo,PatientdataRepository $rp ,EntityManagerInterface $em,$id) {
-            
-                    $user=$repo->find($id);
-                    $date=$user->getBirthdate();
-
-                return $this->render('dashboard/data.html.twig',[
-                    'user'=>$user]);            
+    public function PatientData(CookieGenerator $cookieGenerator,Request $request,UserRepository $repo,$id) {
+            $user=$repo->find($id);
+            $cookie=$cookieGenerator->generate();
+            $response=$this->render('dashboard/data.html.twig',[
+                'user'=>$user,
+            ]);
+            $response->headers->setCookie($cookie);
+            return $response;
     }
 
 
     /**
-     * @Route ("/ssedata" , name="sse_stream")
-     * @param CookieGenerator $cookieGenerator
-     * @return Response
+     * @Route ("/iot/{id?}" ,methods={"POST","GET"})
+     * @param Request $request
+     * @param UserRepository $repo
+     * @param TemperatureRepository $rp
+     * @param $id
+     * @return JsonResponse
      */
-    public function SSE_stream (CookieGenerator $cookieGenerator){
-        $response=$this->render('dashboard/sse.html.twig');
-        $response->headers->setCookie($cookieGenerator->generate());
-        return $response;
-    }
+    public function iot_data (Request $request,UserRepository $repo,TemperatureRepository $rp,$id){
+        $user=$repo->find($id);
+        $d_id=$user->getGatewayId();
+        if ($request->isXmlHttpRequest() && $_SERVER['REQUEST_METHOD'] =='POST') {
+            $content=json_decode($request->getContent(),true);
+            $jsonResponse = array();
+            $to= DateTime::createFromFormat('Y-m-d',$content['to']);
+            $from=DateTime::createFromFormat('Y-m-d',$content['from']);
+            $data=($rp->findByBucket($d_id,$from,$to));
+            foreach($data as $dt){
+                array_push($jsonResponse,[($dt['collect_time']->getTimestamp())*1000,$dt['temperature']]);
+            }
+            return new JsonResponse($jsonResponse);
+        }
+        $to=(new \DateTime())->format('Y-m-d H:i:s');
+        $from=((new \DateTime())->sub(new \DateInterval('P1D')))->format('Y-m-d H:i:s');
+        $data=($rp->findByBucket($d_id,$from,$to));
+        $json_data=array();
+        foreach($data as $dt){
+            array_push($json_data,[($dt['collect_time']->getTimestamp())*1000,$dt['temperature']]);
+        }
 
+       return new JsonResponse($json_data);
+
+    }
 }

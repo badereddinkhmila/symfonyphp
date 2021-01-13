@@ -19,18 +19,29 @@
                 </div>
                 <br>
                 <form action="{{ path('User_login') }}" method="post">
-                    <div class="form-group row">
-                        <i class="far fa-user-circle mr-2"></i>
-                            <label for="_username">Email</label>
-                            <input type="email" class="form-control" name="_username" required>
+                    <div class="form-group required">
+                        <i class="far fa-user-circle"></i>
+                        <label for="_username">Email</label>
+                        <div class="input-with-icon d-flex align-items-center">
+                            <input type="email" name="_username" class="w-100 form-control" required>
+                            <i class="far fa-paper-plane disabled"></i>
+                        </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group required">
                         <i class="fab fa-keycdn mr-2"></i>
                         <label for="_password">Mot de passe</label>
-                        <input type="password" class="form-control" name="_password" required>
+                        <div class="input-with-icon d-flex align-items-center">
+                            <input type="password" id="password" class="w-100 form-control" name="_password" required>
+                            <i class="far fa-eye" id="password_eye"></i>
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" name="_remember_me" id="RememberMe">
+                            <label class="custom-control-label" for="RememberMe">Restez connecter ?</label>
+                        </div>
                     </div>
                     <br>
-                    <hr >
                     <div class="form-group text-center">
                         <button type="submit" class="btn bg-1-lightpink">
                             <i class="fas fa-sign-in-alt mr-2"></i>
@@ -41,9 +52,23 @@
                             Page d'acceuil </a>
                     </div>
                 </form>
+                <hr class="bg-dark">
+                <div class="col-12 text-center">
+                    <p class="text-dark">Cliquez sur ce lien pour réinitialiser votre mot de passe.</p>
+                    <a href="{{ path('app_forgot_password_request') }}" class="btn-link text-primary">
+                        <i class="fas fa-user-lock"></i>
+                        <b>Réinitialiser</b>
+                    </a>
+                </div>
             </div>
         </div>
     </div>                    
 </div>    
 {% endblock %}
+{% block javascript %}
+    <script type="text/javascript">
+        $(document).ready(function(){
 
+    });
+    </script>
+{% endblock %}

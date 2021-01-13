@@ -1,0 +1,38 @@
+{% extends 'partials/_sideNav2.html.twig' %}
+
+{% block main %}
+    <div class="container-fluid row d-flex align-items-center justify-content-center">
+        <div class="card col-12 col-md-8 shadow rounded" id="login-card">
+            <div class="my-title text-center card-title">
+                Réinitialiser mot de passe
+            </div>
+            <div class="card-body">
+                {{ form_start(resetForm) }}
+                <div class="row form-group">
+                    <div class="col-12">
+                        {{form_label(resetForm.plainPassword.first) }}
+                        <div class="input-with-icon d-flex align-items-center">
+                            {{form_widget(resetForm.plainPassword.first,{ 'id': 'user_form_password_first' }) }}
+                            <i class="far fa-eye" id="password_eye2"></i>
+                        </div>
+                        <small>{{ form_help(resetForm.plainPassword.first) }}</small>
+                    </div>
+                    <div class="col-12">
+                        {{form_label(resetForm.plainPassword.second) }}
+                        <div class="input-with-icon d-flex align-items-center">
+                            {{form_widget(resetForm.plainPassword.second,{ 'id': 'user_form_password_second' }) }}
+                            <i class="far fa-eye" id="password_eye3"></i>
+                        </div>
+                        <small>{{ form_help(resetForm.plainPassword.second) }}</small>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group row justify-content-center">
+                    <button class="btn btn-primary"><i class="far fa-save"></i>Réinitialiser</button>
+                </div>
+                {{ form_end(resetForm) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

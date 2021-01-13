@@ -1,0 +1,243 @@
+{% extends "partials/_sideNav2.html.twig" %}
+{% block title %}Gérer patients{% endblock %}
+{% block style %}
+    <link rel="stylesheet" href="/css/B4datatables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.bootstrap4.min.css">
+{% endblock %}
+
+{% block main %}
+    <div class="container-fluid m-0 mb-5 mt-3 ">
+        <div class="row d-flex align-content-center justify-content-center">
+            {% for label , message in app.flashes %}
+                <div role="alert" class="alert alert-{{label}} alert-dismissible  m-5">
+                    <button aria-label="Close" data-dismiss="alert" class="close" type="button">
+                        <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+                    </button>
+                    {% if label == 'danger' %}
+                    <h2 class="alert-heading">Succès!</h2>
+                    <hr>
+                    {% for msg in message %}
+                    <p> <i class="fas fa-minus"></i><img class="avatar-small" alt="#" src="{{ asset('images/complain.svg') }}"> {{ msg | raw }} </p>
+                    {% endfor %}
+                    {% elseif label=='success' %}
+                    <h2 class="alert-heading">Succès!</h2>
+                    <hr>
+                    {% for msg in message %}
+                        <p>
+                        <i class="fas fa-plus"></i>
+                            <img class="avatar-small" src="{{ asset('images/complain.svg') }}" alt="#"> {{ msg | raw }}
+                        </p>
+                    {% endfor %}
+                    {% elseif label=='warning' %}
+                        <h2 class="alert-heading">Succès!</h2>
+                        <hr>
+                        {% for msg in message %}
+                            <p>
+                                <i class="fas fa-reload"></i>
+                                <img class="avatar-small" src="{{ asset('images/complain.svg') }}" alt="#"> {{ msg | raw }}
+                            </p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3 card-body my-title d-flex bg-1-lightpink align-items-center rounded">
+            <div class="mr-auto">Gestion des Réclamations</div>
+            <div class="ml-auto">
+                <button id="newreclamation" class="btn text-white bg-2-dark row d-flex align-items-center">
+                    <i class="fas fa-plus"></i><img src="{{ asset('/images/complain-d.svg') }}" class="avatar-small" alt="#">
+                </button>
+            </div>
+        </div>
+
+        <div class="d-flex mt-3 mb-5 justify-items-start card shadow rounded p-2 w-100 bg-theme">
+            <div class="spinner" id="loader"></div>
+            <table id="datatable" class="table table-striped table-bordered bg-theme-inv row-border compact d-none hover w-100 ">
+                <thead>
+                <tr>
+                    <th scope="col"><i class="fas fa-bug"></i> Type</th>
+                    <th scope="col"><i class="far fa-file-alt"></i> Description</th>
+                    <th scope="col"><i class="fas fa-chart-line"></i> État</th>
+                    <th scope="col"><i class="far fa-user"></i> Utilisateur</th>
+                    <th scope="col"><i class="far fa-calendar-alt"></i> Créer le</th>
+                    <th scope="col"><i class="fas fa-users-cog"></i> Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+    <div tabindex="-1" class="modal fade" id="confirmModal" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-scrollable">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="my-title d-flex align-items-center">
+                                <i class="fas fa-minus "></i>
+                                <img src="{{ asset('images/complain.svg') }}" class="avatar-small mr-2" alt="#">
+                                <span>Supprimer réclamation</span>
+                        </div>
+                        <i class="far fa-times-circle close" type="button" aria-hidden="true" data-dismiss="modal"></i>
+                    </div>
+                    <div class="modal-body text-center">
+                        <bold>Voulez vous vraiment supprimer cette réclamation!</bold>
+                        <p>Cette opération est irréversible</p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <form method="post" id="formdel">
+                            <button type="submit" id="confdel" class="btn btn-warning"><i class="fas fa-exclamation-triangle"></i> Confirmer suppression</button>
+                        </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="modal fade hidden" id="newrec" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title my-title">
+                            <img class="avatar-small" src="{{ asset('images/complain.svg') }}" alt="#">
+                            Nouvelle Réclamation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">
+								<i class="far fa-times-circle"></i>
+							</span>
+                        </button>
+                    </div>
+                    <div class="modal-body d-flex justify-content-center align-content-lg-center">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+
+        <div class="modal fade hidden" id="updaterec" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title my-title">
+                            <i class="fas fa-sync"></i>
+                            <img class="avatar-small" src="{{ asset('images/complain.svg') }}" alt="#">
+                            Modifier Réclamation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">
+								<i class="far fa-times-circle"></i>
+							</span>
+                        </button>
+                    </div>
+                    <div class="modal-body d-flex justify-content-center align-content-lg-center">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        {% endblock %}
+
+{% block javascript %}
+<script src="{{ asset('js/JQdatatable.js')}}" ></script>
+<script src="{{ asset('js/Datatables.bootstrap.js')}}"></script>
+<script src="{{asset('js/responsivetables.js')}}"></script>
+<script src="{{asset('js/DtB4resp.js')}}"></script>
+        <script type="text/javascript">
+        $(document).ready(function(){
+            $.ajax({
+                url:"/complaint/list",
+                method:"GET",
+                dataType:"json",
+                async:true,
+                success:function(data){
+                    $('#datatable').DataTable({
+                        "pagingType": "simple_numbers",
+                        responsive:true,
+                        "language": {
+                        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                        },
+                        data:data,
+                        columns:[
+                            {'data':'type'},
+                            {'data':'description',
+                                "render":function (data, type, JsonResultRow) {
+                                        return`<div class="container-fluid p-0 text-break" id="table-desc">
+                                                    <div class="text-break" id="table-desc">
+                                                        ${JsonResultRow.description}
+                                                    </div>
+                                                </div>`;}
+                            },
+                            {'data':'state',
+                                "render": function (data, type, JsonResultRow) {
+                                    if ( JsonResultRow.state == true){
+                                    return `<div class="custom-control custom-switch">
+                                                <input type="checkbox" disabled class="custom-control-input" checked id='customSwitch${JsonResultRow.id}'>
+                                                <label class="custom-control-label" for="customSwitch${JsonResultRow.id}"></label>
+                                            </div>`;
+                                    }
+                                    else{
+                                        return `<div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input" id='customSwitch${JsonResultRow.id}'>
+                                                <label class="custom-control-label" for='customSwitch${JsonResultRow.id}'></label>
+                                            </div>`;
+                                    }
+                                }
+                            },
+                            {'data':'avatar',
+                             "render": function (data, type, JsonResultRow, meta) {
+                            return `<a href="/dashboard/account/${JsonResultRow.id}" class="container-fluid row justify-content-center">
+                                        <img class="avatar avatar-small" src="${JsonResultRow.avatar}" alt="#">
+                                        <div><span>${JsonResultRow.fname}</span> <span>${JsonResultRow.lname}</span></div>
+                                    </a>`;
+                                }},
+                            {'data':'date'},
+                            {'data':'id',
+                            "render":function(data,type,JsonResultRow,meta){
+                                return '<div class="btn-group-sm row d-flex align-items-center p-2">' +
+                                            '<button class="btn btn-danger m-1 delete text-white" id="'+JsonResultRow.id+'"><i class="fas fa-trash"></i></button>' +
+                                            '<button id="'+JsonResultRow.id+'" class="btn btn-primary update m-2"><i class="far fa-edit"></i></button></div>'
+                                }
+                            }
+
+                        ],
+                    });
+                }
+            }).done(function(){
+                $("#loader").hide();
+                $("#datatable").removeClass('d-none');
+            });
+        });
+
+    $(document).on('click','.delete',function(){
+        let rec_id=$(this).attr('id');
+        $('#confirmModal').modal('show');
+        $('#formdel').attr("action","/complaint/"+rec_id+"/delete");
+        });
+        $(document).on('click','.update',function(){
+            let rec_id=$(this).attr('id');
+            $('#updaterec').modal('show');
+            $.post("/complaint/"+rec_id+"/edit",function (response) {
+                $('#updaterec .modal-body').html(`${response}`);
+            })
+        });
+
+        $(document).on('click','#newreclamation',function(){
+        $("#newrec").modal('show');
+        $.get('/complaint/new',function (res) {
+            $('.spinner').hide();
+            $("#newrec .modal-body").html(`${res}`);
+        })
+    });
+        $(document).on('click','#newreclamation',function(){
+            $("#newrec").modal('show');
+            $.get('/complaint/new',function (res) {
+                $('.spinner').hide();
+                $("#newrec .modal-body").html(`${res}`);
+            })
+        });
+    </script>
+{% endblock %}

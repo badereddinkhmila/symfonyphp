@@ -1,0 +1,18 @@
+{% extends 'partials/_sideNav2.html.twig' %}
+
+{% block main %}
+    <div class="container-fluid d-flex justify-content-center align-items-center">
+        <div class="card col-12 col-md-6 rounded shadow">
+            <div class="card-body">
+                <h4>un email a été envoyer, contenant un lien permettant de réinitialiser le mot de passe. Ce lien expire dans <span class="my-title text-info">{{ tokenLifetime|date('g') }} heure(s)</span>.</h4>
+                <br>
+                <p>si vous ne recevez pas d'e-mail, veuillez vérifier votre dossier spam ou réessayer.</p>
+                <br>
+                <hr>
+                <div class="text-center">
+                    <a href="{{ path('app_forgot_password_request') }}" class="btn btn-primary text-white"><i class="fas fa-undo"></i> Réessayer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

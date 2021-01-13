@@ -26,7 +26,11 @@ security:
             pattern: ^/admin
             anonymous: true
             provider: in_database
-
+            remember_me:
+                name: Admin_RememberMe
+                secret: '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path: /
             form_login:
                 login_path: admin_login
                 check_path: admin_login
@@ -39,6 +43,11 @@ security:
             anonymous: true
             lazy: true
             provider: in_database
+            remember_me:
+                name: Users_RememberMe
+                secret: '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path: /
             form_login:
                 login_path: User_login
                 check_path: User_login
@@ -64,5 +73,5 @@ security:
         - { path: ^/dashboard, roles: ROLE_USER }
     role_hierarchy:
         ROLE_DOCTOR: ROLE_USER
-        ROLE_ADMIN: ROLE_DOCTOR
+        ROLE_ADMIN: [ROLE_USER,ROLE_ALLOWED_TO_SWITCH]
         
