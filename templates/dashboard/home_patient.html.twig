@@ -1,0 +1,119 @@
+{% extends "partials/_sideNav2.html.twig" %}
+{% block main %}
+
+    <div class="container-fluid mt-1 mb-5 mt-md-3">
+        <div class="row">
+            <div class="col-md-6 col-12">
+            <div class="card-counter bg-theme shadow my-title">
+                <div class="row ml-2 d-flex align-items-center card-write">
+                    <div class="avatar-md card-icon" id="compl-logo"></div>
+                    <span class="count-numbers">{{ countcomp }}</span>
+                    <span class="count-name">Réclamations</span>
+                </div>
+                <div class="col-12 card-chart">
+                    <div id="spark1"></div>
+                </div>
+            </div>
+            </div>
+
+            <div class="col-md-6 col-12">
+            <div class="card-counter bg-theme shadow my-title">
+                <div class="row ml-2 d-flex align-items-center card-write">
+                    <div class="avatar-md card-icon" id="meeting"></div>
+                    <span class="count-numbers">{{ countrdv }}</span>
+                    <span class="count-name">Randez-vous</span>
+                </div>
+                <div class="col-12 card-chart">
+                    <div id="spark2"></div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12 col-md-6 p-2">
+                        <div class="card table-responsive bg-1-lightpink rounded shadow-lg">
+                            <div class="my-title text-center m-2">
+                                <i class="far fa-calendar-plus"></i> Randez-vous (5+)
+                            </div>
+                            <div class="table-responsive">
+                                <table class="card-table table-bordered table-striped table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"><i class="fas fa-ellipsis-v"></i> Type</th>
+                                        <th scope="col"><i class="fas fa-user-md"></i> Doctor</th>
+                                        <th scope="col"><i class="far fa-clock"></i> Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for rdv in rdvs %}
+                                    <tr>
+                                        <td>
+                                            {{ rdv.type }}
+                                        </td>
+                                        <td>
+                                            <img src="{{ rdv.person }}" class="avatar avatar-small" alt="avatar">
+                                        </td>
+                                        <td>
+                                            {{ rdv.start }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                </table>
+                            </div>
+                        </div>
+            </div>
+            <div class="col-12 col-md-6 p-2">
+                        <div class="card table-responsive rounded-lg shadow-lg bg-2-dark">
+                            <div class="my-title text-center m-2 text-white">
+                                <i class="far fa-thumbs-down"></i> Réclamations (5+)
+                            </div>
+                            <div class="table-responsive">
+                                <table class="card-table table-bordered text-white table-striped table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"><i class="fas fa-ellipsis-v"></i> Type</th>
+                                        <th scope="col"><i class="far fa-user"></i> Createur</th>
+                                        <th scope="col"><i class="far fa-clock"></i> Date</th>
+                                        <th scope="col"><i class="fas fa-chart-line"></i> Etat</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for comp in comps %}
+                                    <tr>
+                                        <td>
+                                            {{ comp.type }}
+                                        </td>
+                                        <td>
+                                            <img src="{{ comp.person }}" class="avatar avatar-small" alt="avatar">
+                                        </td>
+                                        <td>
+                                            {{ comp.start }}
+                                        </td>
+
+                                        <td>
+                                            {% if comp.status == false %}
+                                                <i class="fas fa-spinner text-danger"></i>
+                                            {% else %}
+                                                <i class="fas fa-check text-success"></i>
+                                            {% endif%}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                </table>
+                            </div>
+                        </div>
+            </div>           
+        </div>  
+    </div>
+{% endblock %}
+ {% block javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.js"></script>
+    <script src="{{asset('js/apexchart.js')}}"></script>
+    <script src="{{asset('js/dashboard.js')}}"></script>
+    <script type="text/javascript">
+        $(".count-numbers").counterUp({delay:5,time:1000});
+    </script>
+ {% endblock %}

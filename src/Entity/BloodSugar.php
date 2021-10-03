@@ -26,7 +26,12 @@ class BloodSugar
     /**
      * @ORM\Column(type="float")
      */
-    private ?float $bSugar_value;
+    private ?float $mg_dl;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private ?float $mmol_l;    
 
     public function getDeviceId(): ?string
     {
@@ -53,14 +58,43 @@ class BloodSugar
     }
 
 
-    public function getBSugarValue(): ?float
+
+    /**
+     * Get the value of mg_dl
+     */ 
+    public function getMg_dl()
     {
-        return $this->bSugar_value;
+        return $this->mg_dl;
     }
 
-    public function setBSugarValue(float $bSugar_value): self
+    /**
+     * Set the value of mg_dl
+     *
+     * @return  self
+     */ 
+    public function setMg_dl($mg_dl)
     {
-        $this->bSugar_value = $bSugar_value;
+        $this->mg_dl = $mg_dl;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of mmol_l
+     */ 
+    public function getMmol_l()
+    {
+        return $this->mmol_l;
+    }
+
+    /**
+     * Set the value of mmol_l
+     *
+     * @return  self
+     */ 
+    public function setMmol_l($mmol_l)
+    {
+        $this->mmol_l = $mmol_l;
 
         return $this;
     }

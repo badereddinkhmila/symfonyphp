@@ -7,6 +7,8 @@ use App\Entity\SensorGateway;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -75,11 +77,25 @@ class UserFormType extends AbstractType
                 ])
 
             ->add('weight',NumberType::class,[
-                'label'=>'Poids(kg)'
+                'label'=>'Poids(kg)',
+                'required'=>false,
             ])
-
             ->add('length',NumberType::class,[
-                'label'=>'Taille(m)'
+                'label'=>'Taille(m)',
+                'required'=>false,
+            ])
+            ->add('ever_married',RadioType::class,[
+            'label'=>'Déja marié(e)',
+                'required'=>false,
+            ])
+            ->add('ever_smoked',RadioType::class,[
+            'label'=>'Déja fumé(e)',
+                'required'=>false,
+            ])
+            ->add('active',CheckboxType::class,[
+                'label'=>'Active',
+                'label_attr' => ['class' => 'switch-custom my-switch'],
+                'required'=>false,
             ]);
     }
 

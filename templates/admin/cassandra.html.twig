@@ -1,0 +1,77 @@
+{% extends 'partials/_sideNav2.html.twig' %}
+{% block title %}
+    Indicateurs cassandra
+{% endblock %}
+{% block main %}
+    <div class="container-fluid mt-5">
+        {# <iframe src="" width="100%" class="border-none shadow"></iframe> #}
+        <div class="row">
+            <div class="col-12 p-3">
+                <div class="card-body shadow rounded bg-2-light">
+                    <h3 class="my-title">Les nodes cassandra</h3>
+                </div>
+            </div>
+            <div class="col-12">
+                <iframe src="http://localhost:3000/d-solo/02xmnzVnz/cassandra-dashboard?orgId=1&refresh=1m&theme=light&panelId=58" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12">
+                <iframe src="http://localhost:3000/d-solo/02xmnzVnz/cassandra-dashboard?orgId=1&refresh=1m&theme=light&panelId=148" width="100%" class="border-none shadow"></iframe>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 p-3">
+                <div class="card-body shadow rounded bg-2-light">
+                    <h3 class="my-title">Machine virtuelle Java (JVM)</h3>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <iframe src="http://localhost:3000/d-solo/02xmnzVnz/cassandra-dashboard?orgId=1&refresh=1m&theme=light&panelId=120" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-lg-6">
+                <iframe src="http://localhost:3000/d-solo/02xmnzVnz/cassandra-dashboard?orgId=1&refresh=1m&theme=light&panelId=39" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-lg-6">
+                <iframe src="http://localhost:3000/d-solo/02xmnzVnz/cassandra-dashboard?orgId=1&refresh=1m&theme=light&panelId=41" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-lg-6">
+                <iframe src="http://localhost:3000/d-solo/02xmnzVnz/cassandra-dashboard?orgId=1&refresh=1m&theme=light&panelId=43" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-lg-6">
+                <iframe src="http://localhost:3000/d-solo/02xmnzVnz/cassandra-dashboard?orgId=1&refresh=1m&theme=light&panelId=44" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-lg-6">
+                <iframe src="http://localhost:3000/d-solo/02xmnzVnz/cassandra-dashboard?orgId=1&refresh=1m&theme=light&panelId=48" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-lg-6">
+                <iframe src="http://localhost:3000/d-solo/02xmnzVnz/cassandra-dashboard?orgId=1&refresh=1m&theme=light&panelId=50" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-lg-6">
+                <iframe src="http://localhost:3000/d-solo/02xmnzVnz/cassandra-dashboard?orgId=1&refresh=1m&theme=light&panelId=60" width="100%" class="border-none shadow"></iframe>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 p-3">
+                <div class="card-body shadow rounded bg-2-light">
+                    <h3 class="my-title">Tableaux dans Cassandra</h3>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <iframe src="http://localhost:3000/d-solo/02xmnzVnz/cassandra-dashboard?orgId=1&refresh=1m&theme=light&panelId=123" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-lg-6">
+                <iframe src="http://localhost:3000/d-solo/02xmnzVnz/cassandra-dashboard?orgId=1&refresh=1m&theme=light&panelId=143" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-lg-6">
+                <iframe src="http://localhost:3000/d-solo/02xmnzVnz/cassandra-dashboard?orgId=1&refresh=1m&theme=light&panelId=127" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-lg-6">
+                <iframe src="http://localhost:3000/d-solo/02xmnzVnz/cassandra-dashboard?orgId=1&refresh=1m&theme=light&panelId=13" width="100%" class="border-none shadow"></iframe>
+            </div>
+
+            <div class="col-12 mb-5">
+                <iframe src="http://localhost:3000/d-solo/02xmnzVnz/cassandra-dashboard?orgId=1&refresh=1m&theme=light&panelId=138" width="100%" class="border-none shadow"></iframe>
+            </div>
+        </div>
+    </div>
+{% endblock %}

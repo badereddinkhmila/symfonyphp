@@ -45,7 +45,7 @@ class TemperatureRepository extends ServiceEntityRepository
     public function findByBucket($d_id,$from,$to): array
     {
         return $this->createQueryBuilder('p')
-            ->select('p.collect_time ,p.temperature_value')
+            ->select('p.collect_time ,p.temperature')
             ->andWhere('p.device_id = :d_id')
             ->andWhere(' p.collect_time >= :from ')
             ->andWhere(' p.collect_time <= :to ')
@@ -56,6 +56,19 @@ class TemperatureRepository extends ServiceEntityRepository
             ->setMaxResults(6000)
             ->getQuery()
             ->getResult();
+    }
+    public function findMaxMinByBucket($d_id,$from,$to): array
+    {
+        return $this->createQueryBuilder('t')
+            ->select('MAX(t.temperature) AS max_v ,MIN(t.temperature) AS min_v')
+            ->andWhere('t.device_id = :d_id')
+            ->andWhere(' t.collect_time >= :from ')
+            ->andWhere(' t.collect_time <= :to ')
+            ->setParameter('d_id',$d_id)
+            ->setParameter('from', $from)
+            ->setParameter('to', $to )
+            ->getQuery()
+            ->getOneOrNullResult();
     }
     /*
     public function findOneBySomeField($value): ?Temperature

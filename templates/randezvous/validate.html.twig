@@ -1,0 +1,32 @@
+{% extends "partials/_sideNav2.html.twig" %}
+{% block title %}
+    Consultation non valide
+{% endblock %}
+
+{% block main %}
+    <div class="container-fluid mt-5 mb-5">
+        <div class="col-12 col-sm-8 col-lg-6 m-auto">
+            <div class="card rounded shadow mb-5">
+                {% if operation == 'new' %}
+                <div class="modal-header">
+                    <h5 class="modal-title my-title">
+                    <i class="far fa-calendar-plus"></i>
+                    Nouvelle consultation</h5>
+                </div>    
+                <div class="card-body">
+                    {% include "randezvous/new.html.twig" with {form:form} %}    
+                </div>
+                {% elseif operation == 'edit' %}
+                <div class="modal-header">
+                    <h5 class="modal-title my-title">
+                    <i class="far fa-calendar-plus"></i>
+                    Modification de consultation</h5>
+                </div>
+                <div class="card-body">
+                    {% include "randezvous/edit.html.twig" with {form:form} %}
+                </div>    
+                {% endif %}    
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,7 +22,7 @@ class SensorsType extends AbstractType
                 'label'=>'Passerelle',
             ])
             ->add('glycose_sensor',TextType::class,[
-                'label'=>'Capteur Glycémie',
+                'label'=>'Capteur glycémie',
             ])
             ->add('temperature_sensor',TextType::class,[
                 'label'=>'Capteur température',
@@ -33,20 +33,17 @@ class SensorsType extends AbstractType
             ->add('bp_sensor',TextType::class,[
                 'label'=>'Capteur pression artériel',
             ])
-            ->add('heart_beat_sensor',TextType::class,[
-                'label'=>'Capteur battement de coeur',
-            ])
             ->add('weight_sensor',TextType::class,[
                 'label'=>'Capteur de poid',
             ])
             ->add('is_Active',CheckboxType::class,[
-                'label'=>'Est Active',
-                'label_attr' => ['class' => 'switch-custom'],
+                'label'=>'Status',
+                'label_attr' => ['class' => 'ml-3 switch-custom my-switch'],
+                'required'=>false
             ])
-            ->add('deploy_date',DateTimeType::class,[
+            ->add('deploy_date',DateType::class,[
                 'label'=>'date de deploiement',
-                'date_widget'=>'single_text',
-                'time_widget'=>'single_text',
+                'widget'=>'single_text'
             ])
             ->add('patient_sg',EntityType::class,[
                 'class' => User::class,

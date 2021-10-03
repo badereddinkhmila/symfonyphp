@@ -4,15 +4,19 @@ framework:
         # failure_transport: failed
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
-            kafka:
+            realtimetransport:
                 dsn: "%env(MESSENGER_ENQUEUE_DSN)%"
-
                 serializer: App\Messages\adapters\IotMessageSerializer
                 retry_strategy:
                     max_retries: 0
-            # failed: 'doctrine://default?queue_name=failed'
-            # sync: 'sync://'
 
+            coldstoragetransport:
+                dsn: "%env(MESSENGER_ENQUEUE)%"
+                serializer: App\Messages\adapters\ColdStorageSerializer
+                retry_strategy:
+                    max_retries: 3
         routing:
             # Route your messages to the transports
-             'App\Messages\message\IotMessage': kafka
+             'App\Messages\message\IotMessage': realtimetransport
+             'App\Messages\message\ColdStorageMessage': coldstoragetransport
+             'App\Messages\message\ColdStorageReqMessage': coldstoragetransport

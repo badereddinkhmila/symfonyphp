@@ -4,10 +4,11 @@
 {% endblock %}
 {% block main %}
 	<div class="container-fluid m-1 mb-5">
-		<div class="row p-sm-4 p-2 d-flex justify-content-center">
-			<div class="card card-inverse shadow rounded col-12 col-md-10">
-				<div class="card-block m-1 m-sm-3">
-					<div class="row d-flex justify-content-center">
+		</--- mini profile--->
+		<div class="row p-2 d-flex justify-content-center">
+			<div class="card animated fadeindown delay-1-4 card-inverse shadow rounded col-12 col-md-10">
+				<div class="card-block m-1">
+					<div class="row d-flex justify-content-center align-items-center">
 						<div class="col-12 col-sm-8">
 							<span class="my-title my-small-title">
 								<strong><img class="avatar-small" src="{{asset('images/patient.svg')}}">
@@ -48,225 +49,268 @@
 				</div>
 			</div>
 		</div>
-        <div class="col-12 text-center card shadow mt-5 rounded">
-            <div class="my-title my-small-title">Période d'observation:</div>
-            <div class="card-body row d-flex justify-content-center">
-                <div class="col-12 d-flex justify-content-center">
-                    <div class="col-6 form-group">
-                        <div class="input-group">
-                            <input type="date" value="" id="datepicker-from" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-6 form-group">
-                        <div class="input-group">
-                            <input type="date" id="datepicker-to" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 d-block d-sm-flex text-center justify-content-center" >
-                    <button class="btn bg-1-lightpink btn-sm" id="refresh">
-                        Changer période <i class="fas fa-retweet"></i>
-                    </button>
-                    <div class="btn-group-sm">
-                        <button class="btn btn-primary mt-1 ml-sm-3 mt-sm-0" id="live">
-                            En direct <i class="fas fa-satellite-dish"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger mt-1 ml-sm-3 mt-sm-0" id="stop">
-                            Fermer <i class="far fa-stop-circle"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-		<div class="row mt-3 mb-5">
-			<div class="container-fluid card bg-transparent shadow p-0">
-				<ul class="nav nav-tabs shadow-lg bg-white" id="myTab" role="tablist">
-					<li class="nav-item col-lg-2 col-sm-4 col-6 p-1">
-						<a class="nav-link  nav-tab-deco active" data-toggle="tab" href="#tab1" role="tab" aria-controls="blood sugar" aria-expanded="true">
-							<img class="avatar-small" src="{{asset('images/gluc.svg')}}" alt="">
-						</a>
-					</li>
-					<li class="nav-item col-lg-2 col-sm-4 col-6 p-1">
-						<a class="nav-link  nav-tab-deco" data-toggle="tab" href="#tab2" role="tab" aria-controls="blood sugar" aria-expanded="true">
-							<img class="avatar-small" src="{{asset('images/thermometer.svg')}}" alt="">
-						</a>
-					</li>
-					<li class="nav-item col-lg-2 col-sm-4 col-6 p-1">
-						<a class="nav-link  nav-tab-deco" data-toggle="tab" href="#tab3" role="tab" aria-controls="o2 blood" aria-expanded="true">
-							<img class="avatar-small" src="{{asset('images/oxygen.svg')}}" alt="">
-						</a>
-					</li>
-					<li class="nav-item col-lg-2 col-sm-4 col-6 p-1">
-						<a class="nav-link nav-tab-deco" data-toggle="tab" href="#tab4" role="tab" aria-controls="blood pressure" aria-expanded="true">
-							<img class="avatar-small" src="{{asset('images/bp.svg')}}" alt="">
-						</a>
-					</li>
-					<li class="nav-item col-lg-2 col-sm-4 col-6 p-1">
-						<a class="nav-link nav-tab-deco" data-toggle="tab" href="#tab5" role="tab" aria-controls="heart rate" aria-expanded="true">
-							<img class="avatar-small" src="{{asset('images/hb.svg')}}" alt="">
-						</a>
-					</li>
-					<li class="nav-item col-lg-2 col-sm-4 col-6 p-1">
-						<a class="nav-link nav-tab-deco" data-toggle="tab" href="#tab6" role="tab" aria-controls="weight" aria-expanded="true">
-							<img class="avatar-small" src="{{asset('images/weigh.svg')}}" alt="">
-						</a>
-					</li>
-				</ul>
-				<div class="tab-content container-fluid bg-transparent p-0" id="myTabContent">
-					<div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="1-tab">
-						<div class="tab-pane-header bg-transparent">
-							<div class="col-12 text-center bg-white shadow mb-2">
-								<span class="card-title my-title">Glycémie</span>
-								<p class="card-text">Taux de glucose dans le sang.</p>
+		</-- period selector --->
+		{% if gateway is same as(null) %}
+			<div class="row d-flex justify-content-center">
+				<section class="page_403 rounded">
+					<div class="text-center">
+						<div class="four_zero_four_bg">
+						</div>
+						<div class="contant_box_403">
+							<h1 class=text-danger> <span style="font-weight: bolder">O</span>ops </h1>
+							<h3 class="h2">
+								{% if is_granted('ROLE_DOCTOR') %} ce patient n'a pas de passerelle. {% else %} Vous ne disposez pas de senseurs. {% endif %}
+							</h3>
+							{% if is_granted('ROLE_DOCTOR') == true %} <a class="link_403 btn" href="{{ path('patient_list') }}"><i class="far fa-user-circle"></i> Patients</a>{% endif %}
+							<a href="{{ path('dash_home') }}" class="btn link_403 reset_403"><i class="far fa-arrow-alt-circle-left"></i> Acceil</a>
+						</div>
+					</div>
+				</section>
+			</div>
+		{% else %}
+			<div class="col-12 text-center animated fadeindown delay1-2 card shadow mt-5 p-1 rounded">
+				<div class="my-title my-small-title">Période d'observation:</div>
+				<div class="card-body row d-flex justify-content-center">
+					<div class="col-12 d-flex justify-content-center">
+						<div class="col-6 form-group">
+							<div class="input-group">
+								<input type="date" value="" id="datepicker-from" class="form-control">
 							</div>
-							<div class="container-fluid p-0" id="tab-content">
-								<div class="row pr-3 pl-3 d-flex justify-content-center align-items-center">
-									<div class="spinner" id="loader"></div>
-									<div class="col-12 card shadow">
-										<div id="gly-line2" class="h-75 d-none"></div>
-										<div id="gly-line" class="h-25"></div>
-									</div>
-									<div class="col-12 mt-4">
-										<div class="row d-flex justify-content-center">
-											<div class="col-12 col-sm-10 col-lg-8 card shadow p-3 d-none" id="live_gly_pie"></div>
-												<div id="glypie" class="col-10 col-md-5 card shadow mr-md-auto"></div>
-												<div id="glypie2" class="col-10 col-md-5 card shadow mt-2 mt-md-0 ml-md-auto"></div>
-											</div>
-									</div>
-								</div>
+						</div>
+						<div class="col-6 form-group">
+							<div class="input-group">
+								<input type="date" id="datepicker-to" class="form-control">
 							</div>
 						</div>
 					</div>
-					<div class="tab-pane fade show" id="tab2" role="tabpanel" aria-labelledby="2-tab">
-						<div class="tab-pane-header bg-transparent">
-							<div class="col-12 text-center bg-white shadow">
-								<span class="card-title mb-2 my-title">Température Corporelle</span>
-							</div>
-							<div class="container-fluid p-0" id="tab-content">
-								<div class="row pr-3 pl-3 d-flex justify-content-center align-items-center">
-									<div class="col-12 card shadow">
-										<div id="temp-line2" class="h-75 d-none"></div>
-										<div id="temp-line" class="h-25"></div>
-									</div>
-									<div class="col-12 mt-4">
-										<div class="row d-flex justify-content-center">
-											<div class="col-12 col-sm-10 col-lg-8 card shadow p-3 d-none" id="live_temp_pie"></div>
-											<div id="temppie" class="col-10 col-md-5 card shadow mr-md-auto"></div>
-											<div id="temppie2" class="col-10 col-md-5 card shadow mt-2 mt-md-0 ml-md-auto"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="tab-pane fade show" id="tab3" role="tabpanel" aria-labelledby="3-tab">
-						<div class="tab-pane-header bg-transparent">
-							<div class="col-12 text-center bg-white shadow">
-								<span class="card-title my-title">Saturation en Oxygéne O2</span>
-								<p class="card-text mb-2">Taux d'oxygène contenu dans les globules rouges après leur passage dans les poumons.</p>
-							</div>
-							<div class="container-fluid p-0" id="tab-content">
-								<div class="row pr-3 pl-3 d-flex justify-content-center align-items-center">
-									<div class="col-12 card shadow">
-										<div id="oxy-line2" class="h-75 d-none"></div>
-										<div id="oxy-line" class="h-25"></div>
-									</div>
-									<div class="col-12 mt-4">
-										<div class="row d-flex justify-content-center">
-											<div class="col-12 col-sm-10 col-lg-8 card shadow p-3 d-none" id="live_oxy_pie"></div>
-											<div id="oxypie" class="col-10 col-md-5 card shadow mr-md-auto"></div>
-											<div id="oxypie2" class="col-10 col-md-5 card shadow mt-2 h-50 mt-md-0 ml-md-auto"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="tab-pane fade show" id="tab4" role="tabpanel" aria-labelledby="4-tab">
-						<div class="tab-pane-header bg-transparent">
-							<div class="col-12 text-center bg-white shadow">
-								<span class="card-title my-title">Tension Artérielle </span>
-								<p class="card-text mb-2">C’est la pression qui règne à l’intérieur des artères.</p>
-							</div>
-							<div class="container-fluid p-0" id="tab-content">
-								<div class="row pr-3 pl-3 d-flex justify-content-center align-items-center">
-									<div class="col-12 card shadow">
-										<div id="tension-line2" class="h-75 d-none"></div>
-										<div id="tension-line" class="h-25"></div>
-									</div>
-									<div class="col-12 mt-4">
-										<div class="row d-flex justify-content-center">
-											<div class="col-12 col-sm-10 col-lg-8 card shadow p-3 d-none" id="live_tension_pie"></div>
-											<div id="tensionpie" class="col-10 col-md-5 card shadow mr-md-auto"></div>
-											<div id="tensionpie2" class="col-10 col-md-5 card shadow mt-2 mt-md-0 ml-md-auto"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="tab-pane fade show" id="tab5" role="tabpanel" aria-labelledby="5-tab">
-						<div class="tab-pane-header bg-transparent">
-							<div class="col-12 text-center bg-white shadow">
-								<span class="card-title my-title">Fréquence Cardiaque</span>
-								<p class="card-text mb-2">Décrit le nombre de battements mesurés par minute (BPM).</p>
-							</div>
-							<div class="container-fluid p-0" id="tab-content">
-								<div class="row pr-3 pl-3 d-flex justify-content-center align-items-center">
-									<div class="col-12 card shadow">
-										<div id="heart-line2" class="h-75 d-none"></div>
-										<div id="heart-line" class="h-25"></div>
-									</div>
-									<div class="col-12 mt-4">
-										<div class="row d-flex justify-content-center">
-											<div class="col-12 col-sm-10 col-lg-8 card shadow p-3 d-none" id="live_heart_pie"></div>
-											<div id="heartpie" class="col-10 col-md-5 card shadow mr-md-auto"></div>
-											<div id="heartpie2" class="col-10 col-md-5 card shadow mt-2 mt-md-0 ml-md-auto"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="tab-pane fade show" id="tab6" role="tabpanel" aria-labelledby="6-tab">
-						<div class="tab-pane-header bg-transparent">
-							<div class="col-12 text-center bg-white shadow">
-								<span class="card-title my-title mb-2">Poids Corporel</span>
-							</div>
-							<div class="container-fluid p-0" id="tab-content">
-								<div class="row pr-3 pl-3 d-flex justify-content-center align-items-center">
-									<div class="col-12 card shadow">
-										<div id="poids-line2" class="h-75 d-none"></div>
-										<div id="poids-line" class="h-25"></div>
-									</div>
-									<div class="col-12 mt-4">
-										<div class="row d-flex justify-content-center">
-											<div class="col-12 col-sm-10 col-lg-8 card shadow p-3 d-none" id="live_poids_pie"></div>
-											<div id="poidspie" class="col-10 col-md-5 card shadow mr-md-auto"></div>
-											<div id="poidspie2" class="col-10 col-md-5 card shadow mt-2 mt-md-0 ml-md-auto"></div>
-										</div>
-									</div>
-								</div>
-							</div>
+					<div class="col-12 d-block d-sm-flex text-center justify-content-center" >
+						<button class="btn bg-1-lightpink btn-sm" id="refresh">
+							Changer période <i class="fas fa-retweet"></i>
+						</button>
+						<div class="btn-group-sm">
+							<button class="btn btn-primary mt-1 ml-sm-3 mt-sm-0" id="live">
+								En direct <i class="fas fa-play"></i>
+							</button>
+							<button class="btn btn-sm btn-outline-danger mt-1 ml-sm-3 mt-sm-0" id="stop">
+								Fermer <i class="far fa-stop-circle"></i>
+							</button>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<!-- /.container -->
+
+			<div class="row mt-3 mb-5">
+				<div class="col-12">
+					<ul class="nav nav-tabs animated fadeindown delay-2-3 shadow-lg bg-white rounded justify-content-between" id="myTab" role="tablist">
+						<li class="nav-item col-3 p-2">
+							<a class="nav-link nav-tab-deco active" data-toggle="tab" href="#tab1" role="tab" aria-controls="blood sugar" aria-expanded="true">	
+								<img class="avatar-small" src="{{asset('images/gluc.svg')}}" alt="">
+							</a>
+							<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:ns1="http://sozi.baierouge.fr" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg3664" viewBox="0 0 208.4 210.53" version="1.1" inkscape:version="0.91 r13725">
+									<g id="layer1" transform="translate(112.77 -529.95)">
+										<g id="g5555" stroke="#000" stroke-width="0.5" fill="#000" fill-rule="nonzero" transform="matrix(.61858 0 0 .63162 -281.75 880.35)">
+										<path id="path5528" style="fill:#c8b7b7" d="m439.75-546.72c-88.315 0-159.91 70.942-159.91 158.47 0 17.779 2.9582 34.888 8.4062 50.844-3.6201-13.385-5.5625-27.591-5.5625-42.281 0-81.218 59.448-147.06 132.78-147.06 73.333 0 132.78 65.844 132.78 147.06 0 81.218-59.448 147.06-132.78 147.06-2.4493 0-4.8647-0.0737-7.2812-0.21875 10.206 2.0254 20.755 3.0938 31.562 3.0938 88.315 0 159.91-70.973 159.91-158.5s-71.591-158.47-159.91-158.47z"/>
+										<path id="path5526" style="block-progression:tb;text-indent:0;color:rgba(174, 214, 220, 1);text-transform:none;fill:rgba(174, 214, 220, 1)" d="m439.75-554.06c-85.302-9.0101-154.89 70.283-164.41 149.99-10.424 61.588 17.148 129.2 73.597 158.99 81.606 53.07 197.1 11.205 242.26-70.488 61.36-101.07-36.9-246.83-151.45-238.49zm0 14.688c74.115-9.1794 137.97 57.068 146.33 127.45 13.752 68.901-20.653 152-93.203 170.49-68.572 23.116-149.6-8.9558-182.65-73.677-36.369-60.86-29.338-150.54 32.582-192.4 27.547-20.92 62.111-33.626 96.946-31.866z"/>
+										</g>
+									</g>
+							</svg>
+						</li>
+						<li class="nav-item col-2 p-2">
+							<a class="nav-link  nav-tab-deco" data-toggle="tab" href="#tab2" role="tab" aria-controls="blood sugar" aria-expanded="true">
+								<img class="avatar-small bg-transparent" src="{{asset('images/thermometer.svg')}}" alt="">
+							</a>
+							<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:ns1="http://sozi.baierouge.fr" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg3664" viewBox="0 0 208.4 210.53" version="1.1" inkscape:version="0.91 r13725">
+									<g id="layer1" transform="translate(112.77 -529.95)">
+										<g id="g5555" stroke="#000" stroke-width="0.5" fill="#000" fill-rule="nonzero" transform="matrix(.61858 0 0 .63162 -281.75 880.35)">
+										<path id="path5528" style="fill:#c8b7b7" d="m439.75-546.72c-88.315 0-159.91 70.942-159.91 158.47 0 17.779 2.9582 34.888 8.4062 50.844-3.6201-13.385-5.5625-27.591-5.5625-42.281 0-81.218 59.448-147.06 132.78-147.06 73.333 0 132.78 65.844 132.78 147.06 0 81.218-59.448 147.06-132.78 147.06-2.4493 0-4.8647-0.0737-7.2812-0.21875 10.206 2.0254 20.755 3.0938 31.562 3.0938 88.315 0 159.91-70.973 159.91-158.5s-71.591-158.47-159.91-158.47z"/>
+										<path id="path5526" style="block-progression:tb;text-indent:0;color:rgba(174, 214, 220, 1);text-transform:none;fill:rgba(174, 214, 220, 1)" d="m439.75-554.06c-85.302-9.0101-154.89 70.283-164.41 149.99-10.424 61.588 17.148 129.2 73.597 158.99 81.606 53.07 197.1 11.205 242.26-70.488 61.36-101.07-36.9-246.83-151.45-238.49zm0 14.688c74.115-9.1794 137.97 57.068 146.33 127.45 13.752 68.901-20.653 152-93.203 170.49-68.572 23.116-149.6-8.9558-182.65-73.677-36.369-60.86-29.338-150.54 32.582-192.4 27.547-20.92 62.111-33.626 96.946-31.866z"/>
+										</g>
+									</g>
+							</svg>
+						</li>
+						<li class="nav-item col-2 p-2">
+							<a class="nav-link  nav-tab-deco" data-toggle="tab" href="#tab3" role="tab" aria-controls="o2 blood" aria-expanded="true">
+								<img class="avatar-small" src="{{asset('images/hb.svg')}}" alt="">
+							</a>
+							<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:ns1="http://sozi.baierouge.fr" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg3664" viewBox="0 0 208.4 210.53" version="1.1" inkscape:version="0.91 r13725">
+									<g id="layer1" transform="translate(112.77 -529.95)">
+										<g id="g5555" stroke="#000" stroke-width="0.5" fill="#000" fill-rule="nonzero" transform="matrix(.61858 0 0 .63162 -281.75 880.35)">
+										<path id="path5528" style="fill:#c8b7b7" d="m439.75-546.72c-88.315 0-159.91 70.942-159.91 158.47 0 17.779 2.9582 34.888 8.4062 50.844-3.6201-13.385-5.5625-27.591-5.5625-42.281 0-81.218 59.448-147.06 132.78-147.06 73.333 0 132.78 65.844 132.78 147.06 0 81.218-59.448 147.06-132.78 147.06-2.4493 0-4.8647-0.0737-7.2812-0.21875 10.206 2.0254 20.755 3.0938 31.562 3.0938 88.315 0 159.91-70.973 159.91-158.5s-71.591-158.47-159.91-158.47z"/>
+										<path id="path5526" style="block-progression:tb;text-indent:0;color:rgba(174, 214, 220, 1);text-transform:none;fill:rgba(174, 214, 220, 1)" d="m439.75-554.06c-85.302-9.0101-154.89 70.283-164.41 149.99-10.424 61.588 17.148 129.2 73.597 158.99 81.606 53.07 197.1 11.205 242.26-70.488 61.36-101.07-36.9-246.83-151.45-238.49zm0 14.688c74.115-9.1794 137.97 57.068 146.33 127.45 13.752 68.901-20.653 152-93.203 170.49-68.572 23.116-149.6-8.9558-182.65-73.677-36.369-60.86-29.338-150.54 32.582-192.4 27.547-20.92 62.111-33.626 96.946-31.866z"/>
+										</g>
+									</g>
+							</svg>
+						</li>
+						<li class="nav-item col-2 p-2">
+							<a class="nav-link nav-tab-deco" data-toggle="tab" href="#tab4" role="tab" aria-controls="blood pressure" aria-expanded="true">
+								<img class="avatar-small" src="{{asset('images/bp.svg')}}" alt="">
+							</a>
+							<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:ns1="http://sozi.baierouge.fr" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg3664" viewBox="0 0 208.4 210.53" version="1.1" inkscape:version="0.91 r13725">
+									<g id="layer1" transform="translate(112.77 -529.95)">
+										<g id="g5555" stroke="#000" stroke-width="0.5" fill="#000" fill-rule="nonzero" transform="matrix(.61858 0 0 .63162 -281.75 880.35)">
+										<path id="path5528" style="fill:#c8b7b7" d="m439.75-546.72c-88.315 0-159.91 70.942-159.91 158.47 0 17.779 2.9582 34.888 8.4062 50.844-3.6201-13.385-5.5625-27.591-5.5625-42.281 0-81.218 59.448-147.06 132.78-147.06 73.333 0 132.78 65.844 132.78 147.06 0 81.218-59.448 147.06-132.78 147.06-2.4493 0-4.8647-0.0737-7.2812-0.21875 10.206 2.0254 20.755 3.0938 31.562 3.0938 88.315 0 159.91-70.973 159.91-158.5s-71.591-158.47-159.91-158.47z"/>
+										<path id="path5526" style="block-progression:tb;text-indent:0;color:rgba(174, 214, 220, 1);text-transform:none;fill:rgba(174, 214, 220, 1)" d="m439.75-554.06c-85.302-9.0101-154.89 70.283-164.41 149.99-10.424 61.588 17.148 129.2 73.597 158.99 81.606 53.07 197.1 11.205 242.26-70.488 61.36-101.07-36.9-246.83-151.45-238.49zm0 14.688c74.115-9.1794 137.97 57.068 146.33 127.45 13.752 68.901-20.653 152-93.203 170.49-68.572 23.116-149.6-8.9558-182.65-73.677-36.369-60.86-29.338-150.54 32.582-192.4 27.547-20.92 62.111-33.626 96.946-31.866z"/>
+										</g>
+									</g>
+							</svg>
+						</li>
+						<li class="nav-item col-3 p-2">
+							<a class="nav-link nav-tab-deco" data-toggle="tab" href="#tab5" role="tab" aria-controls="weight" aria-expanded="true">
+								<img class="avatar-small" src="{{asset('images/weigh.svg')}}" alt="">
+							</a>
+							<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:ns1="http://sozi.baierouge.fr" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg3664" viewBox="0 0 208.4 210.53" version="1.1" inkscape:version="0.91 r13725">
+									<g id="layer1" transform="translate(112.77 -529.95)">
+										<g id="g5555" stroke="#000" stroke-width="0.5" fill="#000" fill-rule="nonzero" transform="matrix(.61858 0 0 .63162 -281.75 880.35)">
+										<path id="path5528" style="fill:#c8b7b7" d="m439.75-546.72c-88.315 0-159.91 70.942-159.91 158.47 0 17.779 2.9582 34.888 8.4062 50.844-3.6201-13.385-5.5625-27.591-5.5625-42.281 0-81.218 59.448-147.06 132.78-147.06 73.333 0 132.78 65.844 132.78 147.06 0 81.218-59.448 147.06-132.78 147.06-2.4493 0-4.8647-0.0737-7.2812-0.21875 10.206 2.0254 20.755 3.0938 31.562 3.0938 88.315 0 159.91-70.973 159.91-158.5s-71.591-158.47-159.91-158.47z"/>
+										<path id="path5526" style="block-progression:tb;text-indent:0;color:rgba(174, 214, 220, 1);text-transform:none;fill:rgba(174, 214, 220, 1)" d="m439.75-554.06c-85.302-9.0101-154.89 70.283-164.41 149.99-10.424 61.588 17.148 129.2 73.597 158.99 81.606 53.07 197.1 11.205 242.26-70.488 61.36-101.07-36.9-246.83-151.45-238.49zm0 14.688c74.115-9.1794 137.97 57.068 146.33 127.45 13.752 68.901-20.653 152-93.203 170.49-68.572 23.116-149.6-8.9558-182.65-73.677-36.369-60.86-29.338-150.54 32.582-192.4 27.547-20.92 62.111-33.626 96.946-31.866z"/>
+										</g>
+									</g>
+							</svg>
+						</li>
+					</ul>
+					<div class="tab-content container-fluid p-0" id="myTabContent">
+						</---------- tabs ----------->
+						<div class="tab-pane delay-1 show active" id="tab1" role="tabpanel" aria-labelledby="1-tab">
+							<div class="tab-pane-header">
+								<div class="container-fluid pl-0" id="tab-content">
+									<div class="row p-3 p-md-5 d-flex justify-content-center align-items-center">
+										<div class="col-12 animated fadeinleft delay-1 bg-white rounded p-0 shadow overflow-auto">
+											<div id="gly-line2" class="h-75"></div>
+											<div id="gly-line" class="h-25"></div>
+										</div>
+										<div class="col-12 mt-4">
+											<div class="row d-flex justify-content-center">
+												<div class="col-12 col-sm-10 col-lg-8 bg-white rounded shadow p-3 d-none" id="live_gly_pie"></div>
+												<div id="glypie" class="col-12 col-md-5 bg-white animated fadeinleft delay-1-5 col-md-5 rounded shadow m-md-auto"></div>
+												<div id="glypie2" class="col-12 col-md-5 bg-white animated fadeinleft delay-2 rounded shadow mt-2 mt-md-0 m-md-auto"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</--- température ---->
+						<div class="tab-pane fade show" id="tab2" role="tabpanel" aria-labelledby="2-tab">
+							<div class="tab-pane-header">
+								<div class="container-fluid p-0" id="tab-content">
+									<div class="row p-3 p-md-5 d-flex justify-content-center align-items-center">
+										<div class="col-12 bg-white bg-white animated fadeinleft delay-1-4 rounded shadow p-0 overflow-auto">
+											<div id="temp-line2" class="h-75"></div>
+											<div id="temp-line" class="h-25"></div>
+										</div>
+										<div class="col-12 mt-4">
+											<div class="row d-flex justify-content-center">
+												<div class="col-12 col-sm-10 col-lg-8  animated fadeinleft delay-1-4   bg-white rounded shadow p-3 d-none" id="live_temp_pie"></div>
+												<div id="temppie" class="col-12 col-md-5  bg-white rounded animated fadeinleft delay-1-2 shadow m-md-auto"></div>
+												<div id="temppie2" class="col-12 col-md-5 bg-white rounded animated fadeinleft delay-2-3 shadow mt-2 mt-md-0 m-md-auto"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</--- Oxygéne -->
+						<div class="tab-pane fade show" id="tab3" role="tabpanel" aria-labelledby="3-tab">
+							<div class="tab-pane-header">
+								<div class="container-fluid p-0" id="tab-content">
+									<div class="row p-3 p-md-5 d-flex justify-content-center align-items-center">
+										<div class="col-12 bg-white bg-white animated fadeinleft delay-1-4 rounded shadow p-0 overflow-auto">
+											<div id="oxy-line2" class="h-75"></div>
+											<div id="oxy-line" class="h-25"></div>
+										</div>
+										<div class="col-12 mt-4">
+											<div class="row d-flex justify-content-center">
+												<div class="col-12 col-sm-10 col-lg-8 bg-white animated fadeinleft delay-1-4 rounded shadow p-3 d-none" id="live_oxy_pie"></div>
+												<div id="oxypie" class="col-12 col-md-5 bg-white animated fadeinleft delay-1-2 rounded shadow m-md-auto"></div>
+												<div id="oxypie2" class="col-12 col-md-5 bg-white animated fadeinleft delay-2-3 rounded shadow mt-2 h-50 mt-md-0 m-md-auto"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</--- tension  ---->
+						<div class="tab-pane fade show" id="tab4" role="tabpanel" aria-labelledby="4-tab">
+							<div class="tab-pane-header">
+								<div class="container-fluid p-0" id="tab-content">
+									<div class="row p-3 p-md-5 d-flex justify-content-center align-items-center">
+										<div class="col-12 bg-white rounded animated fadeinleft delay-1-4 shadow overflow-auto">
+											<div id="tension-line2" class="h-75 fadingin"></div>
+											<div id="tension-line" class="h-25 fadingin"></div>
+										</div>
+										<div class="col-12 mt-4">
+											<div class="row d-flex justify-content-center">
+												<div class="col-12 col-sm-10 col-lg-8 fadingin bg-white animated fadeinleft delay-1-4 rounded shadow p-3 d-none" id="live_tension_pie"></div>
+												<div id="tensionpie" class="col-12 col-md-5 fadingin bg-white rounded shadow animated fadeinleft delay-1-2 m-md-auto"></div>
+												<div id="tensionpie2" class="col-12 col-md-5 fadingin bg-white rounded shadow animated fadeinleft delay-2-3 mt-2 mt-md-0 m-md-auto"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</--  poids  -->
+						<div class="tab-pane fade show" id="tab5" role="tabpanel" aria-labelledby="5-tab">
+							<div class="tab-pane-header">
+								<div class="container-fluid p-0" id="tab-content">
+									<div class="row p-3 p-md-5 d-flex justify-content-center align-items-center">
+										<div class="col-12 bg-white chart-back animated fadeinleft delay-1-4 rounded shadow overflow-auto">
+											<div id="poids-line2" class="h-75 fadingin"></div>
+											<div id="poids-line" class="h-25 fadingin"></div>
+										</div>
+										<div class="col-12 mt-4">
+											<div class="row d-flex justify-content-center">
+												<div class="col-12 col-sm-10 col-lg-8 bg-white animated fadeinleft delay-1-4 rounded shadow p-3 d-none" id="live_poids_pie"></div>
+												<div id="poidspie" class="col-12 col-md-5 bg-white animated fadeinleft delay-1-5 rounded shadow m-md-auto"></div>
+												<div id="poidspie2" class="col-12 col-md-5 bg-white animated fadeinleft delay-2-3 rounded shadow mt-2 mt-md-0 m-md-auto"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</--- fin tabs -->
+					</div>
+				</div>
+			</div>
+		{% endif %}
+		</-- .container -->
 	</div>
+	<div class="toast toast-success" id="update_stream" role="alert" aria-atomic="true" style="z-index: 1000;position:absolute;top: 0;right: 0" data-animation="true" data-auhide="true" data-delay="2000" aria-live="assertive" aria-atomic="true">
+		<div class="toast-body toast-success">
+			<p class="my-title my-small-title"><i class="fas fa-sync"></i>	Mise à jour des chartes avec succès.</p>
+		</div>
+    </div>
+	<div class="toast toast-success" id="start_stream" role="alert" aria-atomic="true" style="z-index: 1000;position:absolute;top: 0;right: 0" data-animation="true" data-auhide="true" data-delay="2000" aria-live="assertive" aria-atomic="true">
+		<div class="toast-body toast-success">
+			<p class="my-title my-small-title"><i class="fas fa-play"></i>	Démarrage du flux de données en direct avec succès.</p>
+		</div>
+    </div>
+
+	<div class="toast toast-warning" id="stop_stream" role="alert" aria-atomic="true" style="z-index: 1000;position:absolute;top: 0;right: 0" data-animation="true" data-auhide="true" data-delay="2000" aria-live="assertive" aria-atomic="true">
+		<div class="toast-body toast-warning">
+			<p class="my-title my-small-title"><i class="far fa-play-circle"></i>	Arrêt du flux de données en direct avec succès.</p>
+		</div>
+    </div>
 {% endblock %}
 {% block javascript %}
 	<script src="{{asset('js/apexchart.js')}}"></script>
 	<script src="{{asset('js/data.js')}}"></script>
 	<script type="text/javascript">
+
 	$(document).ready(function () {
-		charting({{ user.id }},"{{ user.gatewayId }}")
+		const gateway = "{{ gateway }}";
+		console.log(gateway);
+		const user_id = {{ user.id }} ;
+		if (gateway !== ''){
+			charting(user_id,gateway);
+		}
 
 		if (location.hash !== ''){
 			$('a[href="' + location.hash + '"]').tab('show');
-			return $('a[data-toggle="tab"]').on('shown', function (e) {
-			return location.hash = $(e.target).attr('href').substr(1);});
+			return $('a[data-toggle="tab"]').on('shown', function (e) {		
+			return location.hash = $(e.target).attr('href').substr(1);
+			});
 		}
 	});
 

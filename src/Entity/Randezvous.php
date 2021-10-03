@@ -4,12 +4,12 @@ namespace App\Entity;
 
 use DateTime;
 use DateInterval;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\RandezvousRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=RandezvousRepository::class)
  * @ORM\HasLifecycleCallbacks()
@@ -25,13 +25,16 @@ class Randezvous
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(
+     *      max = 400,
+     *      maxMessage = "Votre description ne peut pas dépasser {{ limite }} caractères.")
      */
-    private ?string $description;
+    private ?string $description="";
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private ?bool $isValid;
+    private ?bool $isValid=false;
 
     /**
      * @ORM\Column(type="datetime")
@@ -40,12 +43,14 @@ class Randezvous
 
     /**
      * @Assert\NotBlank
+     * @Assert\GreaterThan("today")
      * @ORM\Column(type="datetime")
      */
     private $dated_for;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="randezvouses")
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="randezvouses",fetch="EXTRA_LAZY")
+     * @ORM\JoinTable(name="randezvous_user")
      */
     private $parts;
 
@@ -152,10 +157,10 @@ class Randezvous
     * @ORM\PrePersist
     *
     */
-public function createTimestamps(): void
-{
-    $this->setCreatedAt(new \DateTime('now'));    
-}
+    public function createTimestamps(): void
+    {
+        $this->setCreatedAt(new \DateTime('now'));    
+    }
 
 public function getColor(): ?string
 {

@@ -1,0 +1,31 @@
+{% extends 'partials/_sideNav2.html.twig' %}
+{% block title %}Indicateurs kafka{% endblock %}
+{% block main %}
+    <div class="container-fluid mt-5">
+        <div class="row justify-content-between">
+            <div class="col-12 col-md-5">
+                <iframe src="http://localhost:3000/d-solo/XT0yr377z/kminion-dashboard?orgId=1&theme=light&panelId=11" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-md-5">
+                <iframe src="http://localhost:3000/d-solo/XT0yr377z/kminion-dashboard?orgId=1&theme=light&panelId=7" width="100%" class="border-none shadow"></iframe>
+            </div>
+        </div>
+        <div class="row">    
+            <div class="col-12 col-md-6">
+                <iframe src="http://localhost:3000/d-solo/XT0yr377z/kminion-dashboard?orgId=1&theme=light&panelId=16" height="250" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-md-6">
+                <iframe src="http://localhost:3000/d-solo/XT0yr377z/kminion-dashboard?orgId=1&theme=light&panelId=17" height="250" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-md-6">
+                <iframe src="http://localhost:3000/d-solo/XT0yr377z/kminion-dashboard?orgId=1&theme=light&panelId=14" height="250" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-md-6">
+                <iframe src="http://localhost:3000/d-solo/XT0yr377z/kminion-dashboard?orgId=1&theme=light&panelId=2" height="250" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12">
+                <iframe src="http://localhost:3000/d-solo/XT0yr377z/kminion-dashboard?orgId=1&theme=light&panelId=4" height="250" width="100%" class="border-none shadow"></iframe>
+            </div>
+        </div>
+    </div>
+{% endblock %}

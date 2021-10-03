@@ -1,0 +1,56 @@
+{% extends 'partials/_sideNav2.html.twig' %}
+{% block title %}
+    Indicateurs machine serveur
+{% endblock %}
+{% block main %}
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-12 col-sm-4 col-lg-2 p-2">
+                <iframe src="http://localhost:3000/d-solo/Id5qeTWnk/node-exporter-full?orgId=1&refresh=5m&from=1629580432521&to=1629666832521&theme=light&panelId=20" class="border-none shadow" width="100%" height="160"></iframe>
+            </div>
+            <div class="col-12 col-sm-4 col-lg-2 p-2">
+                <iframe src="http://localhost:3000/d-solo/Id5qeTWnk/node-exporter-full?orgId=1&refresh=5m&from=1629581194155&to=1629667594156&theme=light&panelId=155" class="border-none shadow" width="100%" height="160"></iframe>
+            </div>
+            <div class="col-12 col-sm-4 col-lg-2 p-1">
+                <iframe src="http://localhost:3000/d-solo/Id5qeTWnk/node-exporter-full?orgId=1&refresh=5m&from=1629581324576&to=1629667724576&theme=light&panelId=16" class="border-none shadow" width="100%" height="160"></iframe>
+            </div>
+            <div class="col-12 col-sm-4 col-lg-2 p-1">
+                <iframe src="http://localhost:3000/d-solo/Id5qeTWnk/node-exporter-full?orgId=1&refresh=5m&from=1629581376621&to=1629667776621&theme=light&panelId=21" class="border-none shadow" width="100%" height="160"></iframe>
+            </div>
+            <div class="col-12 col-sm-8 col-lg-4 p-2">
+                <div class="row d-flex align-items-center">
+                    <div class="col-12 col-md-4 ">
+                        <iframe src="http://localhost:3000/d-solo/Id5qeTWnk/node-exporter-full?orgId=1&refresh=5m&from=1629582846479&to=1629669246479&theme=light&panelId=14" class="border-none shadow" width="100%" height="80"></iframe>
+                    </div>
+                    <div class="col-12 col-md-8">
+                        <iframe src="http://localhost:3000/d-solo/Id5qeTWnk/node-exporter-full?orgId=1&refresh=5m&from=1629582923244&to=1629669323245&theme=light&panelId=15" class="border-none shadow" width="100%" height="80"></iframe>
+                    </div>
+                </div>
+                <div class="row d-flex align-items-center">
+                <div class="col-12 col-md-4">
+                    <iframe src="http://localhost:3000/d-solo/Id5qeTWnk/node-exporter-full?orgId=1&refresh=5m&from=1629666800426&to=1629670400426&kiosk&theme=light&panelId=18" width="100%" height="80" class="border-none shadow"></iframe>
+                </div>
+                <div class="col-12 col-md-4">
+                    <iframe src="http://localhost:3000/d-solo/Id5qeTWnk/node-exporter-full?orgId=1&refresh=5m&from=1629666724479&to=1629670324479&kiosk&theme=light&panelId=75" width="100%" height="80" class="border-none shadow"></iframe>
+                </div>
+                <div class="col-12 col-md-4">
+                    <iframe src="http://localhost:3000/d-solo/Id5qeTWnk/node-exporter-full?orgId=1&refresh=5m&from=1629666529529&to=1629670129530&theme=light&panelId=23" width="100%" height="80" class="border-none shadow"></iframe>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6 p-2">
+                <iframe src="http://localhost:3000/d-solo/Id5qeTWnk/node-exporter-full?orgId=1&refresh=5m&from=1629668332086&to=1629671932086&var-DS_PROMETHEUS=Prometheus&var-job=node&var-node=localhost:9100&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B&theme=light&panelId=77" width="100%" height="200" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-md-6 p-2">
+                <iframe src="http://localhost:3000/d-solo/Id5qeTWnk/node-exporter-full?orgId=1&refresh=5m&from=1629668406361&to=1629672006361&var-DS_PROMETHEUS=Prometheus&var-job=node&var-node=localhost:9100&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B&theme=light&panelId=78" width="100%" height="200" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-md-6 p-2">
+                <iframe src="http://localhost:3000/d-solo/Id5qeTWnk/node-exporter-full?orgId=1&refresh=5m&from=1629637416375&to=1629723816375&theme=light&panelId=152" width="100%" height="200" class="border-none shadow"></iframe></div>
+            <div class="col-12 col-md-6 p-2">
+                <iframe src="http://localhost:3000/d-solo/Id5qeTWnk/node-exporter-full?orgId=1&refresh=5m&from=1629637493441&to=1629723893441&theme=light&panelId=74" width="100%" height="200" class="border-none shadow"></iframe>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -22,18 +22,41 @@ class IotMessageSerializer implements SerializerInterface
         if (!$body) {
             throw new MessageDecodingFailedException('The body is not a valid JSON.');
         }
-
-        $type = $body['type'] ?? '';
-        switch ($type) {
-            case 'iot':
+        $body=$body['body'];
+        $topic = $body['topic'] ?? '';
+        switch ($topic) {
+            case 'avc/temperature':
                 // Here, you can / should validate the structure of $body
                 $content=array_values($body);
                 //dump($content);
                 $message = new IotMessage($content);
                 break;
-
+            case 'avc/blood_pressure':
+                // Here, you can / should validate the structure of $body
+                $content=array_values($body);
+                //dump($content);
+                $message = new IotMessage($content);
+                break;
+            case 'avc/oxygen':
+                // Here, you can / should validate the structure of $body
+                $content=array_values($body);
+                //dump($content);
+                $message = new IotMessage($content);
+                break;
+            case 'avc/glucose':
+                // Here, you can / should validate the structure of $body
+                $content=array_values($body);
+                //dump($content);
+                $message = new IotMessage($content);
+                break;
+            case 'avc/glucose':
+                // Here, you can / should validate the structure of $body
+                $content=array_values($body);
+                //dump($content);
+                $message = new IotMessage($content);
+                break;
             default:
-                throw new MessageDecodingFailedException("The type '$type' is not supported.");
+                throw new MessageDecodingFailedException("The topic '$topic' is not accessible for this application.");
         }
 
         return new Envelope($message);
@@ -48,7 +71,6 @@ class IotMessageSerializer implements SerializerInterface
 
         if ($message instanceof IotMessage) return [
             'body' => json_encode([
-                'type' => 'iotmessage',
                 'content' => $message->getContent(),
             ]),
             'headers' => [

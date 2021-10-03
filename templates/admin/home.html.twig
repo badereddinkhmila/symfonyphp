@@ -1,240 +1,238 @@
 {% extends "partials/_sideNav2.html.twig" %}
-
-
 {% block main %}
-    <div class="container-fluid mt-5">
+    <div class="container-fluid mt-1 mb-5 mt-md-3">
         <div class="row">
-            <div class="col-md-3">
-                <div class="card-counter bg-1-pink">
-                    <i class="fas fa-code-branch"></i>
-                    <span class="count-numbers">12</span>
-                    <span class="count-name">Flowz</span>
+            <div class="col-lg-3 col-sm-6 col-12">
+                <div class="card-counter bg-theme shadow my-title">
+                    <div class="row ml-2 d-flex align-items-center card-write">
+                        <div class="avatar-md card-icon" id="compl-logo"></div>
+                        <span class="count-numbers">{{count_comp}}</span>
+                        <span class="count-name">Réclamations</span>
+                    </div>
+                    <div class="col-12 card-chart">
+                        <div id="spark1"></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-3">
-                <div class="card-counter bg-material-ui">
-                    <i class="fas fa-ticket-alt"></i>
-                    <span class="count-numbers">599</span>
-                    <span class="count-name">Instances</span>
+            <div class="col-lg-3 col-sm-6 col-12">
+                <div class="card-counter bg-theme shadow my-title">
+                    <div class="row ml-2 d-flex align-items-center card-write">
+                        <div class="avatar-md " id="meeting"></div>
+                        <span class="count-numbers">{{count_rdv}}</span>
+                        <span class="count-name">Randez-vous</span>
+                    </div>
+                    <div class="col-12 card-chart">
+                        <div id="spark2"></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-3">
-                <div class="card-counter bg-2-break">
-                    <i class="fas fa-database"></i>
-                    <span class="count-numbers">6875</span>
-                    <span class="count-name">Data</span>
+            <div class="col-lg-3 col-sm-6 col-12">
+                <div class="card-counter bg-theme shadow my-title">
+                    <div class="row ml-2 d-flex align-items-center card-write">
+                        <div class="card-icon avatar-md" id='detector'></div>
+                        <span class="count-numbers">{{count_sg}}</span>
+                        <span class="count-name">Dispositifs</span>
+                    </div>
+                    <div class="col-12 card-chart">
+                        <div id="spark3"></div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card-counter bg-2-dark m-2">
-                    <i class="fas fa-users"></i>
-                    <span class="count-numbers">35</span>
-                    <span class="count-name">Users</span>
+            <div class="col-lg-3 col-sm-6 col-12">
+                <div class="card-counter bg-theme shadow my-title">
+                    <div class="row ml-2 d-flex align-items-center card-write">
+                        <span class="iconify card-icon" data-icon="raphael:users"></span>
+                        <span class="count-numbers">{{count_users}}</span>
+                        <span class="count-name">Utilisateurs</span>
+                    </div>
+                    <div class="col-12 card-chart">
+                        <div id="spark4"></div>
+                    </div>
+
                 </div>
             </div>
         </div>
-
-        <div class="container-fluid mt-5 mb-5">
-            <div class="row d-flex align-items-center justify-content-center">
-                <!-- Card -->
-                <div class="card promoting-card bg-white col-12 col-md-5 m-2">
-
-                    <!-- Card content -->
-                    <div class="card-body d-flex flex-row">
-
-                        <!-- Avatar -->
-                        <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" class="rounded-circle mr-3" height="50px" width="50px" alt="avatar">
-
-                        <!-- Content -->
-                        <div>
-
-                            <!-- Title -->
-                            <h4 class="card-title font-weight-bold mb-2">New spicy meals</h4>
-                            <!-- Subtitle -->
-                            <p class="card-text"><i class="far fa-clock pr-2"></i>07/24/2018</p>
-
-                        </div>
-
-                    </div>
-
-                    <!-- Card image -->
-                    <div class="view overlay">
-                        <img class="card-img-top rounded-0" src="https://mdbootstrap.com/img/Photos/Horizontal/Food/full page/2.jpg" alt="Card image cap">
-                        <a href="#!">
-                            <div class="mask rgba-white-slight"></div>
-                        </a>
-                    </div>
-
-                    <!-- Card content -->
-                    <div class="card-body">
-
-                        <div class="collapse-content">
-
-                            <!-- Text -->
-                            <p class="card-text collapse" id="collapseContent">Recently, we added several exotic new dishes to our restaurant menu. They come from countries such as Mexico, Argentina, and Spain. Come to us, have some delicious wine and enjoy our juicy meals from around the world.</p>
-                            <!-- Button -->
-                            <a class="btn btn-flat red-text p-1 my-1 mr-0 mml-1 collapsed" data-toggle="collapse" href="#collapseContent" aria-expanded="false" aria-controls="collapseContent"></a>
-                            <i class="fas fa-share-alt text-muted float-right p-1 my-1" data-toggle="tooltip" data-placement="top" title="Share this post"></i>
-                            <i class="fas fa-heart text-muted float-right p-1 my-1 mr-3" data-toggle="tooltip" data-placement="top" title="I like it"></i>
-
-                        </div>
-
-                    </div>
-
+        <div class="row mt-3 d-flex align-items-center justify-content-center">
+            <div class="col-12 col-md-8 col-lg-12 p-2">
+                <div class="card shadow-lg bg-theme rounded">
+                    <div id="bar"></div>
                 </div>
-                <!-- Card -->
-                <!-- Card -->
-                <div class="card promoting-card bg-white col-12 col-md-5 m-2">
-
-                    <!-- Card content -->
-                    <div class="card-body d-flex flex-row">
-
-                        <!-- Avatar -->
-                        <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" class="rounded-circle mr-3" height="50px" width="50px" alt="avatar">
-
-                        <!-- Content -->
-                        <div>
-
-                            <!-- Title -->
-                            <h4 class="card-title font-weight-bold mb-2">New spicy meals</h4>
-                            <!-- Subtitle -->
-                            <p class="card-text"><i class="far fa-clock pr-2"></i>07/24/2018</p>
-
-                        </div>
-
-                    </div>
-
-                    <!-- Card image -->
-                    <div class="view overlay">
-                        <img class="card-img-top rounded-0" src="https://mdbootstrap.com/img/Photos/Horizontal/Food/full page/2.jpg" alt="Card image cap">
-                        <a href="#!">
-                            <div class="mask rgba-white-slight"></div>
-                        </a>
-                    </div>
-
-                    <!-- Card content -->
-                    <div class="card-body">
-
-                        <div class="collapse-content">
-
-                            <!-- Text -->
-                            <p class="card-text collapse" id="collapseContent">Recently, we added several exotic new dishes to our restaurant menu. They come from countries such as Mexico, Argentina, and Spain. Come to us, have some delicious wine and enjoy our juicy meals from around the world.</p>
-                            <!-- Button -->
-                            <a class="btn btn-flat red-text p-1 my-1 mr-0 mml-1 collapsed" data-toggle="collapse" href="#collapseContent" aria-expanded="false" aria-controls="collapseContent"></a>
-                            <i class="fas fa-share-alt text-muted float-right p-1 my-1" data-toggle="tooltip" data-placement="top" title="Share this post"></i>
-                            <i class="fas fa-heart text-muted float-right p-1 my-1 mr-3" data-toggle="tooltip" data-placement="top" title="I like it"></i>
-
-                        </div>
-
-                    </div>
-
-                </div>
-                <!-- Card -->
             </div>
-            <div class="row mt-3 d-flex align-items-center justify-content-center">
-                <!-- Card -->
-                <div class="card promoting-card bg-white col-12 col-md-5 m-2">
-
-                    <!-- Card content -->
-                    <div class="card-body d-flex flex-row">
-
-                        <!-- Avatar -->
-                        <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" class="rounded-circle mr-3" height="50px" width="50px" alt="avatar">
-
-                        <!-- Content -->
-                        <div>
-
-                            <!-- Title -->
-                            <h4 class="card-title font-weight-bold mb-2">New spicy meals</h4>
-                            <!-- Subtitle -->
-                            <p class="card-text"><i class="far fa-clock pr-2"></i>07/24/2018</p>
-
-                        </div>
-
-                    </div>
-
-                    <!-- Card image -->
-                    <div class="view overlay">
-                        <img class="card-img-top rounded-0" src="https://mdbootstrap.com/img/Photos/Horizontal/Food/full page/2.jpg" alt="Card image cap">
-                        <a href="#!">
-                            <div class="mask rgba-white-slight"></div>
-                        </a>
-                    </div>
-
-                    <!-- Card content -->
-                    <div class="card-body">
-
-                        <div class="collapse-content">
-
-                            <!-- Text -->
-                            <p class="card-text collapse" id="collapseContent">Recently, we added several exotic new dishes to our restaurant menu. They come from countries such as Mexico, Argentina, and Spain. Come to us, have some delicious wine and enjoy our juicy meals from around the world.</p>
-                            <!-- Button -->
-                            <a class="btn btn-flat red-text p-1 my-1 mr-0 mml-1 collapsed" data-toggle="collapse" href="#collapseContent" aria-expanded="false" aria-controls="collapseContent"></a>
-                            <i class="fas fa-share-alt text-muted float-right p-1 my-1" data-toggle="tooltip" data-placement="top" title="Share this post"></i>
-                            <i class="fas fa-heart text-muted float-right p-1 my-1 mr-3" data-toggle="tooltip" data-placement="top" title="I like it"></i>
-
-                        </div>
-
-                    </div>
-
+            <div class="col-12 col-md-4 p-2">
+                <div class="card shadow-lg bg-theme rounded">
+                    <div id="polar"></div>
                 </div>
-                <!-- Card -->
-
-                <!-- Card -->
-                <div class="card promoting-card bg-white col-12 col-md-5 m-2">
-
-                    <!-- Card content -->
-                    <div class="card-body d-flex flex-row">
-
-                        <!-- Avatar -->
-                        <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" class="rounded-circle mr-3" height="50px" width="50px" alt="avatar">
-
-                        <!-- Content -->
-                        <div>
-
-                            <!-- Title -->
-                            <h4 class="card-title font-weight-bold mb-2">New spicy meals</h4>
-                            <!-- Subtitle -->
-                            <p class="card-text"><i class="far fa-clock pr-2"></i>07/24/2018</p>
-
-                        </div>
-
-                    </div>
-
-                    <!-- Card image -->
-                    <div class="view overlay">
-                        <img class="card-img-top rounded-0" src="https://mdbootstrap.com/img/Photos/Horizontal/Food/full page/2.jpg" alt="Card image cap">
-                        <a href="#!">
-                            <div class="mask rgba-white-slight"></div>
-                        </a>
-                    </div>
-
-                    <!-- Card content -->
-                    <div class="card-body">
-
-                        <div class="collapse-content">
-
-                            <!-- Text -->
-                            <p class="card-text collapse" id="collapseContent">Recently, we added several exotic new dishes to our restaurant menu. They come from countries such as Mexico, Argentina, and Spain. Come to us, have some delicious wine and enjoy our juicy meals from around the world.</p>
-                            <!-- Button -->
-                            <a class="btn btn-flat red-text p-1 my-1 mr-0 mml-1 collapsed" data-toggle="collapse" href="#collapseContent" aria-expanded="false" aria-controls="collapseContent"></a>
-                            <i class="fas fa-share-alt text-muted float-right p-1 my-1" data-toggle="tooltip" data-placement="top" title="Share this post"></i>
-                            <i class="fas fa-heart text-muted float-right p-1 my-1 mr-3" data-toggle="tooltip" data-placement="top" title="I like it"></i>
-
-                        </div>
-
-                    </div>
-
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4 p-2">
+                <div class="card shadow-lg bg-theme rounded">
+                    <div id="radial"></div>
                 </div>
-                <!-- Card -->
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4 p-2">
+                <div class="card shadow-lg bg-theme rounded">
+                    <div id="donut"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-5 mt-5">
+            <div class="col-12 col-md-6 p-md-2">
+                <div class="card table-responsive rounded text-dark shadow-lg bg-1-lightpink">
+                    <div class="my-title text-center m-2">
+                        <i class="fas fa-users-cog"></i> Utilisateurs (5+)
+                    </div>
+                    <div class="table-responsive">
+                        <table class="card-table table-bordered table-sm table">
+                            <thead>
+                            <tr>
+                                <th scope="col"><i class="far fa-user"></i> Prénom</th>
+                                <th scope="col"><i class="far fa-user"></i> Nom</th>
+                                <th scope="col"><i class="fas fa-camera-retro"></i> Avatar</th>
+                                <th scope="col"><i class="fas fa-user-shield"></i> Role</th>
+                                <th scope="col"><i class="far fa-clock"></i> Date d'ajout</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for usr in users %}
+                                <tr>
+                                    <td>
+                                        {{ usr.fname }}
+                                    </td>
+                                    <td>
+                                        {{ usr.lname }}
+                                    </td>
+                                    <td>
+                                        <div class="text-center">
+                                            <img src="{{ usr.person }}" class="avatar avatar-small" alt="avatar">
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        {% if usr.role == 'ROLE_DOCTOR' %}
+                                            <i class="fas fa-user-md fa-2x"></i>
+                                        {% elseif usr.role == 'ROLE_ADMIN' %}
+                                            <i class="fas fa-headset fa-2x"></i>
+                                        {% else %}
+                                            <i class="far fa-user-circle fa-2x"></i>
+                                        {% endif%}
+                                    </td>
+                                    <td>
+                                        {{ usr.date }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 p-md-2 pt-5">
+                <div class="card table-responsive rounded shadow-lg bg-2-break">
+                    <div class="my-title text-center m-2">
+                        <img src="{{asset('images/microcontroller.svg')}}" alt="detector" class='avatar-small'> Dispositifs (5+)
+                    </div>
+                    <div class="table-responsive">
+                        <table class="card-table table-sm table-bordered table">
+                            <thead>
+                            <tr>
+                                <th scope="col"><i class="far fa-user"></i> Patient</th>
+                                <th scope="col"><i class="fas fa-map-signs"></i> Passerelle</th>
+                                <th scope="col"><i class="fas fa-exclamation-circle"></i> Status</th>
+                                <th scope="col"><i class="far fa-clock"></i> Depuis le</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for sg in sensors %}
+                                <tr>
+                                    <td>
+                                        <div class="col-12 text-center">
+                                            <img src="{{ sg.person }}" class="avatar avatar-small" alt="avatar">
+                                            <div>
+                                                <span> {{ sg.fname }}</span> <span>{{ sg.lname }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{ sg.sg_name }}
+                                    </td>
+                                    <td class="text-center">
+                                        {% if sg.state == false %}
+                                            <i class="fas fa-times text-danger"></i>
+                                        {% else %}
+                                            <i class="fas fa-check text-success"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {{ sg.date }}
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 p-md-5 pt-5">
+                <div class="rounded-lg shadow-lg bg-2-dark">
+                    <div class="my-title text-center m-2 text-white">
+                        <i class="far fa-thumbs-down"></i> Réclamations (5+)
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table-sm table-bordered text-white table-striped table">
+                            <thead>
+                            <tr>
+                                <th scope="col"><i class="fas fa-ellipsis-v"></i> Type</th>
+                                <th scope="col"><i class="far fa-user"></i> Patient</th>
+                                <th scope="col"><i class="far fa-clock"></i> Date</th>
+                                <th scope="col"><i class="fas fa-exclamation-circle"></i> Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for comp in comps %}
+                                <tr>
+                                    <td>
+                                        {{ comp.type }}
+                                    </td>
+                                    <td>
+                                        <div class="col-12 text-center">
+                                            <img src="{{ comp.person }}" class="avatar avatar-small" alt="avatar">
+                                            <div>
+                                                <span> {{ comp.fname }}</span> <span>{{ comp.lname }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{ comp.start }}
+                                    </td>
+
+                                    <td class="text-center">
+                                        {% if comp.status == false %}
+                                            <i class="fas fa-lightbulb text-danger"></i>
+                                        {% else %}
+                                            <i class="far fa-lightbulb text-success"></i>
+                                        {% endif%}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 {% endblock %}
+
  {% block javascript %}
+
  <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.js"></script>
- <script>$(".count-numbers").counterUp({delay:5,time:1000});</script>
+ <script src="{{asset('js/apexchart.js')}}"></script>
+    <script src="{{asset('js/admin-dashboard.js')}}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+        $(".count-numbers").counterUp({delay:5,time:1000});
+        });
+    </script>
  {% endblock %}

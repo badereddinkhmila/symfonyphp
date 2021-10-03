@@ -1,0 +1,254 @@
+{% extends 'partials/_sideNav2.html.twig' %}
+
+{% block main %}
+    {% for label , message in app.flashes %}
+        <div class="toast toast-{{label}}" role="alert" aria-atomic="true" style="z-index: 1000;position:absolute;top: 0;right: 0" data-animation="true" data-auhide="true" data-delay="3000" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header toast-{{label}}">
+                <strong class="mr-auto"><i class="fas fa-check-circle"></i> Succès!</strong>
+                <small>à l'instant</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                {% if label=='success' %}
+                    {% for msg in message %}
+                        <p> <i class="fas fa-sync"></i> {{ msg | raw }} .</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+    <div class="container-fluid min-vh-100 p-2 mt-2 mt-md-5">
+            <div class="row m-auto justify-content-center">
+                <div class="col-sm-6 col-12 mb-4">
+                    <div class="card shadow rounded-profile">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div class="align-self-center">
+                                    <i class="fas fa-exclamation-triangle text-danger fa-4x"></i>
+                                </div>
+                                <div class="text-end my-av-title my-small-title">
+                                    <h3 class="text-danger">{{ info.complaint }}</h3>
+                                    <p class="mb-0">Réclamations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-12 mb-4">
+                    <div class="rounded-profile card shadow">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div class="align-self-center">
+                                    <i class="far fa-calendar-alt text-primary fa-4x"></i>
+                                </div>
+                                <div class="text-end my-av-title my-small-title">
+                                    <h3 class="text-primary">{{ info.randezvous }}</h3>
+                                    <p class="mb-0">Randez-vous</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if info.doctor == null %}
+                    <div class="col-sm-8 col-12 mb-4">
+                        <div class="card shadow rounded-profile">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between px-md-1">
+                                    <div class="align-self-center">
+                                        <i class="fas fa-procedures text-info fa-4x"></i>
+                                    </div>
+                                    <div class="text-end my-av-title my-small-title">
+                                        <h3 class="text-info">{{ info.patients }}</h3>
+                                        <p class="mb-0">Patients</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="row m-auto">
+            <div class="col-12 col-md-5 p-3 m-auto">
+                <div class="card rounded-profile p-1">
+                    <div class="card-img-top text-center">
+                        <img src="{{ avatar }}" alt="avatar" class="img-thumbnail shadow-sm avatar avatar-large">
+                    </div>
+                    <div class="card-body d-block text-center">
+                        <span class="my-av-title my-small-title">
+                            {% if user.isDoctor %} <i class="fas fa-user-md"></i> {% else %} <i class="far fa-user-circle"></i>{% endif%} {{ user.firstname }} {{ user.lastname }}
+                        </span>
+                        <ul class="list-inline mb-0 ml-auto">
+                            <li class="list-group">
+                                <small class="text-muted">
+                                    <i class="fas fa-thumbtack avatar-micro"></i>
+                                    Adresse: <span>{{ user.address }}</span>
+                                </small>
+                            </li>
+                            <li class="list-group">
+                                <small class="text-muted">
+                                    <i class="far fa-paper-plane avatar-micro"></i>
+                                    Email: <span>{{ user.email }}</span>
+                                </small>
+                            </li>
+                            <li class="list-group">
+                                <small class="text-muted my-av-title my-micro-title">
+                                    <button id="#edit_btn" {% if app.user.id == user.id %} data-toggle="modal" data-target="#edit_profile" {% endif %}  class="btn btn-outline-primary {% if app.user.id != user.id %} disabled {% endif %}">
+                                        <i class="far fa-edit"></i> Modifier
+                                    </button>
+                                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_DOCTOR') %}
+                                    <div class="custom-control custom-switch {% if app.user.id == user.id %}d-none{% endif %}">
+                                        <input type="checkbox" {% if user.active %}checked{% endif%} class="custom-control-input" id="activationSwitch">
+                                        <label class="custom-control-label my-switch" for="activationSwitch">(dés)activer</label>
+                                    </div>
+                                    {% endif %}
+                                </small>
+                            </li>
+                        </ul>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="badge w-100 card-b-bg text-white">
+                                    <img src="{{asset('images/add.svg')}}" alt="#" class="avatar-small mr-2">
+                                    joindre :
+                                    {{user.createdAt | date('d-m-Y')}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-7 p-3">
+                <div class="card rounded-profile p-2">
+                    <div class="model-header my-av-title mt-2">
+                        <strong>
+                            <img src="{{asset('images/body-scan.svg')}}" class="avatar-small" alt="">
+                            Informations :
+                        </strong>
+                    </div>
+                    <hr>
+                    <div class="card-text">
+                        <div class="col-12 my-av-title my-small-title">
+                            <p><i class="fas fa-birthday-cake"></i> Date de naissance: {{user.birthdate | date('d-m-Y')}}</p>
+                        </div>
+                        <hr>
+                        <div class="col-12 my-av-title my-small-title">
+                            <p>
+                                <img src="{{asset('images/growing-up.svg')}}" alt="" class="avatar-micro">
+                                Age: {{user.age}} ans
+                            </p>
+                        </div>
+                        <hr>
+                        <div class="col-12 my-av-title my-small-title">
+                            <i class="fas fa-ruler-vertical"></i>
+                            Taille: {{ user.length}} m
+                        </div>
+                        <hr>
+                        <div class="col-12 my-av-title my-small-title">
+                            <i class="fas fa-weight"></i>
+                            Poids: {{ user.weight }} kg
+                        </div>
+                        <hr>
+                        <div class="col-12 my-av-title my-small-title">
+                            <i class="fas fa-baby-carriage"></i>
+                            Déjà marié(e): {% if user.getEverMarried() %} <i class="fas fa-user-check"></i> {% else %} <i class="fas fa-user-times"></i> {% endif %}
+                        </div>
+                        <hr>
+                        <div class="col-12 my-av-title my-small-title">
+                            <i class="fas fa-joint"></i>
+                            Déjà fumé(e): {% if user.getEverSmoked() %} <i class="fas fa-user-check"></i> {% else %} <i class="fas fa-user-times"></i> {% endif %}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="badge w-100 my-av-title my-small-title">
+                            Status: <i class="fab fa-gg-circle text-{% if user.getActive %}success{% else %}danger{% endif %}"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        {% if info.doctor is not null %}
+        <div class="row">
+        <div class="col-12 col-md-8 m-auto p-3">
+            <div class="card rounded-profile p-1">
+                <div class="p-2">
+                    <div class="w-100 my-av-title my-small-title">
+                        <img src="{{asset('images/doctor.svg')}}" class="avatar-small">
+                        Docteur:
+                    </div>
+                    <hr>
+                    <div class="col-12 text-left p-0">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div class="align-self-center">
+                                    <img src="{% if info.doctor is not null %}{{ info.doctor.getAvatar() }}{% endif %}" class="avatar-md rounded shadow"/>
+                                </div>
+                                <div class="text-end my-av-title my-micro-title">
+                                    <h3>{% if info.doctor is not null %}{{ info.doctor.getFirstname() }} {{ info.doctor.getLastname() }}{% endif %}</h3>
+                                    <p class="mb-0"><i class="far fa-paper-plane"></i> Email: {{ info.doctor.getEmail() }}</p>
+                                    <p class="mb-0"><i class="fas fa-thumbtack"></i> Address: {{ info.doctor.Address() }}</p>
+                                    <div class="mb-0">
+                                        <img src="{{asset('images/adduser.svg')}}" alt="#" class="avatar-small mr-2"/>
+                                        joindre :
+                                        {% if info.doctor is not null %} {{info.doctor.getCreatedAt() | date('d-m-Y')}} {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="badge w-100 my-av-title my-small-title">
+                        Status: <i class="fab fa-gg-circle {% if info.doctor is not null %} text-{% if info.doctor.getActive %}success{% else %}danger{% endif %} {% endif %}"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        {% endif %}
+    </div>
+    {% include 'partials/edituser.html.twig' with {form:form}%}
+
+    {% if user.active %}
+        {% set operation = 'désactiver'%}
+    {% else %}
+        {% set operation = 'activer'%}
+    {% endif %}
+
+    <div tabindex="-1" class="modal fade" id="confirmModal" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="my-title"><span><i class="fas fa-user-edit mr-3"></i></span> {{operation}} utilisateur</div>
+                    <i class="far fa-times-circle close" type="button" aria-hidden="true" data-dismiss="modal"></i>
+                </div>
+                <div class="modal-body text-center">
+                    <bold>Voulez vous vraiment {{ operation}} cet utilisateur ?</bold>
+                </div>
+                <div class="modal-footer justify-content-center">
+                        <a href="/account/{{ user.id }}/status" class="btn btn-warning"><i class="fas fa-exclamation-triangle"></i> {{ operation|upper }} </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock main%}
+
+{% block javascript %}
+<script>
+    $(document).ready(()=>{
+        const errors = "{{errors}}";
+        const user_id = "{{ user.id }}"
+        if(errors == 1){
+            $('#edit_profile').modal('show')
+        }
+        $('#activationSwitch').on('click',()=>{
+            $('#confirmModal').modal('show');
+
+            /*$.post('/account/'+user_id+'/status',(resp)=>{
+                console.log(resp)
+            })*/
+        })
+    })
+</script>
+{% endblock %}
+

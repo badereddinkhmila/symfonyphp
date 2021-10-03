@@ -9,17 +9,15 @@
                 {{ form_start(form) }}
                 <div class="row form-group">
                     <div class="col-12 col-md-6">
-                        {{form_errors(form.firstname)}}
                         {{form_label(form.firstname) }}
                         <div class="input-with-icon d-flex align-items-center">
-                            {{form_widget(form.firstname) }}
-                            <i class="far fa-user"></i>
+                        {{form_widget(form.firstname) }}
+                        <i class="far fa-user"></i>
                         </div>
                         <small>{{ form_help(form.firstname) }}</small>
                     </div>
                     <div class="col-12 col-md-6">
-                        {{form_errors(form.lastname)}}
-                        {{form_label(form.lastname) }}
+                                      {{form_label(form.lastname) }}
                         <div class="input-with-icon d-flex align-items-center">
                             {{form_widget(form.lastname) }}
                             <i class="far fa-user"></i>
@@ -29,18 +27,16 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-12">
-                            {{form_errors(form.email)}}
-                            {{form_label(form.email) }}
+                                           {{form_label(form.email) }}
                             <div class="input-with-icon d-flex align-items-center">
                                 {{form_widget(form.email) }}
                                 <i class="far fa-paper-plane"></i>
                             </div>
-                            <small>{{ form_help(form.email) }}</small>
+                        <small>{{ form_help(form.email) }}</small>
                         </div>
 
                     <div class="col-12 col-md-6">
-                        {{form_errors(form.password.first)}}
-                        {{form_label(form.password.first) }}
+                                            {{form_label(form.password.first) }}
                         <div class="input-with-icon d-flex align-items-center">
                             {{form_widget(form.password.first) }}
                             <i class="far fa-eye" id="password_eye2"></i>
@@ -49,8 +45,7 @@
                     </div>
 
                     <div class="col-12 col-md-6">
-                        {{form_errors(form.password.second)}}
-                        {{form_label(form.password.second) }}
+                                             {{form_label(form.password.second) }}
                         <div class="input-with-icon d-flex align-items-center">
                             {{form_widget(form.password.second) }}
                             <i class="far fa-eye" id="password_eye3"></i>
@@ -60,16 +55,14 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-12 col-md-8">
-                        {{form_errors(form.birthdate)}}
-                        {{form_label(form.birthdate) }}
+                                       {{form_label(form.birthdate) }}
                         <div class="input-with-icon d-flex align-items-center">
                             {{form_widget(form.birthdate) }}
                         </div>
                         <small>{{ form_help(form.birthdate) }}</small>
                     </div>
                     <div class="col-12 col-md-4">
-                        {{form_errors(form.gender)}}
-                        {{form_label(form.gender) }}
+                                    {{form_label(form.gender) }}
                         <div class="input-with-icon d-flex align-items-center">
                             {{form_widget(form.gender) }}
                             <i class="fas fa-venus-mars"></i>
@@ -79,8 +72,7 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-12 col-md-6">
-                        {{form_errors(form.weight)}}
-                        {{form_label(form.weight) }}
+                                    {{form_label(form.weight) }}
                         <div class="input-with-icon d-flex align-items-center">
                             {{form_widget(form.weight) }}
                             <i class="fas fa-weight"></i>
@@ -88,8 +80,7 @@
                         <small>{{ form_help(form.weight) }}</small>
                     </div>
                     <div class="col-12 col-md-6">
-                        {{form_errors(form.length)}}
-                        {{form_label(form.length) }}
+                                    {{form_label(form.length) }}
                         <div class="input-with-icon d-flex align-items-center">
                             {{form_widget(form.length) }}
                             <i class="fas fa-ruler"></i>
@@ -97,10 +88,31 @@
                         <small>{{ form_help(form.length) }}</small>
                     </div>
                 </div>
+                <div class="row form-group">
+                    <div class="col-12 col-md-6">
+                        {{form_label(form.ever_married) }}
+                        <div class="input-with-icon d-flex align-items-center">
+                            {{form_widget(form.ever_married) }}
+                        </div>
+                        <small>{{ form_help(form.ever_married) }}</small>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        {{form_label(form.ever_smoked) }}
+                        <div class="input-with-icon d-flex align-items-center">
+                            {{form_widget(form.ever_smoked) }}
+
+                        </div>
+                        <small>{{ form_help(form.ever_smoked) }}</small>
+                    </div>
+                    <div class="col-12 col-md-6 d-none">
+                        {{ form_label(form.active) }}
+                        {{ form_widget(form.active) }}
+                        <small> {{ form_help(form.active) }} </small>
+                    </div>
+                </div>
                 <div class="form-group row">
                     <div class="col-12 col-md-6">
-                        {{form_errors(form.address)}}
-                        {{form_label(form.address) }}
+                                     {{form_label(form.address) }}
                         <div class="input-with-icon d-flex align-items-center">
                             {{form_widget(form.address) }}
                             <i class="far fa-compass"></i>
@@ -108,8 +120,7 @@
                         <small>{{ form_help(form.address) }}</small>
                     </div>
                     <div class="col-12 col-md-6">
-                        {{form_errors(form.phone)}}
-                        {{form_label(form.phone) }}
+                                   {{form_label(form.phone) }}
                         <div class="input-with-icon d-flex align-items-center">
                             {{form_widget(form.phone) }}
                             <i class="fas fa-mobile-alt"></i>
@@ -119,8 +130,7 @@
                 </div>
                 <div class="form-group row d-flex justify-content-center">
                     <div class="col-12 col-md-10">
-                        {{form_errors(form.avatar)}}
-                        {{form_label(form.avatar) }}
+                                    {{form_label(form.avatar) }}
                         <div class="d-flex align-items-center">
                             {{form_widget(form.avatar) }}
                         </div>

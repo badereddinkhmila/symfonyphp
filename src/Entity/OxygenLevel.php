@@ -27,7 +27,12 @@ class OxygenLevel
     /**
      * @ORM\Column(type="float")
      */
-    private ?float $oxygen_level;
+    private ?float $pulse;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private ?float $spo2;
 
 
     public function getDeviceId(): ?string
@@ -54,14 +59,42 @@ class OxygenLevel
         return $this;
     }
 
-    public function getOxygenLevel(): ?float
+    /**
+     * Get the value of spo2
+     */ 
+    public function getSpo2()
     {
-        return $this->oxygen_level;
+        return $this->spo2;
     }
 
-    public function setOxygenLevel(float $oxygen_level): self
+    /**
+     * Set the value of spo2
+     *
+     * @return  self
+     */ 
+    public function setSpo2($spo2)
     {
-        $this->oxygen_level = $oxygen_level;
+        $this->spo2 = $spo2;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pulse
+     */ 
+    public function getPulse()
+    {
+        return $this->pulse;
+    }
+
+    /**
+     * Set the value of pulse
+     *
+     * @return  self
+     */ 
+    public function setPulse($pulse)
+    {
+        $this->pulse = $pulse;
 
         return $this;
     }

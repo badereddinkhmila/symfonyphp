@@ -26,8 +26,19 @@ class Weight
     /**
      * @ORM\Column(type="float")
      */
-    private $weight_value;
+    private $bmi;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $bodyfat;
+    
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $weight;
+    
+    
     public function getDeviceId(): ?string
     {
         return $this->device_id;
@@ -53,15 +64,41 @@ class Weight
     }
 
 
-    public function getWeightValue(): ?float
+    public function getBmi(): ?float
     {
-        return $this->weight_value;
+        return $this->bmi;
     }
 
-    public function setWeightValue(float $weight_value): self
+    public function setBmi(float $bmi): self
     {
-        $this->weight_value = $weight_value;
+        $this->weight = $bmi;
 
         return $this;
     }
+
+
+    public function getBodyfat(): ?float
+    {
+        return $this->bodyfat;
+    }
+
+    public function setBodyfat(float $bodyfat): self
+    {
+        $this->bodyfat = $bodyfat;
+
+        return $this;
+    }
+
+    public function getWeight(): ?float
+    {
+        return $this->weight;
+    }
+
+    public function setWeight(float $weight): self
+    {
+        $this->weight = $weight;
+
+        return $this;
+    }
+
 }

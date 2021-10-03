@@ -45,7 +45,7 @@ class OxygenLevelRepository extends ServiceEntityRepository
     public function findByBucket($d_id,$from,$to): array
     {
         return $this->createQueryBuilder('p')
-            ->select('p.collect_time ,p.oxygen_value')
+            ->select('p.collect_time ,p.pulse,p.spo2')
             ->andWhere('p.device_id = :d_id')
             ->andWhere(' p.collect_time >= :from ')
             ->andWhere(' p.collect_time <= :to ')
@@ -53,7 +53,21 @@ class OxygenLevelRepository extends ServiceEntityRepository
             ->setParameter('from', $from)
             ->setParameter('to', $to )
             ->orderBy('p.collect_time', 'ASC')
-            ->setMaxResults(6000)
+            //->setMaxResults(6000)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findMaxMinByBucket($d_id,$from,$to): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('Max(p.spo2) AS max_v, Min(p.spo2) AS min_v')
+            ->andWhere('p.device_id = :d_id')
+            ->andWhere(' p.collect_time >= :from ')
+            ->andWhere(' p.collect_time <= :to ')
+            ->setParameter('d_id',$d_id)
+            ->setParameter('from', $from)
+            ->setParameter('to', $to )
             ->getQuery()
             ->getResult();
     }

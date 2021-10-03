@@ -25,7 +25,7 @@ class Temperature
     /**
      * @ORM\Column(type="float")
      */
-    private ?float $temperature_level;
+    private ?float $temperature;
 
     public function getDeviceId(): ?string
     {
@@ -51,14 +51,14 @@ class Temperature
         return $this;
     }
 
-    public function getTemperatureLevel(): ?float
+    public function getTemperature(): ?float
     {
-        return $this->temperature_level;
+        return $this->temperature;
     }
 
-    public function setTemperatureLevel(float $temperature_level): self
+    public function setTemperature(float $temperature): self
     {
-        $this->temperature_level = $temperature_level;
+        $this->temperature = $temperature;
 
         return $this;
     }

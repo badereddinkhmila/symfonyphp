@@ -1,5 +1,8 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes: ['bootstrap_4_layout.html.twig']
+    
+    paths:
+        '%kernel.project_dir%/assets': assets
     globals:
         mercure_publish_url: '%env(MERCURE_PUBLISH_URL)%'

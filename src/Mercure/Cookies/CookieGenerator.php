@@ -21,8 +21,8 @@ class CookieGenerator
     public function generate(): Cookie
     {
         $token = (new Builder())
-            ->withClaim('mercure', ['subscribe' => ['*'],'publish'=>['*']])
+            ->withClaim('mercure', ['subscribe' => ['*']])
             ->getToken(new Sha256(), new Key($this->secret));
-        return Cookie::create('mercureAuthorization', $token, (new \DateTime())->add(new \DateInterval('P1D')), '/.well-known/mercure',null,false, true);
+        return Cookie::create('mercureAuthorization', $token, (new \DateTime())->add(new \DateInterval('P30D')),'/.well-known/mercure');
     }
 }

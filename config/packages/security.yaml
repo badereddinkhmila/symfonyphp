@@ -40,6 +40,7 @@ security:
                 path: User_logout
                 target: welcome_page
         main:
+            user_checker: App\Security\UserChecker
             anonymous: true
             lazy: true
             provider: in_database
@@ -54,7 +55,6 @@ security:
                 default_target_path: dash_home
                 failure_path : login_error
                 always_use_default_target_path: true
-            
             logout:
                 path: User_logout
                 target: welcome_page

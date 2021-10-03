@@ -1,0 +1,14 @@
+enqueue:
+    default: 
+        transport:        
+            dsn: "rdkafka://"
+            global:
+                group.id: "Symfony application"
+                metadata.broker.list: "%env(KAFKA_BROKERS)%"
+            topic:
+                auto.offset.reset: latest
+            commit_async: true
+            receiveTimeout: 10000
+        consumption:
+            receive_timeout: 3000
+        client: ~

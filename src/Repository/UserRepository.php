@@ -47,6 +47,10 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
     */
+    /**
+     * @param $value
+     * @return array
+     */
     public function findByDoctor($value): array
     {   
 
@@ -58,4 +62,79 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
 
+
+    public function findCountPerDay(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "select to_char ( au.created_at , 'dd-mm-yyyy' ),  
+                count (*)  
+                from   app_users au 
+                group  by to_char ( au.created_at , 'dd-mm-yyyy' );
+            ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+
+    public function findCountPerDayPerDoc($doc_id): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "select to_char ( au.created_at , 'dd-mm-yyyy' ), count (p.patient_id)
+                from   app_users au inner join patients p on au.id = p.patient_id
+                where p.doctor_id = ".$doc_id."
+                group  by to_char ( au.created_at , 'dd-mm-yyyy' );
+            ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+
+    public function findCountPerGender(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "select au.gender,count (*)
+	            from   app_users au 
+                group  by au.gender;
+               ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function findCountPerAge(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "select COUNT(*),
+ 	            CASE
+  		            WHEN au.age <18 THEN 'Under 18'
+  		            WHEN au.age BETWEEN 18 AND 40 THEN '18-40'
+  		            WHEN au.age BETWEEN 41 AND 62 THEN '41-62'
+  		            WHEN au.age >45 THEN 'Over 63'
+	            END AS age_range 
+                FROM app_users au
+                GROUP BY age_range;
+               ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function findCountPerRole(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "select r.title, count (*)  
+                from   role_user ru
+                inner join role r on r.id = ru.role_id 
+                group  by (r.title);";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }

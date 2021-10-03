@@ -1,37 +1,47 @@
-<div class="container-fluid" id="formContainer">
-    {{ form_start(form) }}
-    <div class="row form-group">
-        <div class="col-12">
-            {{ form_errors(form.complaint_type) }}
-            {{form_label(form.complaint_type) }}
-            <div class="input-with-icon d-flex align-items-center">
-                {{form_widget(form.complaint_type) }}
-                <i class="fas fa-ellipsis-v"></i>
+<div tabindex="-1" class="modal fade" id="{{modalID}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title my-title">
+                    <img class="avatar-small" src="{{ asset('images/complain.svg') }}" alt="#">
+                    Nouvelle Réclamation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="far fa-times-circle"></i>
+                    </span>
+                </button>
             </div>
-            <small>{{ form_help(form.complaint_type) }}</small>
-        </div>
-        <div class="col-12">
-            {{form_errors(form.complaint_description)}}
-            {{form_label(form.complaint_description) }}
-            {{form_widget(form.complaint_description) }}
-            <small>{{ form_help(form.complaint_description) }}</small>
-        </div>
-        <div class="col-12 mt-2">
-                {{form_errors(form.is_treated)}}
-                    {{form_label(form.is_treated) }}
-                    {{form_widget(form.is_treated,{'attr':{'disabled':true}}) }}
-            <small>{{ form_help(form.is_treated) }}</small>
+            <div class="modal-body" id="formContainer">
+                {{ form_start(form) }}
+                <div class="row form-group">
+                    <div class="col-12">
+                        {{ form_errors(form.complaint_type) }}
+                        {{form_label(form.complaint_type) }}
+                        <div class="input-with-icon d-flex align-items-center">
+                            {{form_widget(form.complaint_type) }}
+                            <i class="fas fa-ellipsis-v"></i>
+                        </div>
+                        <small>{{ form_help(form.complaint_type) }}</small>
+                    </div>
+                    <div class="col-12">
+                        {{form_errors(form.complaint_description)}}
+                        {{form_label(form.complaint_description) }}
+                        {{form_widget(form.complaint_description) }}
+                        <small>{{ form_help(form.complaint_description) }}</small>
+                    </div>
+                    <div class="col-12 mt-2 d-none">
+                            {{form_errors(form.is_treated)}}
+                                {{form_label(form.is_treated) }}
+                                {{form_widget(form.is_treated) }}
+                        <small>{{ form_help(form.is_treated) }}</small>
+                    </div>
+                </div>
+                <hr class="bg-dark">
+                <div class="text-center">
+                    <button class="btn text-center bg-material-ui text-white" type="submit"><i class="far fa-save fa-2m"></i> Enregistrer</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
         </div>
     </div>
-    <hr class="bg-dark">
-    <div class="text-center">
-        <button class="btn text-center bg-material-ui text-white" type="submit" id="formsubmit"><i class="far fa-save fa-2m"></i> Enregistrer</button>
-    </div>
-    {{ form_end(form) }}
 </div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('textarea').summernote({
-        });
-    })
-</script>

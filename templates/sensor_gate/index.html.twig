@@ -1,0 +1,251 @@
+{% extends "partials/_sideNav2.html.twig" %}
+{% block main %}
+  {% for label, message in app.flashes %}
+    <div class="toast toast-{{label}}" role="alert" aria-atomic="true" style="z-index: 1000;position:absolute;top: 0;right: 0" data-animation="true" data-auhide="true" data-delay="5000" aria-live="assertive">
+      <div class="toast-header toast-{{label}}">
+        <strong class="mr-auto">
+          <i class="fas fa-check-circle"></i>
+          Succès!</strong>
+        <small>à l'instant</small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body">
+        {% if label == 'warning' %}
+          {% for msg in message %}
+            <p>
+              <i class="fas fa-exclamation-triangle"></i>
+              {{ msg | raw }}
+            </p>.
+          {% endfor %}
+        {% elseif label=='success' %}
+          {% for msg in message %}
+            <p>
+              <i class="far fa-thumbs-up"></i>
+              {{ msg | raw }}
+            </p>
+          {% endfor %}
+        {% else %}
+          {% for msg in message %}
+            <p>
+              <i class="fas fa-ban"></i>
+              {{ msg | raw }}
+            </p>.
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+  <div class="container-fluid m-0 m-sm-1">
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_DOCTOR') %}
+      <div class="mb-3 mt-2 mt-md-5 card-body my-title d-flex bg-1-lightpink align-items-center rounded">
+        <span class="text-bold mr-auto">Gestion des dispositifs</span>
+        <span class="ml-auto">
+          <a href="{{ path('sensor_gateway_new') }}" class="btn {% if is_granted('ROLE_DOCTOR') == false %}disabled{%endif %} btn-md btn-light d-flex align-items-center">
+            <i class="fas fa-plus"></i><img class="avatar-micro" src="{{ asset('images/detector.svg') }}" alt="..">
+          </a>
+        </span>
+      </div>
+    {% endif %}
+
+    <div class="row p-md-5 d-flex align-content-center justify-content-center" id="content-row">
+      <div id="loader" class="spinner"></div>
+      <section class="page_403 d-none">
+        <div class="text-center">
+          <div class="four_zero_four_bg"></div>
+          <div class="contant_box_403">
+            <h1 class="text-danger">
+              <span style="font-weight: bolder">O</span>ops
+            </h1>
+            <h3 class="h2">
+              {% if is_granted('ROLE_DOCTOR') or is_granted('ROLE_ADMIN') %}
+                Aucun équipement n'est déployé.
+              {% else %}
+                Vous ne disposez pas des équipements.
+              {% endif %}
+            </h3>
+            {% if is_granted('ROLE_DOCTOR') == true %}
+              <button class="link_403 btn" href="{{ path('sensor_gateway_new') }}">
+                <i class="fas fa-plug"></i>
+                Ajouter</button>
+            {% endif %}
+            <a href="{{ path('dash_home') }}" class="btn link_403 reset_403">
+              <i class="far fa-arrow-alt-circle-left"></i>
+              Acceil</a>
+          </div>
+        </div>
+      </section>
+    </div>
+    <br>
+  </div>
+
+  <div tabindex="-1" class="modal fade" id="confirmModal" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span>
+            <i class="fas fa-minus"></i>
+            <img src="{{ asset('images/microcontroller.svg') }}" alt="#" class="avatar-small">
+          </span>
+          <p class="my-title ml-1">Supprimer paquet de capteur
+          </p>
+          <i class="far fa-times-circle close" type="button" aria-hidden="true" data-dismiss="modal"></i>
+        </div>
+        <div class="modal-body text-center">
+          <bold>Voulez vous vraiment supprimer ce paquet !</bold>
+          <p>Cette opération est irréversible</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <a type="submit" id="confdel" class="btn btn-warning">
+            <i class="fas fa-exclamation-triangle"></i>
+            Confirmer suppression</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block javascript %}
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $.ajax({
+        url: "{{ path('sensor_gateway_list') }}",
+        method: "GET",
+        dataType: "json",
+        async: true,
+        success: function (data) {
+          $('#loader').hide();
+          if (data.length == 0) {
+            $('section').removeClass('d-none');
+          } else 
+            data.forEach(function (el) {
+              let content = document.getElementById('content-row');
+              let status = "";
+              if (el.state == true) {
+                status = "<i class='text-success fab fa-creative-commons-sampling-plus'></i>"
+              } else {
+                status = "<i class='text-danger fab fa-creative-commons-sampling-plus'></i>"
+              }
+              let card = `<div class="p-3 m-auto col-12 col-md-4">
+                            <div class="rotate-container">
+                                <div id="front-${el.id}" class="card card-front text-center">
+                                    <div class="modal-header justify-content-center">
+                                    <p class="my-title">
+                                        <i class="far fa-user"></i>
+                                        Patient</p>
+                                    </div>
+                                    <div class="card-block p-2">
+                                    <img src="${el.user_photo}" alt="Avatar" class="avatar-large img-thumbnail"/>
+                                    <h3 class="card-title my-title">${el.user_f_name} ${el.user_l_name}</h3>
+                                    <a href="/dashboard/sensor/gateway/${el.id}/edit" class="{% if is_granted('ROLE_DOCTOR') == false %}disabled{%endif %}  btn btn-small btn-outline-primary m-1 {% if is_granted('ROLE_DOCTOR') == false and is_granted('ROLE_ADMIN') == false %}disabled{%endif %}">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a id="${el.id}" class='{% if is_granted('ROLE_DOCTOR') == false %}disabled{%endif %} btn btn-small delete btn-outline-danger m-1'>
+                                        <i class="far fa-trash-alt"></i>
+                                    </a>
+                                    <p class="text-center p-2">
+                                        <span class="m-1">Status: ${status}
+                                        </span>
+                                    </p>
+                                    </div>
+                                    <div class="footer p-3">
+                                    <button class="btn btn-primary btn-rotate" id="${el.id}">
+                                        Equipements
+                                        <i class="fas fa-long-arrow-alt-right"></i>
+                                    </button>
+                                    </div>
+                                </div>
+                                <div id="back-${el.id}" class="card card-back text-center">
+                                    <div class="modal-header justify-content-center">
+                                      <img src="{{ asset('images/microcontroller.svg') }}" alt="..." class="avatar-small p-1">
+                                      <span class="text-break my-title"> ${el.id}</span>
+                                    </div>
+                                    <div class="card-block">
+                                    <div class="row">
+                                      <div class="col-6">
+                                          <figure class="snip1321">
+                                            <img src="{{asset("images/bp_ble.jpg")}}" alt="bp_ble_sensor" style="visibility:inherit"/>
+                                              <figcaption>
+                                              <div class="col-12">
+                                              <img src="{{ asset('images/bp.svg') }}"class="avatar-small"/>
+                                              </div>
+                                                  <small>${el.bp_sensor}</small>
+                                              </figcaption>
+                                          </figure>
+                                      </div>
+                                      <div class="col-6">
+                                          <figure class="snip1321"><img src="{{asset("images/glucometer_ble.jpg")}}" alt="bp_ble_sensor"/>
+                                              <figcaption>
+                                              <div class="col-12">  
+                                              <img src="{{ asset('images/gluc.svg') }}"class="avatar-small"/>
+                                              </div>    
+                                              <small>${el.gly_sensor}</small>
+                                              </figcaption>
+                                          </figure>
+                                      </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <figure class="snip1321"><img src="{{asset("images/spo2_ble.jpg")}}" alt="bp_ble_sensor"/>
+                                                <figcaption>
+                                                <div class="col-12">
+                                                <img src="{{ asset('images/oxygen.svg') }}"class="avatar-small"/>
+                                                </div>
+                                                    <small>${el.oxy_sensor}</small>
+                                                </figcaption>
+                                            </figure>
+                                        </div>
+                                        <div class="col-6">
+                                            <figure class="snip1321"><img src="{{asset("images/temperature_ble.jpg")}}" alt="bp_ble_sensor"/>
+                                                <figcaption>
+                                                <div class="col-12">  
+                                                <img src="{{ asset('images/thermometer.svg') }}"class="avatar-small"/>
+                                                </div>    
+                                                <small>${el.temp_sensor}</small>
+                                                </figcaption>
+                                            </figure>
+                                        </div>
+                                        <div class="col-12">
+                                            <figure class="snip1321"><img src="{{asset("images/body_scale_ble.jpg")}}" alt="bp_ble_sensor"/>
+                                                <figcaption>
+                                                <div class="col-12">  
+                                                <img src="{{ asset('images/weigh.svg') }}"class="avatar-small"/>
+                                                </div>    
+                                                <small>${el.weight_sensor}</small>
+                                                </figcaption>
+                                            </figure>
+                                        </div>
+                                    </div>
+                                    <div class="footer p-3">
+                                      <button class="btn btn-primary btn-rotate" id="${el.id}">
+                                      <i class="fas fa-long-arrow-alt-left"></i>
+                                        Patient
+                                      </button>
+                                    </div>
+                                </div>  
+                            </div>
+                          </div>`
+              content.innerHTML += card
+            });
+          }
+        });
+    });
+
+    $(document).on('click', ".delete", function () {
+      let sensor_id = $(this).attr('id');
+      $('#confirmModal').modal('show');
+      $('#confdel').attr("href", "/dashboard/sensor/gateway/" + sensor_id + "/delete");
+    });
+    
+    $(document).on('click','.btn-rotate',function () {
+        let id = $(this).attr('id')
+        let front = document.getElementById(`front-${id}`)
+        let back = document.getElementById(`back-${id}`)
+        
+        front.classList.toggle('rotate-card-front');
+        back.classList.toggle('rotate-card-back');
+    });
+
+  </script>
+{% endblock %}

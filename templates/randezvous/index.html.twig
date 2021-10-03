@@ -1,267 +1,374 @@
 {% extends "partials/_sideNav2.html.twig"%}
 {% block title%}Randez-vous
-{% endblock  %}
+{% endblock %}
 {% block style %}
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.2/main.css"/>
-{% endblock  %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.2/main.css"/>
+{% endblock %}
 
 {% block main %}
-	<div class="container-fluid d-lg-flex d-block mt-2 mb-5">
-		<div id='external-events' class="container-fluid card d-flex col-12 col-lg-3 ml-auto shadow rounded mr-lg-1">
-			<div class="row d-flex align-items-center">
-				<strong class="mr-auto my-title my-small-title m-2">Randez-vous</strong>
-				<img class="avatar-micro ml-auto shadow m-2" src="{{asset('images/meeting.svg')}}" alt="">
-			</div>
-			<hr>
-			<div class="row flex-lg-column d-flex flex-sm-row align-items-lg-center justify-items-center">
-				<div class="col-12 col-sm-4 col-lg-12">
-					<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-danger'>
-						<span class='fc-event-main'>Urgent</span>
-					</div>
-				</div>
-				<div class="col-12 col-sm-4 col-lg-12">
-					<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-warning'>
-						<span class='fc-event-main'>Réaliser des tests</span>
-					</div>
-				</div>
-				<div class="col-12 col-sm-4 col-lg-12">
-					<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-success'>
-						<span class='fc-event-main'>Controle régulier</span>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id='calendar-container' class="card shadow rounded mt-2 p-3 mb-5 h-100 d-flex col-lg-9 col-12">
-			<div class="spinner"></div>
-			<div id='calendar' class="mb-5"></div>
-		</div>
-	<div class="modal fade hidden" id="newevent" role="dialog">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title my-title">
-							<i class="far fa-calendar-plus"></i>
-							Nouveau Randez-vous</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">
-								<i class="far fa-times-circle"></i>
-							</span>
-						</button>
-					</div>
-					<div class="modal-body d-flex justify-content-center align-content-lg-center">
-						<div class="spinner"></div>
-					</div>
-				</div>
-				<!-- /.modal-content -->
-			</div>
-			<!-- /.modal-dialog -->
-		</div>
-		<!-- /.modal -->
+  {% for label, message in app.flashes %}
+    <div class="toast toast-{{label}}" role="alert" aria-atomic="true" style="z-index: 1000;position:absolute;top: 0;right: 0" data-animation="true" data-auhide="true" data-delay="5000" aria-live="assertive">
+      <div class="toast-header toast-{{label}}">
+        <strong class="mr-auto">
+          <i class="fas fa-check-circle"></i>
+          Succès!</strong>
+        <small>à l'instant</small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body">
+        {% if label == 'warning' %}
+          {% for msg in message %}
+            <p>
+              <i class="fas fa-exclamation-triangle"></i>
+              {{ msg | raw }}
+            </p>.
+          {% endfor %}
+        {% elseif label=='success' %}
+          {% for msg in message %}
+            <p>
+              <i class="far fa-thumbs-up"></i>
+              {{ msg | raw }}
+            </p>
+          {% endfor %}
+        {% else %}
+          {% for msg in message %}
+            <p>
+              <i class="far fa-calendar slashed"></i>
+              {{ msg | raw }}
+            </p>.
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
 
-	<div class="modal fade hidden" id="upevent" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title my-title">
-						<i class="far fa-calendar-check"></i>
-						Modifier Randez-vous</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">
-							<i class="far fa-times-circle"></i>
-						</span>
-					</button>
-				</div>
-				<div class="modal-body d-flex">
-					<div class="spinner"></div>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
+  <div class="container-fluid d-lg-flex d-block mt-2 mb-5">
+    <div id='external-events' class="m-2 card d-flex col-12 col-lg-3 col-xl-2 ml-auto shadow rounded">
+      <div class="row d-flex align-items-center">
+        <strong class="mr-auto my-title my-small-title m-2 ">Consultation</strong>
+        <img class="avatar-micro ml-auto m-2" src="{{asset('images/meeting.svg')}}" alt="">
+        <small class="text-muted my-micro-title p-2">
+        glisser-déposer l'un de ces événements pour créer une nouvelle consultation.  
+        </small>  
+      </div>
+      <hr>
+      <div class="row flex-lg-column d-flex flex-sm-row align-items-lg-center justify-items-center">
+        <div class="col-12 col-sm-4 col-lg-12">
+          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-danger'>
+            <span class='fc-event-main'>Urgent</span>
+          </div>
+        </div>
+        <div class="col-12 col-sm-4 col-lg-12">
+          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-warning'>
+            <span class='fc-event-main'>Réaliser des tests</span>
+          </div>
+        </div>
+        <div class="col-12 col-sm-4 col-lg-12">
+          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-success'>
+            <span class='fc-event-main'>Controle régulier</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id='calendar-container' class="card shadow rounded mt-2 p-3 mb-5 d-flex col-xl-10 col-lg-9 col-12">
+      <div class="row p-3 justify-content-center">
+        <small class="my-small-title col-12">
+          Légende:
+        </small>
+        <div class="col-12 col-md-4 my-micro-title d-flex align-items-center">
+          <small>Aujourd'hui: </small> 
+          <svg width="50" height="10">
+            <rect width="300" height="100" class="rounded shadow" style="fill:rgba(255, 247, 204, 0.8)"/>
+          </svg> 
+        </div>
+        <div class="col-12 col-md-4 my-micro-title d-flex align-items-center">
+          <small>Temps pris: </small> 
+          <svg width="50" height="10">
+            <rect width="50" height="10" class="rounded shadow" style="fill:rgba(255, 165, 165, 0.3)"/>
+          </svg> 
+        </div>
+        <div class="col-12 col-md-4 my-micro-title d-flex align-items-center">
+          <small>Hors temps de travail: </small> 
+          <svg width="50" height="10">
+            <rect width="300" height="100" class="rounded shadow" style="fill:rgba(209, 215, 215,0.3)"/>
+          </svg> 
+        </div>
+      </div>
+      <div class="spinner"></div>
+      <div id='calendar' class="mb-5"></div>
+    </div>
+
+    <!---------   new event modal   -------->
+    <div class="modal fade hidden" id="newevent" role="dialog">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title my-title">
+              <i class="far fa-calendar-plus"></i>
+              Nouvelle Consultation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">
+                <i class="far fa-times-circle"></i>
+              </span>
+            </button>
+          </div>
+          <div class="modal-body d-flex justify-content-center align-content-lg-center">
+            <div class="spinner"></div>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 
 
-	<div class="modal fade hidden" id="confirm" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title my-title">
-						<i class="far fa-calendar-minus"></i>
-						Supprimer Randez-vous</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">
-							<i class="far fa-times-circle"></i>
-						</span>
-					</button>
-				</div>
-				<div class="modal-body text-center">
-					<bold>Voulez vous vraiment annuler ce randez-vous !</bold>
-					<p>Cette étape est irréversible</p>
-					<hr>
-					<button class="btn bg-warning" id="confdel">
-						<i class="fas fa-exclamation-triangle"></i>Confirmer</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
-	</div>
+    <!----   update event modal  ------>
+    <div class="modal fade hidden" id="upevent" role="dialog">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title my-title">
+              <i class="far fa-calendar-check"></i>
+              Modifier Consultation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">
+                <i class="far fa-times-circle"></i>
+              </span>
+            </button>
+          </div>
+          <div class="modal-body d-flex">
+            <div class="spinner"></div>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade hidden" id="confirm" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title my-title">
+              <i class="far fa-calendar-minus"></i>
+              Annuler Consultation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">
+                <i class="far fa-times-circle"></i>
+              </span>
+            </button>
+          </div>
+          <div class="modal-body text-center">
+            <bold>Voulez vous vraiment annuler ce randez-vous !</bold>
+            <p>Cette étape est irréversible</p>
+            <hr>
+            <button class="btn bg-warning" id="confdel">
+              <i class="fas fa-exclamation-triangle"></i>Confirmer</button>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+  </div>
 {% endblock main %}
 
 {% block javascript %}
-	<script src="{{asset('js/fullcalendar.js')}}"></script>
-	<script>
-		$(document).ready(function () {
-			var Draggable = FullCalendar.Draggable;
+  <script src="{{asset('js/fullcalendar.js')}}"></script>
+  <script>
+    $(document).ready(function () {
+      var Draggable = FullCalendar.Draggable;
 
-			var containerEl = document.getElementById('external-events');
+      var containerEl = document.getElementById('external-events');
 
-			new Draggable(containerEl, {
-			itemSelector: '.fc-event',
-			eventData: function (eventEl) {
-			return {title: eventEl.innerText};
-			}
-			});
+      new Draggable(containerEl, {
+        itemSelector: '.fc-event',
+        eventData: function (eventEl) {
+          return {title: eventEl.innerText};
+        }
+      });
 
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        titleFormat: {
+          year: '2-digit',
+          month: 'short',
+          day: 'numeric'
+        },
+        height: '100%',
+        locale: 'fr',
+        slotMinTime: "08:00:00",
+        slotMaxTime: "18:00:00",
+        themeSystem: 'bootstrap',
+        timeZone: 'Europe/paris',
+        headerToolbar: {
+          left: 'prev next today',
+          center: '',
+          right: 'timeGridWeek timeGridDay listWeek'
+        },
+        footerToolbar: {
+          left: 'prev next',
+          center: 'title'
+        },
+        slotDuration:'00:15:00',
+        buttonText: {
+          today: "aujourd'hui",
+          week: "semaine",
+          day: "jour",
+          list: "liste"
+        },
+        events: '/dashboard/randezvous/list',
+        eventTimeFormat: {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false,
+          meridiem: false
+        },
+        displayEventEnd : true,
+        editable: true,
+        droppable: true,
+        weekends: false,
+        allDaySlot: false,
+        drop: function (info) {
+          $("#newevent").modal('show');
+          let rdv = [];
+          if ($(info.draggedEl).hasClass("bg-success")) {
+            rdv[0] = "#28a745";
+          } else if ($(info.draggedEl).hasClass("bg-warning")) {
+            rdv[0] = "#ffc107";
+          } else {
+            rdv[0] = "#dc3545";
+          }
+          rdv[1] = $(info.draggedEl).text();
+          rdv[2] = info.date;
+          let jrdv = JSON.stringify(rdv);
+          // "save after drop"
+          $.post('/dashboard/randezvous/new', jrdv).done(function (response) {
+            console.log(response)
+            $('.spinner').hide();
+            $("#newevent .modal-body").html(`${response}`);
+          });
+        },
+        loading: function (state) {
+          if (state == false) {
+            $("#calendar-container .spinner").hide();
+            $('#calendar').show();
+          } else {
+            $('#calendar').hide();
+          }
+        },
+        businessHours: [
+          {
+            daysOfWeek: [
+              1, 2, 3
+            ],
+            startTime: '08:00',
+            endTime: '17:00'
+          }, {
+            daysOfWeek: [
+              4, 5
+            ],
+            startTime: '08:00',
+            endTime: '16:00'
+          }
+        ],
+        nowIndicator: true,
+        eventClick: function (info) {
+        if(info.event.display !== 'background'){
+          let id = info.event.id;
+          $.post(`/dashboard/randezvous/${id}/edit`, function (response) {
+            $("#upevent .modal-body").html(`${response}`);
+            $("#upevent").modal('show');
+            $("#formsubmit").click(function () {
+              setTimeout(calendar.refetchEvents(), 1000);
+            });
+            $('#deleteEvent').click(function () {
+              $('#confirm').modal('show');
+              $("#upevent").modal('hide');
+              $('#confdel').click(function () {
+                const delUrl = `/dashboard/randezvous/${id}/delete`;
+                $.ajax({
+                  method: 'GET',
+                  url: delUrl,
+                  success: function () {
+                    $('#confirm').modal('hide');
+                    calendar.refetchEvents();
+                  }
+                });
+              });
+            });
+          });
+        }},
+        eventMouseEnter: function (MouseEnter) {
+          if (MouseEnter.event.extendedProps.firstname !== undefined) {
+            $(function () {
+              $(MouseEnter.el).popover({
+                items: MouseEnter.el,
+                trigger: 'hover',
+                placement: 'left',
+                delay: {
+                  show: "0",
+                  hide: "3000"
+                },
+                html: true,
+                content: function () {
+                  var valid="";
+                  if(MouseEnter.event.extendedProps.valid){
+                    valid= `Approuvée: <i class="fas fa-check text-success"></i>`;
+                  }
+                  else {valid= `Approuvée: <i class="fas fa-times text-danger"></i>`;}
+                  return `
+              <div class="card-body m-0 p-0">
+                <div class="d-flex justify-content-end p-0 m-0">
+                  <i class="far fa-times-circle text-primary p-0 m-0" id="close-popover" title="Fermer!"></i>
+                </div>   
+              <div class="my-title my-micro-title text-center">${MouseEnter.event.extendedProps.firstname} ${MouseEnter.event.extendedProps.lastname}</div>   
+                  <div class="row d-flex justify-content-center">
+                    <img class='avatar avatar-md img-thumbnail' src='${MouseEnter.event.extendedProps.avatar}'/>
+                  </div>
+                  <div class="col-12 p-0 m-0">
+                    <div class="my-title my-micro-title text-center">${valid}</div>
+                    <div class="my-title my-micro-title">Description: </div>
+                    <p class="overflow-auto">${MouseEnter.event.extendedProps.description}</p>
+                  </div>
+							</div>`
+              }
+              });
+              $(MouseEnter.el).popover({
+                delay: {
+                  show: 0
+                }
+              });
+            });
+          }
+        },
+        eventMouseLeave: function () {
+          $('.popover').popover({
+            delay: {
+              hide: 2000
+            }
+          });
+        },
 
-			var calendarEl = document.getElementById('calendar');
+        dayMaxEventRows: true, // for all non-TimeGrid views
+        /*views: {
+          timeGrid: {
+            dayMaxEventRows: 6 // adjust to 6 only for timeGridWeek/timeGridDay
+          }
+        }*/
 
-			var calendar = new FullCalendar.Calendar(calendarEl, {
-			initialView: 'timeGridWeek',
-			titleFormat: {
-				year:'2-digit',
-				month: 'short',
-				day: 'numeric',
-			  },
-			height: '100%',
-			locale: 'fr',
-			themeSystem: 'bootstrap',
-			timeZone: 'Europe/paris',
-			headerToolbar: {
-			left: 'prev,next today',
-			center: '',
-			right: 'timeGridWeek timeGridDay listWeek'
-			},
-			footerToolbar: {
-			left: 'prevYear,prev next,nextYear',
-			center: 'title',
-			},
-			buttonText: {
-			today: "aujourd'hui",
-			month: "mois",
-			week: "semaine",
-			day: "jour",
-			list: "liste"
-			},
-			events: '/dashboard/randezvous/list',
-			editable: true,
-			droppable: true,
-			drop: function (info) {
-			$("#newevent").modal('show');
-			let rdv = [];
-			if ($(info.draggedEl).hasClass("bg-success")) {
-			rdv[0] = "#28a745";
-			} else if ($(info.draggedEl).hasClass("bg-warning")) {
-			rdv[0] = "#ffc107";
-			} else {
-			rdv[0] = "#dc3545";
-			} rdv[1] = $(info.draggedEl).text();
-			rdv[2] = info.date;
-			let jrdv = JSON.stringify(rdv);
-			// "save after drop"
-			$.post('/dashboard/randezvous/new', jrdv).done(function () {}).done(function () {
-			$.get('/dashboard/randezvous/newe', function (response) {
-			$('.spinner').hide();
-			$("#newevent .modal-body").html (`${response}`);
-			});
-			});
-			},
-			loading: function (state) {
-			if (state == false) {
-			$("#calendar-container .spinner").hide();
-			$('#calendar').show();
-			} else {
-			$('#calendar').hide();
-			}
-			},
-			eventResizableFromStart: true,
-			weekends: false,
-			allDaySlot:false,
-			weekNumbers: true,
-			nowIndicator: true,
-			slotMinTime: '08:00:00',
-			slotMaxTime: '18:00:00',
-			eventClick: function (info) {
-			let id = info.event.id;
-			$.post(`/dashboard/randezvous/${id}/edit`, function (response) {
-			$("#upevent .modal-body").html (`${response}`);
-			$("#upevent").modal('show');
-			$("#formsubmit").click(function () {
-			setTimeout(calendar.refetchEvents(), 1000);
-			});
-			$('#deleteEvent').click(function () {
-			$('#confirm').modal('show');
-			$("#upevent").modal('hide');
-			$('#confdel').click(function () {
-			$.ajax({
-			method: 'DELETE',
-			url: `/dashboard/randezvous/${id}`,
-			success: function () {
-			calendar.refetchEvents();
-			$('#confirm').modal('hide');
-			}
-			});
-			});
-			});
-			});
-			},
-			eventMouseEnter: function (MouseEnter) {
-			if (MouseEnter.event.extendedProps.firstname !== undefined) {
-			$(function () {
-			$(MouseEnter.el).popover({
-				items: MouseEnter.el,
-				trigger: 'hover',
-				placement: 'left',
-				delay: {
-				   show: "100",
-				   hide: "1500"
-				},
-				html: true,
-				content: function () {
-					return `
-						<div class="popover bg-theme" role="tooltip">
-							<div class="badge my-title w-100 my-small-title sticky-top bg-1-lightpink">${MouseEnter.event.extendedProps.firstname} ${MouseEnter.event.extendedProps.lastname}</div>
-							<div class="popover-body">
-								<div class="row d-flex justify-content-center">
-									<img class='avatar-md img-thumbnail' src='${MouseEnter.event.extendedProps.avatar}'/>
-								</div>
-								<div class="col-12 bg-theme">
-									<em class="my-small-title">Description:</em>
-									<p class="overflow-auto">${MouseEnter.event.extendedProps.description}</p>
-								</div>
-							</div>
-						</div>
-				`},
-				});
-			$(MouseEnter.el).popover('show');
-				});
-				}},
-			/*eventMouseLeave: function () {
-			$('.popover').popover('hide');
-			},*/
-			dayMaxEventRows: true, // for all non-TimeGrid views
-			views: {
-			timeGrid: {
-			dayMaxEventRows: 6 // adjust to 6 only for timeGridWeek/timeGridDay
-			}
-			}
-
-			});
-			calendar.on('eventChange', (e) => {});
-			calendar.render();
-			});
-	</script>
-{% endblock  %}
+      });
+      calendar.on('eventChange', (e) => {
+        console.log(e);
+      });
+      calendar.render();
+    });
+  </script>
+{% endblock %}

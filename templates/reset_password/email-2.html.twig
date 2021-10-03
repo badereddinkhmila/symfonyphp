@@ -1,0 +1,130 @@
+
+{% apply inky_to_html|inline_css(source('@assets/styles/foundation-emails.css')) %}
+    <container>
+        <row class="header">
+            <columns>
+                <center>
+                    <a href="{{ url('welcome_page') }}">
+                        <img src="{{ email.image('@assets/images/textlogo.png') }}" class="logo float-center" width="200" height="50" alt="SpaceBar Logo">
+                    </a>
+                </center>
+            </columns>
+        </row>
+        {% block content %}
+            <table class="body">
+            <tr>
+                <td class="float-center" align="center" valign="top">
+                <center data-parsed="">
+                    <table class="spacer float-center">
+                    <tbody>
+                        <tr>
+                        <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+                        </tr>
+                    </tbody>
+                    </table>
+                    <table align="center" class="container float-center">
+                    <tbody>
+                        <tr>
+                        <td>
+                            <table class="row header">
+                                <tbody>
+                                    <tr>
+                                    <th class="small-12 large-12 columns first last">
+                                        <table>
+                                        <tr>
+                                            <th>
+                                                <table class="spacer">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <h4 class="text-center">Platforme AVC Docteur</h4>
+                                            </th>
+                                            <th class="expander"></th>
+                                        </tr>
+                                        </table>
+                                    </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="row">
+                            <tbody>
+                                <tr>
+                                <th class="small-12 large-12 columns first last">
+                                    <table>
+                                    <tr>
+                                        <th>
+                                        <table class="spacer">
+                                            <tbody>
+                                            <tr>
+                                                <td height="32px" style="font-size:32px;line-height:32px;">&#xA0;</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <center data-parsed=""> <img src="{{ email.image('@assets/images/favicon.ico') }}" align="center" class="float-center" width='200' height='150'> </center>
+                                        <table class="spacer">
+                                            <tbody>
+                                            <tr>
+                                                <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <h1 class="text-center">Mot de passe oublié?</h1>
+                                        <table class="spacer">
+                                            <tbody>
+                                            <tr>
+                                                <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <p class="text-center">Ça arrive. Cliquez sur le lien ci-dessous pour réinitialiser votre mot de passe.</p>
+                                        <table class="button large expand">
+                                            <tr>
+                                            <td>
+                                                <table>
+                                                <tr>
+                                                    <td>
+                                                    <center data-parsed=""><a href="{{ url('app_reset_password', {token: resetToken.token}) }}" align="center" class="float-center">Réinitialiser</a></center>
+                                                    </td>
+                                                </tr>
+                                                </table>
+                                            </td>
+                                            <td class="expander"></td>
+                                            </tr>
+                                        </table>
+                                        <hr>
+                                            <p>
+                                                <small>
+                                                    Copyright &#169;
+                                                    DHCSys tout droit réservé.
+                                                    Avc Docteur.
+                                                </small>
+                                            </p>
+                                        </th>
+                                        <th class="expander"></th>
+                                    </tr>
+                                    </table>
+                                </th>
+                                </tr>
+                            </tbody>
+                            </table>
+                            <table class="spacer">
+                            <tbody>
+                                <tr>
+                                <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+                                </tr>
+                            </tbody>
+                            </table>
+                        </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </center>
+                </td>
+            </tr>
+            </table>
+        {% endblock %}
+    </container>
+{% endapply %}

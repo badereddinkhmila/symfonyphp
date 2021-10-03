@@ -1,0 +1,212 @@
+{% extends 'partials/_sideNav2.html.twig' %}
+{% block title %}PaquetRequest index{% endblock %}
+{% block style %}
+    <link rel="stylesheet" href="/css/B4datatables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.bootstrap4.min.css">
+{% endblock %}
+{% block main %}
+    {% for label , message in app.flashes %}
+        <div class="toast toast-{{label}}" role="alert" aria-atomic="true" style="z-index: 1000;position:absolute;top: 0;right: 0" data-animation="true" data-auhide="true" data-delay="3000" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header toast-{{label}}">
+                <strong class="mr-auto"><i class="fas fa-check-circle"></i> Succès!</strong>
+                <small>à l'instant</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                {% if label == 'warning' %}
+                    {% for msg in message %}
+                        <p> <i class="far fa-thumbs-up"></i> {{ msg | raw }} </p>.
+                    {% endfor %}
+                {% elseif label=='success' %}
+                    {% for msg in message %}
+                        <p> <i class="fas fa-plus"></i><i class="fas fa-box-open fa-2x"></i> {{ msg | raw }} </p>.
+                    {% endfor %}
+                {% elseif label=='danger' %}
+                    {% for msg in message %}
+                        <p><i class="fas fa-box-open" style="text-decoration-line: line-through"></i> {{ msg | raw }} </p>.
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+<div class="container-fluid m-0 m-sm-2">
+    <div class="mt-3 mb-3 card-body my-title d-flex bg-1-lightpink align-items-center rounded">
+        <h3 class="mr-auto">Gestion des demandes en paquets</h3>
+        <div class="ml-auto">
+            <button data-target="#new_packet" data-toggle="modal" class="btn bg-2-dark text-light" {% if is_granted('ROLE_DOCTOR') == false %} disabled {% endif %}>
+                <i  class="fas fa-plus"></i><i class="fas fa-box-open fa-2x"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="d-flex mt-3 justify-items-start card shadow rounded p-2 w-100">
+        <div id="loader" class="spinner"></div>
+        <table id="datatable" class="table table-sm compact d-none hover w-100">
+            <thead>
+            <tr>
+                <th scope="col"><i class="fas fa-user-md"></i> Docteur</th>
+                <th scope="col"><img class="m-0" src="{{ asset('images/microcontroller.svg') }}" alt="gateway" width="16" height="16">Passerelle</th>
+                <th scope="col"><img class="m-1" src="{{ asset('images/gluc.svg') }}" alt="glucometer" width="16" height="16">Glucométre</th>
+                <th scope="col"><img class="m-1" src="{{ asset('images/oxygen.svg') }}" alt="O2" width="16" height="16">Oxymétre</th>
+                <th scope="col"><img class="m-1" src="{{ asset('images/bp.svg') }}" alt="bp" width="16" height="16">Tensiométre</th>
+                <th scope="col"><img class="m-1" src="{{ asset('images/thermometer.svg') }}" alt="thermometer" width="16" height="16">Thermométre</th>
+                <th scope="col"><img class="m-1" src="{{ asset('images/weigh.svg') }}" alt="weight" width="16" height="16">Balance</th>
+                <th scope="col"><i class="fab fa-searchengin"></i> Approved</th>
+                <th scope="col"><i class="far fa-calendar-alt"></i> Crée le</th>
+                <th scope="col"><i class="fas fa-cog"></i> Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    {% include "paquet_request/_form.html.twig" with {modalID:"new_packet",form:form} %}
+
+    <div tabindex="-1" class="modal fade" id="confirmModal" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="my-title"><span><i class="mr-3 fas fa-box-open fa-2x" style="text-decoration-line: line-through"></i></span> Annuler demande</div>
+                    <i class="far fa-times-circle close" type="button" aria-hidden="true" data-dismiss="modal"></i>
+                </div>
+                <div class="modal-body text-center">
+                    <bold>Voulez vous vraiment annuler cette demande !</bold>
+                    <p>Cette opération est irréversible</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <form method="post" id="formdel">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" id="confdel" class="btn btn-warning"><i class="fas fa-exclamation-triangle"></i> Confirmer suppression</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script src="{{ asset('js/JQdatatable.js')}}" ></script>
+<script src="{{ asset('js/Datatables.bootstrap.js')}}"></script>
+<script src="{{asset('js/responsivetables.js')}}"></script>
+<script src="{{asset('js/DtB4resp.js')}}"></script>
+<script>
+        $(document).ready(function(){
+            if("{{errors}}" == 1){
+               $('#new_packet').modal('show');
+            }
+            const cond= "{{ role }}";
+            const url = cond ? ("/paquet/request/list/all") : ("/paquet/request/list/");
+            $.ajax({
+                url:url,
+                method:"GET",
+                dataType:"json",
+                async:true,
+                success:function(data){
+                    console.log(data);
+                $("#loader").hide();
+                    $('#datatable').DataTable({
+                        "pagingType": "simple_numbers",
+                        responsive:true,
+                        "language": {
+                        "url": "{{ asset('js/DataTable_Frensh.json') }}"
+                        },
+                        data:data,
+                        columns:[
+                            {'data':'issuer',
+                             "render": function (data, type, JsonResultRow) {
+                            return `<div class="col-12 text-center">
+                                        <img class="avatar avatar-small" src="${JsonResultRow.issuer.avatar}">
+                                        <h5 class="my-title my-micro-title d-flex">${JsonResultRow.issuer.firstname} ${JsonResultRow.issuer.lastname}</h5>
+                                    </div>`;
+                             }},
+                            {'data':'gateway',
+                                "render": function (data, type, JsonResultRow) {
+                                    if ( JsonResultRow.gateway == true){
+                                        return `<i class="fas fa-check text-success"></i>`;
+                                    }
+                                    else{
+                                        return `<i class="fas fa-times text-danger"></i>`;
+                                    }
+                                }},
+                            {'data':'glucose',
+                                "render": function (data, type, JsonResultRow) {
+                                    if ( JsonResultRow.glucose == true){
+                                        return `<i class="fas fa-check text-success"></i>`;
+                                    }
+                                    else{
+                                        return `<i class="fas fa-times text-danger"></i>`;
+                                    }
+                                }},
+                            {'data':'oxygen',
+                                "render": function (data, type, JsonResultRow) {
+                                    if ( JsonResultRow.oxygen == true){
+                                        return `<i class="fas fa-check text-success"></i>`;
+                                    }
+                                    else{
+                                        return `<i class="fas fa-times text-danger"></i>`;
+                                    }
+                                }},
+                            {'data':'bp',
+                                "render": function (data, type, JsonResultRow) {
+                                    if ( JsonResultRow.bp == true){
+                                        return `<i class="fas fa-check text-success"></i>`;
+                                    }
+                                    else{
+                                        return `<i class="fas fa-times text-danger"></i>`;
+                                    }
+                                }},
+                            {'data':'temperature',
+                                "render": function (data, type, JsonResultRow) {
+                                    if ( JsonResultRow.temperature == true){
+                                        return `<i class="fas fa-check text-success"></i>`;
+                                    }
+                                    else{
+                                        return `<i class="fas fa-times text-danger"></i>`;
+                                    }
+                                }},
+                            {'data':'weight',
+                               "render": function (data, type, JsonResultRow) {
+                                    if ( JsonResultRow.weight == true){
+                                    return `<i class="fas fa-check text-success"></i>`;
+                                    }
+                                    else{
+                                        return `<i class="fas fa-times text-danger"></i>`;
+                                    }
+                            }},
+                            {'data':'status',
+                            "render": function (data, type, JsonResultRow) {
+                                    if ( JsonResultRow.status == true){
+                                    return `<i class="fas fa-check-double text-success"></i>`;
+                                    }
+                                    else{
+                                        return `<i class="fas fa-spinner text-danger"></i>`;
+                                    }
+                            }},
+                            {'data':'created_at',
+                            "render":function(data,type,JsonResultRow,meta){
+                                return JsonResultRow.created_at
+                                }
+                            },
+                            {'data':'id',
+                            "render":function(data,type,JsonResultRow,meta){
+                                return '<a href="/paquet/request/'+JsonResultRow.id+'/edit" class="text-primary m-1"><i class="fas fa-file-signature"></i></a><a class="m-1 delete text-danger" id="'+JsonResultRow.id+'"><i class="fas fa-trash"></i></a>'
+                                }
+                            }
+
+                        ],
+                    });
+                $("#datatable").removeClass('d-none');
+                }
+            })
+        });
+
+    $(document).on('click','.delete',function(){
+        let id=$(this).attr('id');
+        $('#confirmModal').modal('show');
+        $('#formdel').attr("action","/paquet/request/"+id+"/delete");
+        });
+    </script>
+{% endblock %}

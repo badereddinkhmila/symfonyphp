@@ -1,0 +1,39 @@
+{% extends 'partials/_sideNav2.html.twig' %}
+{% block title %}
+    Indicateurs MQTT
+{% endblock %}
+{% block main %}
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-4">
+                <iframe src="http://localhost:3000/d-solo/6m9oFQWnz/emqx?orgId=1&theme=light&panelId=6" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <iframe src="http://localhost:3000/d-solo/6m9oFQWnz/emqx?orgId=1&theme=light&panelId=7" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <iframe src="http://localhost:3000/d-solo/6m9oFQWnz/emqx?orgId=1&theme=light&panelId=2" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <iframe src="http://localhost:3000/d-solo/6m9oFQWnz/emqx?orgId=1&theme=light&panelId=9" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <iframe src="http://localhost:3000/d-solo/6m9oFQWnz/emqx?orgId=1&theme=light&panelId=12" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <iframe src="http://localhost:3000/d-solo/6m9oFQWnz/emqx?orgId=1&theme=light&panelId=13" width="100%" class="border-none shadow"></iframe>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <iframe src="http://localhost:3000/d-solo/6m9oFQWnz/emqx?orgId=1&theme=light&panelId=1" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12 col-md-6">
+                <iframe src="http://localhost:3000/d-solo/6m9oFQWnz/emqx?orgId=1&theme=light&panelId=10" width="100%" class="border-none shadow"></iframe>
+            </div>
+            <div class="col-12">
+                <iframe src="http://localhost:3000/d-solo/6m9oFQWnz/emqx?orgId=1&theme=light&panelId=5" width="100%" class="border-none shadow"></iframe>
+            </div>
+        </div>
+    </div>
+{% endblock %}

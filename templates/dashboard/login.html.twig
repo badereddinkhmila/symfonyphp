@@ -38,7 +38,7 @@
                     <div class="form-group text-center">
                         <div class="custom-control custom-switch">
                             <input type="checkbox" class="custom-control-input" name="_remember_me" id="RememberMe">
-                            <label class="custom-control-label" for="RememberMe">Restez connecter ?</label>
+                            <label class="custom-control-label my-switch" for="RememberMe">Restez connecter ?</label>
                         </div>
                     </div>
                     <br>
@@ -54,10 +54,9 @@
                 </form>
                 <hr class="bg-dark">
                 <div class="col-12 text-center">
-                    <p class="text-dark">Cliquez sur ce lien pour réinitialiser votre mot de passe.</p>
                     <a href="{{ path('app_forgot_password_request') }}" class="btn-link text-primary">
                         <i class="fas fa-user-lock"></i>
-                        <b>Réinitialiser</b>
+                        <b>Réinitialiser mot de passe</b>
                     </a>
                 </div>
             </div>

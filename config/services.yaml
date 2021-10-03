@@ -34,3 +34,8 @@ services:
     App\Mercure\Cookies\CookieGenerator:
         arguments:
             $secret: '%env(MERCURE_JWT_KEY)%'
+
+    App\Messages\MessageHandler\Handler:
+        autowire: true
+        autoconfigure: true
+        public: true

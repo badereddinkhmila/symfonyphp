@@ -46,7 +46,7 @@ class BloodPressureRepository extends ServiceEntityRepository
     public function findByBucket($d_id,$from,$to): array
     {
         return $this->createQueryBuilder('p')
-            ->select('p.collect_time ,p.bp_value')
+            ->select('p.collect_time ,p.diastolic,p.pulse,p.systolic')
             ->andWhere('p.device_id = :d_id')
             ->andWhere(' p.collect_time >= :from ')
             ->andWhere(' p.collect_time <= :to ')
@@ -54,10 +54,26 @@ class BloodPressureRepository extends ServiceEntityRepository
             ->setParameter('from', $from)
             ->setParameter('to', $to )
             ->orderBy('p.collect_time', 'ASC')
-            ->setMaxResults(6000)
+            //->setMaxResults(6000)
             ->getQuery()
             ->getResult();
     }
+
+
+    public function findMaxMinByBucket($d_id,$from,$to): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('Max(p.diastolic) as max_v ,Min(p.diastolic) as min_v')
+            ->andWhere('p.device_id = :d_id')
+            ->andWhere(' p.collect_time >= :from ')
+            ->andWhere(' p.collect_time <= :to ')
+            ->setParameter('d_id',$d_id)
+            ->setParameter('from', $from)
+            ->setParameter('to', $to )
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?BloodPressure
     {

@@ -45,4 +45,60 @@ class RandezvousRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findCountPerUser($user_id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "select to_char ( r2.dated_for , 'dd-mm-yyyy' ),  
+                count (*)  
+                from   randezvous r2
+                inner join randezvous_user ru on ru.randezvous_id = r2.id 
+                where ru.user_id = ?
+                group  by to_char ( r2.dated_for , 'dd-mm-yyyy' );
+            ";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(1, $user_id);
+            $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function findCountPerDay(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "select to_char ( r2.created_at , 'dd-mm-yyyy' ),  
+                count (*)  
+                from   randezvous r2
+                group  by to_char ( r2.created_at , 'dd-mm-yyyy' );
+            ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+
+    public function findByUser($user)
+    {
+        return $this->createQueryBuilder('r')
+            ->select('count(r.dated_for)')
+            ->groupBy('r.dated_for')
+            ->innerJoin('r.parts', 'part')
+            ->where('part.id = :val')
+            ->setParameter('val', $user)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findStats($user_id)
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.parts = :userId')
+            ->setParameter('userId',$user_id)
+            ->orderBy('r.dated_for')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

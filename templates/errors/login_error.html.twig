@@ -1,10 +1,27 @@
-{% extends "partials/_sideNav2.html.twig" %}
+{% extends 'partials/_sideNav2.html.twig' %}
+
 {% block body %}
-      <div clss="contianer" id='error'>
-          <div class="text-center mt-5">
-                <h1 class=text-danger> <span style="font-weight: bolder">O</span>ops </h1> <h5>vérifiez vos identifiants de connexion</h5>
-                  <a href="{{ path('welcome_page') }}" class='btn text-danger'>
-                  <i class="fas fa-arrow-alt-circle-left"></i><span> Page de connexion</span></a>
-          </div>
-      </div>
-{% endblock%}
+<body class="justify-content-center align-content-center d-flex">
+<section class="page_403">
+    <div class="text-center">
+    <div class="four_zero_four_bg">
+        <h1 class="text-center">401</h1>
+    </div>
+    <div class="contant_box_403">
+        <h1 class=text-danger> <span style="font-weight: bolder">O</span>ops </h1>
+        <p>vérifier vos identifiants de connexion!</p>
+        <small>revenir à la page principale et essayer de se connecter à nouveau!</small>
+        <div class="row m-auto justify-content-center">
+            <a href="{{ path("welcome_page")}}" class="link_403 m-2">Accueil</a>
+            <a href="{{ path('app_forgot_password_request') }}" class="link_403 reset_403 m-2"  >Réinitialiser le mot de passe!</a>
+        </div>
+        <p>
+            <h3 class=text-danger>NB</h3>
+        Si le problème persiste, cela signifie que votre compte a été désactivé.
+        <h6> Essayez de contacter votre médecin ou un opérateur. </h6>
+        </p>
+
+    </div>
+    </div>
+</section>
+{% endblock %}

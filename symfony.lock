@@ -148,6 +148,9 @@
     "lcobucci/jwt": {
         "version": "3.3.2"
     },
+    "lorenzo/pinky": {
+        "version": "1.0.5"
+    },
     "monolog/monolog": {
         "version": "2.1.0"
     },
@@ -375,15 +378,15 @@
         }
     },
     "symfony/mercure": {
-        "version": "v0.4.0"
+        "version": "v0.5.3"
     },
     "symfony/mercure-bundle": {
-        "version": "0.2",
+        "version": "0.3",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
-            "version": "0.2",
-            "ref": "a37d3438e4bd4f9f924c516996bc29e25f66b07e"
+            "version": "0.3",
+            "ref": "d1cdff3ae53bf6a5cbfb088c82f26032bdc14cc3"
         },
         "files": [
             "config/packages/mercure.yaml"
@@ -637,8 +640,17 @@
     "symfonycasts/verify-email-bundle": {
         "version": "v1.1.1"
     },
+    "tijsverkoyen/css-to-inline-styles": {
+        "version": "2.2.3"
+    },
+    "twig/cssinliner-extra": {
+        "version": "v3.2.1"
+    },
     "twig/extra-bundle": {
         "version": "v3.0.4"
+    },
+    "twig/inky-extra": {
+        "version": "v3.2.1"
     },
     "twig/intl-extra": {
         "version": "v3.1.0"

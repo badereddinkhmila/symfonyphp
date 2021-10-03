@@ -1,8 +1,7 @@
-<div class="container-fluid">{{ form_start(form,{action:path('test',{'id':id})}) }}
-    <div class="row">
+<div class="container-fluid ">
+    {{ form_start(form)}}
+    <div class="form-group row">
         <div class="col-12">{{ form_row(form.type) }}</div>
-    </div>
-    <div class="form-group row ">
         <div class="col-12">
             {{form_errors(form.description)}}
             {{form_label(form.description) }}
@@ -12,13 +11,9 @@
             </div>
             <small>{{ form_help(form.description) }}</small>
         </div>
-    </div>
-    <div class="row">
         <div class="col-12">{{ form_row(form.dated_for) }}</div>
         <div class="col-12">{{form_row(form.end_in,{'attr': {'class': 'disabled'}})}}</div>
-    </div>
-    <div class="form-group row">
-        <div class="col-12">
+        <div class="col-12 w-100">
             {{form_errors(form.parts)}}
             {{form_label(form.parts) }}
             <div class="d-flex align-items-center">
@@ -26,9 +21,19 @@
             </div>
             <small>{{ form_help(form.parts) }}</small>
         </div>
+        {% if is_granted('ROLE_DOCTOR') %}
+        <div class="col-12 p-4">
+            {{form_errors(form.isValid)}}
+            {{form_label(form.isValid) }}
+            <div class="d-flex justify-content-center">
+                {{form_widget(form.isValid)}}
+            </div>
+            <small>{{ form_help(form.isValid) }}</small>
+        </div>
+        {% endif %}
     </div>
     <hr>
-    <div class="text-center">
+    <div class="text-center mb-3">
         <button class="btn text-center bg-material-ui text-white" type="submit" id="formsubmit"><i class="far fa-save fa-2m"></i> Enregistrer</button>
         <button type="button" class="btn btn-danger align-content-end" id="deleteEvent"><i class="far fa-trash-alt"></i> Supprimer</button>
     </div>{{ form_end(form) }}

@@ -1,36 +1,48 @@
-<div class="container-fluid">
-    {{ form_start(form) }}
-    <div class="row form-group">
-        <div class="col-12">
-            {{ form_errors(form.complaint_type) }}
-            {{ form_label(form.complaint_type) }}
-            <div class="input-with-icon d-flex align-items-center">
-                {{ form_widget(form.complaint_type) }}
-                <i class="fas fa-ellipsis-v"></i>
+{% extends 'partials/_sideNav2.html.twig' %}
+
+{% block main %}
+<div class="container-fluid d-flex justify-content-center align-items-center vh-100">
+    <div class="col-11 col-md-8">
+    <div class="card shadow">
+        <div class="modal-header">
+            <h5 class="modal-title my-title">
+                <i class="fas fa-sync"></i>
+                <img class="avatar-small" src="{{ asset('images/complain.svg') }}" alt="#">
+                Modifier Réclamation
+            </h5>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+            <div class="row form-group">
+                <div class="col-12">
+                    {{ form_errors(form.complaint_type) }}
+                    {{ form_label(form.complaint_type) }}
+                    <div class="input-with-icon d-flex align-items-center">
+                        {{ form_widget(form.complaint_type) }}
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                    <small>{{ form_help(form.complaint_type) }}</small>
+                </div>
+                <div class="col-12">
+                    {{ form_errors(form.complaint_description)}}
+                    {{ form_label(form.complaint_description) }}
+                    {{ form_widget(form.complaint_description) }}
+                    <small>{{ form_help(form.complaint_description) }}</small>
+                </div>
+                <div class="col-12 mt-2{% if treat == false %} d-none{% endif %}">
+                    {{ form_errors(form.is_treated) }}
+                    {{ form_label(form.is_treated) }}
+                    {{ form_widget(form.is_treated) }}
+                    <small>{{ form_help(form.is_treated) }}</small>
+                </div>
             </div>
-            <small>{{ form_help(form.complaint_type) }}</small>
-        </div>
-        <div class="col-12">
-            {{ form_errors(form.complaint_description)}}
-            {{ form_label(form.complaint_description) }}
-            {{ form_widget(form.complaint_description) }}
-            <small>{{ form_help(form.complaint_description) }}</small>
-        </div>
-        <div class="row d-flex justify-content-center mt-2">
-            {{ form_errors(form.is_treated) }}
-            {{ form_label(form.is_treated) }}
-            {{ form_widget(form.is_treated,{'disabled': false}) }}
-            <small>{{ form_help(form.is_treated) }}</small>
+            <hr class="bg-dark">
+            <div class="text-center">
+                <button class="btn text-center bg-material-ui text-white" type="submit" ><i class="far fa-save fa-2m"></i> Enregistrer</button>
+            </div>
+            {{ form_end(form) }}
         </div>
     </div>
-    <hr class="bg-dark">
-    <div class="text-center">
-        <button class="btn text-center bg-material-ui text-white" type="submit" ><i class="far fa-save fa-2m"></i> Enregistrer</button>
-    </div>{{ form_end(form) }}
+    </div>
 </div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('textarea').summernote({
-        })
-    })
-</script>
+{% endblock main %}

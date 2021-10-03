@@ -25,7 +25,17 @@ class BloodPressure
     /**
      * @ORM\Column(type="float")
      */
-    private $bp_value;
+    private $diastolic;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $pulse;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $systolic;
 
     public function getDeviceId(): ?string
     {
@@ -52,14 +62,63 @@ class BloodPressure
     }
 
 
-    public function getBpValue(): ?float
+
+    /**
+     * Get the value of diastolic
+     */ 
+    public function getDiastolic()
     {
-        return $this->bp_value;
+        return $this->diastolic;
     }
 
-    public function setBpValue(float $bp_value): self
+    /**
+     * Set the value of diastolic
+     *
+     * @return  self
+     */ 
+    public function setDiastolic($diastolic)
     {
-        $this->bp_value = $bp_value;
+        $this->diastolic = $diastolic;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pulse
+     */ 
+    public function getPulse()
+    {
+        return $this->pulse;
+    }
+
+    /**
+     * Set the value of pulse
+     *
+     * @return  self
+     */ 
+    public function setPulse($pulse)
+    {
+        $this->pulse = $pulse;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of systolic
+     */ 
+    public function getSystolic()
+    {
+        return $this->systolic;
+    }
+
+    /**
+     * Set the value of systolic
+     *
+     * @return  self
+     */ 
+    public function setSystolic($systolic)
+    {
+        $this->systolic = $systolic;
 
         return $this;
     }

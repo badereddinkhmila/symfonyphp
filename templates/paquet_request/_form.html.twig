@@ -1,0 +1,78 @@
+<div tabindex="-1" class="modal fade" id="{{modalID}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header d-flex align-content-center">
+                <span class="mr-2"><i class="fas fa-plus"></i><i class="fas fa-box-open fa-2x"></i></span><h3 class="modal-title my-title">Nouvelle demande des équipements </h3>
+                <i class="far fa-times-circle close" type="button" aria-hidden="true" data-dismiss="modal"></i>
+            </div>
+            <div class="modal-body">
+                {{ form_start(form) }}
+                <div class="row form-group">
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        {{form_label(form.gateway) }}
+                        <div class="d-flex align-items-center">
+                            <img class="m-1" src="{{ asset('images/microcontroller.svg') }}" alt="gateway" width="20" height="20">
+                            {{form_widget(form.gateway) }}
+                        </div>
+                        <small>{{ form_help(form.gateway) }}</small>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        {{form_label(form.glucose_sensor) }}
+                        <div class="d-flex align-items-center">
+                            <img class="m-1" src="{{ asset('images/gluc.svg') }}" alt="glucose" width="20" height="20">
+                            {{form_widget(form.glucose_sensor) }}
+                        </div>
+                        <small>{{ form_help(form.glucose_sensor) }}</small>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        {{form_label(form.oxygen_sensor) }}
+                        <div class="d-flex align-items-center">
+                            <img class="m-1" src="{{ asset('images/oxygen.svg') }}" alt="oxymeter" width="20" height="20">
+                            {{form_widget(form.oxygen_sensor) }}
+                        </div>
+                        <small>{{ form_help(form.oxygen_sensor) }}</small>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        {{form_label(form.blood_pressure_sensor) }}
+                        <div class="d-flex align-items-center">
+                            <img class="m-1" src="{{ asset('images/bp.svg') }}" alt="tensiometer" width="20" height="20">
+                            {{form_widget(form.blood_pressure_sensor) }}
+                        </div>
+                        <small>{{ form_help(form.blood_pressure_sensor) }}</small>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        {{form_label(form.weight) }}
+                        <div class="d-flex align-items-center">
+                            <img class="m-1" src="{{ asset('images/weigh.svg') }}" alt="balance" width="20" height="20">
+                            {{form_widget(form.weight) }}
+                        </div>
+                        <small>{{ form_help(form.weight) }}</small>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        {{form_label(form.temperature) }}
+                        <div class="d-flex align-items-center">
+                            <img class="m-1" src="{{ asset('images/thermometer.svg') }}" alt="thermometer" width="20" height="20">
+                            {{form_widget(form.temperature) }}
+                        </div>
+                        <small>{{ form_help(form.temperature) }}</small>
+                    </div>
+                </div>
+
+                <div class="row {% if is_granted('ROLE_ADMIN')== false %} d-none {% endif %}">
+                    <div class="col-12 d-flex justify-items-center">
+                        {{form_label(form.approved)}}
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-file-contract m-1"></i>
+                            {{form_widget(form.approved)}}
+                        </div>
+                        <small>{{ form_help(form.approved) }}</small>
+                    </div>
+                </div>
+                <div class="modal-footer text-center">
+                    <button type="submit" class="btn bg-1-lightpink"><i class="fas fa-save"></i>  Confirmer</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
