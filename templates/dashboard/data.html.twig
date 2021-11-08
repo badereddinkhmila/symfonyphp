@@ -276,6 +276,13 @@
 		{% endif %}
 		</-- .container -->
 	</div>
+	<div class="modal fade bd-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+            	<img src="{{asset("/images/spinner.svg")}}" alt="" style="min-width:200px;min-height:80px;">
+			</div>
+		</div>
+	</div>
 	<div class="toast toast-success" id="update_stream" role="alert" aria-atomic="true" style="z-index: 1000;position:absolute;top: 0;right: 0" data-animation="true" data-auhide="true" data-delay="2000" aria-live="assertive" aria-atomic="true">
 		<div class="toast-body toast-success">
 			<p class="my-title my-small-title"><i class="fas fa-sync"></i>	Mise à jour des chartes avec succès.</p>

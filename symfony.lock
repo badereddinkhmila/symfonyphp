@@ -146,7 +146,7 @@
         "version": "1.0.4"
     },
     "lcobucci/jwt": {
-        "version": "3.3.2"
+        "version": "3.4.6"
     },
     "lorenzo/pinky": {
         "version": "1.0.5"
@@ -378,15 +378,15 @@
         }
     },
     "symfony/mercure": {
-        "version": "v0.5.3"
+        "version": "v0.4.1"
     },
     "symfony/mercure-bundle": {
-        "version": "0.3",
+        "version": "0.2",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
-            "version": "0.3",
-            "ref": "d1cdff3ae53bf6a5cbfb088c82f26032bdc14cc3"
+            "version": "0.2",
+            "ref": "9c94631c3fc2e9ab2302380ebb36b5942f5be676"
         },
         "files": [
             "config/packages/mercure.yaml"

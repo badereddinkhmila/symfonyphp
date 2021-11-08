@@ -26,7 +26,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
@@ -49,7 +48,8 @@ class DoctorController extends AbstractController
         $complaints=$user->getComplaints()->filter(function(Complaint $complaint) {
             return $complaint->getCreatedAt() > date_sub(new DateTime(),new \DateInterval('P3D'));
         });
-        $rdv=$user->getRandezvouses()->filter(function(Randezvous $randezvous) {
+        $all_rdv=$user->getRandezvouses();
+        $rdv=$all_rdv->filter(function(Randezvous $randezvous) {
             return $randezvous->getDatedFor() > new DateTime();
         });
         $countrdv=count($rdv);
@@ -124,7 +124,7 @@ class DoctorController extends AbstractController
                 'comps'=>$Complaints,
                 'rdvs'=>$randezvouses,
                 'pts'=>$Patients,
-                'countrdv'=>$countrdv,
+                'countrdv'=>count($all_rdv),
                 'complaints'=>count($complaints),
                 'patients'=>$patients,
                 'dispositif'=>$dispositif
@@ -133,7 +133,7 @@ class DoctorController extends AbstractController
         else{
             $response=$this->render('dashboard/home_patient.html.twig', [
                 'countcomp'=>count($user->getComplaints()),
-                'countrdv'=>count($randezvouses),
+                'countrdv'=>count($all_rdv),
                 'comps' => prepareComp($user->getComplaints()),
                 'rdvs' => $randezvouses
             ]);
@@ -349,7 +349,7 @@ class DoctorController extends AbstractController
      * @param MessageBusInterface $bus
      * @return JsonResponse
      */
-    public function IOT_Data (Request $request,UserRepository $repo,$id,MessageBusInterface $bus,DataService $dataService,SessionInterface $session){
+    public function IOT_Data (Request $request,UserRepository $repo,$id,MessageBusInterface $bus,DataService $dataService){
         $user=$repo->find($id);
         $d_id=$user->getSensorGateway()->getSensorGatewayId();
         $topic="http://avcdocteur.com/".$d_id."/update"; 
@@ -380,21 +380,21 @@ class DoctorController extends AbstractController
                 $jsonResponse['glucose']=$dataService->getIotGlucose($d_id,$from,$to);
                 $jsonResponse['bp']=$dataService->getIotBP($d_id,$from,$to);
                 $jsonResponse['oxygen']=$dataService->getIotOxygen($d_id,$from,$to);
-                {$update = new Update([$topic], json_encode(
-                    $jsonResponse));
-                    $bus->dispatch($update);
-                }
+                $update = new Update([$topic], json_encode($jsonResponse));
+                $bus->dispatch($update);
             }
             return new JsonResponse($jsonResponse);
         }
 
         $to=(new \DateTime())->format('Y-m-d H:i:s');
-        $from=((new \DateTime())->sub(new \DateInterval('P1D')))->format('Y-m-d H:i:s');
+        $from=((new \DateTime())->sub(new \DateInterval('P5D')))->format('Y-m-d H:i:s');
         $json_data['temperature']=$dataService->getIotTemperature($d_id,$from,$to);
         $json_data['oxygen']=$dataService->getIotOxygen($d_id,$from,$to);
         $json_data['weight']=$dataService->getIotweight($d_id,$from,$to);
         $json_data['bp']=$dataService->getIotBP($d_id,$from,$to);
         $json_data['glucose']=$dataService->getIotGlucose($d_id,$from,$to);
+
+        dump($json_data);
 
        return new JsonResponse($json_data);
     }

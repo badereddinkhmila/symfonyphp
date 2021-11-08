@@ -1455,3 +1455,15 @@ figure.snip1321 {
     fill-opacity: 0;
     animation: fill-in 0.5s 0.5s forwards;
 }
+
+.bd-modal-lg .modal-dialog{
+    display: table;
+    position: relative;
+    margin: 0 auto;
+    top: calc(50% - 24px);
+  }
+  
+  .bd-modal-lg .modal-dialog .modal-content{
+    background-color: transparent;
+    border: none;
+  }

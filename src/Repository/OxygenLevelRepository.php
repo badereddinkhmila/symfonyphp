@@ -61,7 +61,7 @@ class OxygenLevelRepository extends ServiceEntityRepository
     public function findMaxMinByBucket($d_id,$from,$to): array
     {
         return $this->createQueryBuilder('p')
-            ->select('Max(p.spo2) AS max_v, Min(p.spo2) AS min_v')
+            ->select('Max(p.spo2) AS max, Min(p.spo2) AS min')
             ->andWhere('p.device_id = :d_id')
             ->andWhere(' p.collect_time >= :from ')
             ->andWhere(' p.collect_time <= :to ')

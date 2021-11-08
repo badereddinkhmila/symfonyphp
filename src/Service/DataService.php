@@ -16,13 +16,14 @@ class DataService
     private $weight_repo;
     private $bp_repo;
     private $gly_repo;
+
     public function __construct(TemperatureRepository $temp_repo,OxygenLevelRepository $oxy_repo,WeightRepository $weight_repo,BloodPressureRepository $bp_repo,BloodSugarRepository $gly_repo)
     {
         $this->temp_repo=$temp_repo;
         $this->oxy_repo=$oxy_repo;
         $this->weight_repo=$weight_repo;
         $this->bp_repo=$bp_repo;
-        $this->gly_repo=$bp_repo;
+        $this->gly_repo=$gly_repo;
     }
 
     public function getIotTemperature($gateway,$from,$to){
@@ -35,7 +36,7 @@ class DataService
         }
 
         $jsonResponse['temperature']=$temp;
-        $jsonResponse['max_min']=$min_max;
+        $jsonResponse['max_min']=[$min_max['max'],$min_max['min']];
         return $jsonResponse;
     }
     public function getIotOxygen($gateway,$from,$to){
@@ -43,15 +44,14 @@ class DataService
         $pulse=array();
         $spo2=array();
         $data=($this->oxy_repo->findByBucket($gateway,$from,$to));
-        $min_max=($this->oxy_repo->findMaxMinByBucket($gateway,$from,$to));
-
+        $min_max=($this->oxy_repo->findMaxMinByBucket($gateway,$from,$to))[0];
         foreach($data as $dt){
             array_push($pulse,[($dt['collect_time']->getTimestamp())*1000,$dt['pulse']]);
             array_push($spo2,[($dt['collect_time']->getTimestamp())*1000,$dt['spo2']]);
         }
         $jsonResponse['pulse']=$pulse;
         $jsonResponse['spo2']=$spo2;
-        $jsonResponse['max_min']=$min_max;
+        $jsonResponse['max_min']=[$min_max['max'],$min_max['min']];
         return $jsonResponse;
     }
     public function getIotweight($gateway,$from,$to){
@@ -60,7 +60,7 @@ class DataService
         $bodyfat=array();
         $weight=array();
         $data=($this->weight_repo->findByBucket($gateway,$from,$to));
-        $min_max=($this->weight_repo->findMaxMinByBucket($gateway,$from,$to));
+        $min_max=($this->weight_repo->findMaxMinByBucket($gateway,$from,$to))[0];
 
         foreach($data as $dt){
             array_push($bmi,[($dt['collect_time']->getTimestamp())*1000,$dt['bmi']]);
@@ -70,7 +70,7 @@ class DataService
         $jsonResponse['bmi']=$bmi;
         $jsonResponse['bodyfat']=$bodyfat;
         $jsonResponse['weight']=$weight;
-        $jsonResponse['max_min']=$min_max;
+        $jsonResponse['max_min']=[$min_max['max'],$min_max['min']];
         return $jsonResponse;
     }
 
@@ -80,14 +80,14 @@ class DataService
         $mmol_l=array();
 
         $data=($this->gly_repo->findByBucket($gateway,$from,$to));
-        $min_max=($this->gly_repo->findMaxMinByBucket($gateway,$from,$to));
+        $min_max=($this->gly_repo->findMaxMinByBucket($gateway,$from,$to))[0];
         foreach($data as $dt){
-            array_push($jsonResponse,[($dt['collect_time']->getTimestamp())*1000,$dt['mg_dl']]);
-            array_push($jsonResponse,[($dt['collect_time']->getTimestamp())*1000,$dt['mmol_l']]);
+            array_push($mg_dl,[($dt['collect_time']->getTimestamp())*1000,$dt['mg_dl']]);
+            array_push($mmol_l,[($dt['collect_time']->getTimestamp())*1000,$dt['mmol_l']]);
         }
         $jsonResponse['mg_dl']=$mg_dl;
         $jsonResponse['mmol_l']=$mmol_l;
-        $jsonResponse['max_min']=$min_max;
+        $jsonResponse['max_min']=[$min_max['max'],$min_max['min']];
         return $jsonResponse;
     }
 
@@ -98,6 +98,7 @@ class DataService
         $systolic=array();
         $data=($this->bp_repo->findByBucket($gateway,$from,$to));
         $min_max=($this->bp_repo->findMaxMinByBucket($gateway,$from,$to));
+        dump($min_max);
         foreach($data as $dt){
             array_push($diastolic,[($dt['collect_time']->getTimestamp())*1000,$dt['diastolic']]);
             array_push($pulse,[($dt['collect_time']->getTimestamp())*1000,$dt['pulse']]);
@@ -106,7 +107,8 @@ class DataService
         $jsonResponse['diastolic']=$diastolic;
         $jsonResponse['pulse']=$pulse;
         $jsonResponse['systolic']=$systolic;
-        $jsonResponse['max_min']=$min_max;
+        $jsonResponse['max_min']=
+        $jsonResponse['max_min']=[$min_max['max_dias'],$min_max['max_sys']];
         return $jsonResponse;
     }
 }

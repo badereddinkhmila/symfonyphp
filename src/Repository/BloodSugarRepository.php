@@ -62,7 +62,7 @@ class BloodSugarRepository extends ServiceEntityRepository
     public function findMaxMinByBucket($d_id,$from,$to): array
     {
         return $this->createQueryBuilder('p')
-            ->select('Max(p.mg_dl) AS max_v, Min(p.mg_dl) AS min_v')
+            ->select('Max(p.mg_dl) AS max, Min(p.mg_dl) AS min')
             ->andWhere('p.device_id = :d_id')
             ->andWhere(' p.collect_time >= :from ')
             ->andWhere(' p.collect_time <= :to ')

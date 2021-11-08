@@ -63,7 +63,7 @@ class BloodPressureRepository extends ServiceEntityRepository
     public function findMaxMinByBucket($d_id,$from,$to): array
     {
         return $this->createQueryBuilder('p')
-            ->select('Max(p.diastolic) as max_v ,Min(p.diastolic) as min_v')
+            ->select('Max(p.diastolic) as max_dias ,Max(p.systolic) as max_sys')
             ->andWhere('p.device_id = :d_id')
             ->andWhere(' p.collect_time >= :from ')
             ->andWhere(' p.collect_time <= :to ')

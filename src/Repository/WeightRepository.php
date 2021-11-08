@@ -61,7 +61,7 @@ class WeightRepository extends ServiceEntityRepository
     public function findMaxMinByBucket($d_id,$from,$to): array
     {
         return $this->createQueryBuilder('p')
-            ->select('Max(p.weight) AS max_v, Min(p.weight) AS min_v')
+            ->select('Max(p.bmi) AS max, Min(p.bmi) AS min')
             ->andWhere('p.device_id = :d_id')
             ->andWhere(' p.collect_time >= :from ')
             ->andWhere(' p.collect_time <= :to ')

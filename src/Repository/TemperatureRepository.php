@@ -60,7 +60,7 @@ class TemperatureRepository extends ServiceEntityRepository
     public function findMaxMinByBucket($d_id,$from,$to): array
     {
         return $this->createQueryBuilder('t')
-            ->select('MAX(t.temperature) AS max_v ,MIN(t.temperature) AS min_v')
+            ->select('MAX(t.temperature) AS max ,MIN(t.temperature) AS min')
             ->andWhere('t.device_id = :d_id')
             ->andWhere(' t.collect_time >= :from ')
             ->andWhere(' t.collect_time <= :to ')
